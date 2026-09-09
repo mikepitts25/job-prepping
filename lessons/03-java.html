@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Java refresher &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/00-program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/02-python.html">3. Python Refresher</a></li><li class="active"><a href="../lessons/03-java.html">4. Java Refresher</a></li><li><a href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/05-ood.html">6. OO Design &amp; SOLID</a></li><li><a href="../lessons/06-linux.html">7. Linux / RHEL</a></li><li><a href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/08-testing-ci.html">9. Testing &amp; CI/CD</a></li><li><a href="../lessons/09-containers.html">10. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/10-architecture.html">11. Architecture &amp; Software Factory</a></li><li><a href="../lessons/11-cyber.html">12. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/13-mock-interview.html">14. Mock Interview Bank</a></li><li><a href="../lessons/14-cheatsheets.html">15. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="4-java-refresher">4. Java refresher</h1>
+<p>The posting pairs Java with Python. On a program like this, Java is likely to be
+where the long-lived server-side applications live, so expect depth questions
+even if the live coding is in Python.</p>
+<p>Check your toolchain:</p>
+<div class="codehilite"><pre><span></span><code>java<span class="w"> </span>-version<span class="w">      </span><span class="c1"># 17 or 21 is the realistic modern baseline</span>
+javac<span class="w"> </span>-version
+mvn<span class="w"> </span>-v<span class="w">             </span><span class="c1"># or: gradle -v</span>
+</code></pre></div>
+
+<h2 id="1-a-complete-class-written-the-way-they-want-to-see-it">1. A complete class, written the way they want to see it</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">lm.prep</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.Objects</span><span class="p">;</span>
+
+<span class="cm">/** One system-level estimate of a tracked object. */</span>
+<span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Track</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">Comparable</span><span class="o">&lt;</span><span class="n">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="n">trackId</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">latitude</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">longitude</span><span class="p">;</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">altitudeMeters</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="nf">Track</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">trackId</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">altitudeMeters</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">trackId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Objects</span><span class="p">.</span><span class="na">requireNonNull</span><span class="p">(</span><span class="n">trackId</span><span class="p">,</span><span class="w"> </span><span class="s">"trackId"</span><span class="p">);</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">latitude</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">longitude</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">altitudeMeters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">altitudeMeters</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">getTrackId</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">trackId</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="nf">getAltitudeFeet</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">altitudeMeters</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mf">3.28084</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">updatePosition</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">lat</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">lon</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">latitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lat</span><span class="p">;</span>
+<span class="w">        </span><span class="k">this</span><span class="p">.</span><span class="na">longitude</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lon</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">equals</span><span class="p">(</span><span class="n">Object</span><span class="w"> </span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="k">this</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">o</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">o</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">Track</span><span class="w"> </span><span class="n">other</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span><span class="w">   </span><span class="c1">// pattern matching, Java 16+</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">trackId</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="na">trackId</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">hashCode</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">Objects</span><span class="p">.</span><span class="na">hash</span><span class="p">(</span><span class="n">trackId</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">String</span><span class="w"> </span><span class="nf">toString</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"Track["</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">trackId</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">" @ "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">","</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">"]"</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="nf">compareTo</span><span class="p">(</span><span class="n">Track</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="na">trackId</span><span class="p">.</span><span class="na">compareTo</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="na">trackId</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>The equals/hashCode contract is asked constantly.</strong> Memorize the rule: if two
+objects are equal, they must have the same hash code. The converse is not
+required. Break it and your objects vanish inside a <code>HashMap</code>. Base both on the
+same immutable fields.</p>
+<p>Records remove most of that boilerplate for value types:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">record</span> <span class="nc">Detection</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">sensorId</span><span class="p">,</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">timestampMillis</span><span class="p">,</span>
+<span class="w">                        </span><span class="kt">double</span><span class="w"> </span><span class="n">latitude</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">longitude</span><span class="p">,</span><span class="w"> </span><span class="kt">double</span><span class="w"> </span><span class="n">confidence</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">Detection</span><span class="w"> </span><span class="p">{</span><span class="w">                                  </span><span class="c1">// compact constructor</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">confidence</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">confidence</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1.0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalArgumentException</span><span class="p">(</span><span class="s">"confidence out of range: "</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">confidence</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="nf">isHighConfidence</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">confidence</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.8</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A record gives you a final class with final fields plus <code>equals</code>, <code>hashCode</code>,
+<code>toString</code>, and accessors. Use it for immutable data carriers, which is most of
+what flows through a message-driven system.</p>
+<h2 id="2-collections">2. Collections</h2>
+<table>
+<thead>
+<tr>
+<th>Interface</th>
+<th>Common impl</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>List</code></td>
+<td><code>ArrayList</code></td>
+<td>O(1) index, O(n) middle insert. The default choice.</td>
+</tr>
+<tr>
+<td><code>List</code></td>
+<td><code>LinkedList</code></td>
+<td>O(1) ends. Rarely the right answer; say so.</td>
+</tr>
+<tr>
+<td><code>Set</code></td>
+<td><code>HashSet</code></td>
+<td>O(1) average, no order</td>
+</tr>
+<tr>
+<td><code>Set</code></td>
+<td><code>LinkedHashSet</code></td>
+<td>insertion order preserved</td>
+</tr>
+<tr>
+<td><code>Set</code></td>
+<td><code>TreeSet</code></td>
+<td>sorted, O(log n)</td>
+</tr>
+<tr>
+<td><code>Map</code></td>
+<td><code>HashMap</code></td>
+<td>O(1) average, no order</td>
+</tr>
+<tr>
+<td><code>Map</code></td>
+<td><code>LinkedHashMap</code></td>
+<td>insertion or access order; makes an easy LRU cache</td>
+</tr>
+<tr>
+<td><code>Map</code></td>
+<td><code>TreeMap</code></td>
+<td>sorted keys, O(log n), range queries</td>
+</tr>
+<tr>
+<td><code>Deque</code></td>
+<td><code>ArrayDeque</code></td>
+<td>preferred stack and queue</td>
+</tr>
+<tr>
+<td><code>Queue</code></td>
+<td><code>PriorityQueue</code></td>
+<td>heap ordered</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">bySensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">bySensor</span><span class="p">.</span><span class="na">computeIfAbsent</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="na">sensorId</span><span class="p">(),</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">()).</span><span class="na">add</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">counts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">counts</span><span class="p">.</span><span class="na">merge</span><span class="p">(</span><span class="n">sensorId</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">Integer</span><span class="p">::</span><span class="n">sum</span><span class="p">);</span>
+<span class="n">counts</span><span class="p">.</span><span class="na">getOrDefault</span><span class="p">(</span><span class="n">sensorId</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<span class="n">counts</span><span class="p">.</span><span class="na">putIfAbsent</span><span class="p">(</span><span class="n">sensorId</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="n">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">List</span><span class="p">.</span><span class="na">of</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">));</span><span class="w">   </span><span class="c1">// List.of is immutable</span>
+<span class="n">tracks</span><span class="p">.</span><span class="na">sort</span><span class="p">(</span><span class="n">Comparator</span><span class="p">.</span><span class="na">comparingDouble</span><span class="p">(</span><span class="n">Track</span><span class="p">::</span><span class="n">getAltitudeFeet</span><span class="p">).</span><span class="na">reversed</span><span class="p">()</span>
+<span class="w">                      </span><span class="p">.</span><span class="na">thenComparing</span><span class="p">(</span><span class="n">Track</span><span class="p">::</span><span class="n">getTrackId</span><span class="p">));</span>
+<span class="n">tracks</span><span class="p">.</span><span class="na">removeIf</span><span class="p">(</span><span class="n">t</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">t</span><span class="p">.</span><span class="na">getAltitudeFeet</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1000</span><span class="p">);</span>
+
+<span class="n">Deque</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">stack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">stack</span><span class="p">.</span><span class="na">push</span><span class="p">(</span><span class="s">"a"</span><span class="p">);</span><span class="w"> </span><span class="n">stack</span><span class="p">.</span><span class="na">pop</span><span class="p">();</span>
+<span class="n">Deque</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queue</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">queue</span><span class="p">.</span><span class="na">offer</span><span class="p">(</span><span class="s">"a"</span><span class="p">);</span><span class="w"> </span><span class="n">queue</span><span class="p">.</span><span class="na">poll</span><span class="p">();</span>
+
+<span class="n">PriorityQueue</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="w"> </span><span class="n">byConfidence</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="k">new</span><span class="w"> </span><span class="n">PriorityQueue</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="n">Comparator</span><span class="p">.</span><span class="na">comparingDouble</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">confidence</span><span class="p">).</span><span class="na">reversed</span><span class="p">());</span>
+</code></pre></div>
+
+<p>Iterating and removing safely:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// WRONG: ConcurrentModificationException</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Track</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stale</span><span class="p">(</span><span class="n">t</span><span class="p">))</span><span class="w"> </span><span class="n">tracks</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">t</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+
+<span class="c1">// RIGHT</span>
+<span class="n">tracks</span><span class="p">.</span><span class="na">removeIf</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">stale</span><span class="p">);</span>
+
+<span class="c1">// RIGHT, when you need the iterator</span>
+<span class="n">Iterator</span><span class="o">&lt;</span><span class="n">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tracks</span><span class="p">.</span><span class="na">iterator</span><span class="p">();</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="na">hasNext</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stale</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="na">next</span><span class="p">()))</span><span class="w"> </span><span class="n">it</span><span class="p">.</span><span class="na">remove</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<h2 id="3-streams">3. Streams</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.stream.*</span><span class="p">;</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">highConfidenceSensors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="n">d</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">confidence</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.8</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">sensorId</span><span class="p">)</span>
+<span class="w">        </span><span class="p">.</span><span class="na">distinct</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">sorted</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">toList</span><span class="p">();</span><span class="w">                                   </span><span class="c1">// Java 16+; else .collect(toList())</span>
+
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">countsBySensor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">groupingBy</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">sensorId</span><span class="p">,</span><span class="w"> </span><span class="n">Collectors</span><span class="p">.</span><span class="na">counting</span><span class="p">()));</span>
+
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">avgConfidence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">groupingBy</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">sensorId</span><span class="p">,</span>
+<span class="w">                 </span><span class="n">Collectors</span><span class="p">.</span><span class="na">averagingDouble</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">confidence</span><span class="p">)));</span>
+
+<span class="n">Optional</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="w"> </span><span class="n">best</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">Comparator</span><span class="p">.</span><span class="na">comparingDouble</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">confidence</span><span class="p">));</span>
+
+<span class="kt">double</span><span class="w"> </span><span class="n">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">mapToDouble</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">confidence</span><span class="p">).</span><span class="na">sum</span><span class="p">();</span>
+
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">Boolean</span><span class="p">,</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">split</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">detections</span><span class="p">.</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">        </span><span class="p">.</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">partitioningBy</span><span class="p">(</span><span class="n">Detection</span><span class="p">::</span><span class="n">isHighConfidence</span><span class="p">));</span>
+
+<span class="n">String</span><span class="w"> </span><span class="n">joined</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sensors</span><span class="p">.</span><span class="na">stream</span><span class="p">().</span><span class="na">collect</span><span class="p">(</span><span class="n">Collectors</span><span class="p">.</span><span class="na">joining</span><span class="p">(</span><span class="s">", "</span><span class="p">,</span><span class="w"> </span><span class="s">"["</span><span class="p">,</span><span class="w"> </span><span class="s">"]"</span><span class="p">));</span>
+</code></pre></div>
+
+<p>Know that streams are lazy until a terminal operation, that they are single-use,
+and that <code>parallelStream()</code> is rarely worth it and can be actively wrong with
+shared mutable state.</p>
+<p><code>Optional</code> is for return values that may be absent:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Optional</span><span class="o">&lt;</span><span class="n">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="n">found</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">repo</span><span class="p">.</span><span class="na">findById</span><span class="p">(</span><span class="n">id</span><span class="p">);</span>
+<span class="n">Track</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">found</span><span class="p">.</span><span class="na">orElseThrow</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">NoSuchElementException</span><span class="p">(</span><span class="n">id</span><span class="p">));</span>
+<span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">found</span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">Track</span><span class="p">::</span><span class="n">getTrackId</span><span class="p">).</span><span class="na">orElse</span><span class="p">(</span><span class="s">"unknown"</span><span class="p">);</span>
+<span class="n">found</span><span class="p">.</span><span class="na">ifPresent</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">publish</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Do not use <code>Optional</code> for fields or parameters. Do not call <code>.get()</code> without
+checking.</p>
+<h2 id="4-exceptions">4. Exceptions</h2>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="n">Path</span><span class="w"> </span><span class="n">file</span><span class="p">)</span><span class="w"> </span><span class="kd">throws</span><span class="w"> </span><span class="n">IOException</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// checked</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="n">BufferedReader</span><span class="w"> </span><span class="n">reader</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Files</span><span class="p">.</span><span class="na">newBufferedReader</span><span class="p">(</span><span class="n">file</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// try-with-resources</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">reader</span><span class="p">.</span><span class="na">lines</span><span class="p">()</span>
+<span class="w">                     </span><span class="p">.</span><span class="na">filter</span><span class="p">(</span><span class="n">line</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">line</span><span class="p">.</span><span class="na">isBlank</span><span class="p">())</span>
+<span class="w">                     </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">parseLine</span><span class="p">)</span>
+<span class="w">                     </span><span class="p">.</span><span class="na">toList</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">private</span><span class="w"> </span><span class="n">Detection</span><span class="w"> </span><span class="nf">parseLine</span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">line</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">parts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">line</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">","</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">parts</span><span class="p">.</span><span class="na">length</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MalformedRecordException</span><span class="p">(</span><span class="n">line</span><span class="p">);</span><span class="w">       </span><span class="c1">// unchecked</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">.</span><span class="na">parseLong</span><span class="p">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="p">),</span>
+<span class="w">                             </span><span class="n">Double</span><span class="p">.</span><span class="na">parseDouble</span><span class="p">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="p">),</span>
+<span class="w">                             </span><span class="n">Double</span><span class="p">.</span><span class="na">parseDouble</span><span class="p">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="p">),</span>
+<span class="w">                             </span><span class="n">Double</span><span class="p">.</span><span class="na">parseDouble</span><span class="p">(</span><span class="n">parts</span><span class="o">[</span><span class="mi">4</span><span class="o">]</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">NumberFormatException</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">MalformedRecordException</span><span class="p">(</span><span class="n">line</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">);</span><span class="w">    </span><span class="c1">// preserve the cause</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Checked versus unchecked, the answer they want: checked extends <code>Exception</code> and
+must be declared or handled, and is appropriate for recoverable conditions a
+caller should deal with; unchecked extends <code>RuntimeException</code> and signals a
+programming error or an unrecoverable state. Always chain the cause. Never
+swallow an exception into an empty catch block.</p>
+<h2 id="5-concurrency">5. Concurrency</h2>
+<p>Java is where you get asked real concurrency questions.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">java.util.concurrent.atomic.*</span><span class="p">;</span>
+
+<span class="n">ExecutorService</span><span class="w"> </span><span class="n">pool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Executors</span><span class="p">.</span><span class="na">newFixedThreadPool</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+<span class="n">Future</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pool</span><span class="p">.</span><span class="na">submit</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">correlate</span><span class="p">(</span><span class="n">chunk</span><span class="p">));</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">);</span>
+<span class="n">pool</span><span class="p">.</span><span class="na">shutdown</span><span class="p">();</span>
+<span class="n">pool</span><span class="p">.</span><span class="na">awaitTermination</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="n">TimeUnit</span><span class="p">.</span><span class="na">SECONDS</span><span class="p">);</span>
+
+<span class="c1">// Modern composition</span>
+<span class="n">CompletableFuture</span><span class="o">&lt;</span><span class="n">List</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">cf</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">CompletableFuture</span><span class="p">.</span><span class="na">supplyAsync</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">fetch</span><span class="p">(</span><span class="n">sensor</span><span class="p">),</span><span class="w"> </span><span class="n">pool</span><span class="p">)</span>
+<span class="w">                     </span><span class="p">.</span><span class="na">thenApply</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">normalize</span><span class="p">)</span>
+<span class="w">                     </span><span class="p">.</span><span class="na">exceptionally</span><span class="p">(</span><span class="n">ex</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">List</span><span class="p">.</span><span class="na">of</span><span class="p">());</span>
+</code></pre></div>
+
+<p>Thread-safe collections and counters:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">ConcurrentHashMap</span><span class="o">&lt;</span><span class="n">String</span><span class="p">,</span><span class="w"> </span><span class="n">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="n">live</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ConcurrentHashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">live</span><span class="p">.</span><span class="na">compute</span><span class="p">(</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="w"> </span><span class="n">existing</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">existing</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">null</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">newTrack</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">existing</span><span class="p">.</span><span class="na">merge</span><span class="p">(</span><span class="n">det</span><span class="p">));</span>
+
+<span class="n">BlockingQueue</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="w"> </span><span class="n">inbox</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">LinkedBlockingQueue</span><span class="o">&lt;&gt;</span><span class="p">(</span><span class="mi">10_000</span><span class="p">);</span>
+<span class="n">inbox</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="n">d</span><span class="p">);</span><span class="w">                    </span><span class="c1">// blocks when full: backpressure</span>
+<span class="n">Detection</span><span class="w"> </span><span class="n">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">inbox</span><span class="p">.</span><span class="na">take</span><span class="p">();</span><span class="w">   </span><span class="c1">// blocks when empty</span>
+
+<span class="n">AtomicLong</span><span class="w"> </span><span class="n">processed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AtomicLong</span><span class="p">();</span>
+<span class="n">processed</span><span class="p">.</span><span class="na">incrementAndGet</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Synchronization vocabulary you should be able to define on the spot:</p>
+<ul>
+<li><strong><code>synchronized</code></strong>: intrinsic lock on an object; only one thread in the block
+  at a time; also establishes a happens-before edge.</li>
+<li><strong><code>volatile</code></strong>: guarantees visibility of writes across threads and prevents
+  certain reorderings. It does <em>not</em> make <code>count++</code> atomic, because that is a
+  read-modify-write.</li>
+<li><strong>Race condition</strong>: outcome depends on thread interleaving.</li>
+<li><strong>Deadlock</strong>: two threads each hold a lock the other needs. Prevent by always
+  acquiring locks in a globally consistent order, or by using timeouts.</li>
+<li><strong>Livelock / starvation</strong>: threads run but make no progress, or one thread
+  never gets the lock.</li>
+<li><strong>Immutability</strong> is the cheapest concurrency strategy. Records help.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1">// The classic bug</span>
+<span class="kd">private</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">increment</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">        </span><span class="c1">// not atomic: read, add, write</span>
+
+<span class="c1">// Fixes</span>
+<span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">AtomicInteger</span><span class="w"> </span><span class="n">safeCount</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">AtomicInteger</span><span class="p">();</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">increment2</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">safeCount</span><span class="p">.</span><span class="na">incrementAndGet</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+
+<span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">Object</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Object</span><span class="p">();</span>
+<span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">increment3</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kd">synchronized</span><span class="w"> </span><span class="p">(</span><span class="n">lock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">count</span><span class="o">++</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Virtual threads, if the team is on Java 21, are worth one sentence: they make
+blocking I/O cheap by decoupling a Java thread from an OS thread, so a
+thread-per-request design scales again.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="w"> </span><span class="p">(</span><span class="kd">var</span><span class="w"> </span><span class="n">executor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Executors</span><span class="p">.</span><span class="na">newVirtualThreadPerTaskExecutor</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">sensors</span><span class="p">.</span><span class="na">forEach</span><span class="p">(</span><span class="n">s</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">executor</span><span class="p">.</span><span class="na">submit</span><span class="p">(()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">poll</span><span class="p">(</span><span class="n">s</span><span class="p">)));</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="6-memory-and-the-jvm">6. Memory and the JVM</h2>
+<p>Expect at least one JVM question on a systems program.</p>
+<ul>
+<li><strong>Stack vs heap.</strong> Locals and frames on the stack, objects on the heap.</li>
+<li><strong>Garbage collection.</strong> Generational: most objects die young, so the young
+  generation is collected frequently and cheaply. Survivors get promoted.
+  Modern collectors: G1 (default), ZGC and Shenandoah for low pause times.</li>
+<li><strong>Memory leak in Java.</strong> Not a leak in the C sense; it is unintended
+  retention. A static collection that grows forever, a listener never
+  unregistered, a <code>ThreadLocal</code> on a pooled thread, a cache with no eviction.</li>
+<li><strong>Diagnosis.</strong> <code>jcmd &lt;pid&gt; GC.heap_info</code>, <code>jmap -histo &lt;pid&gt;</code>, a heap dump via
+  <code>jcmd &lt;pid&gt; GC.heap_dump</code>, then Eclipse MAT or VisualVM. <code>jstack &lt;pid&gt;</code> for a
+  thread dump when things hang.</li>
+<li><strong>Flags you might see.</strong> <code>-Xms</code> and <code>-Xmx</code> for heap sizing,
+  <code>-XX:+HeapDumpOnOutOfMemoryError</code>, <code>-XX:MaxMetaspaceSize</code>.</li>
+</ul>
+<div class="codehilite"><pre><span></span><code>jps<span class="w"> </span>-l<span class="w">                            </span><span class="c1"># find the pid</span>
+jstack<span class="w"> </span><span class="m">4711</span><span class="w"> </span>&gt;<span class="w"> </span>threads.txt<span class="w">         </span><span class="c1"># hung? get a thread dump, twice, 10s apart</span>
+jcmd<span class="w"> </span><span class="m">4711</span><span class="w"> </span>GC.heap_dump<span class="w"> </span>/tmp/heap.hprof
+</code></pre></div>
+
+<h2 id="7-testing-with-junit-5">7. Testing with JUnit 5</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">package</span><span class="w"> </span><span class="nn">lm.prep</span><span class="p">;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.jupiter.api.*</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.jupiter.params.ParameterizedTest</span><span class="p">;</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">org.junit.jupiter.params.provider.CsvSource</span><span class="p">;</span>
+<span class="kn">import static</span><span class="w"> </span><span class="nn">org.junit.jupiter.api.Assertions.*</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">TrackCorrelatorTest</span><span class="w"> </span><span class="p">{</span>
+
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="n">TrackCorrelator</span><span class="w"> </span><span class="n">correlator</span><span class="p">;</span>
+
+<span class="w">    </span><span class="nd">@BeforeEach</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">setUp</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">correlator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">TrackCorrelator</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Test</span>
+<span class="w">    </span><span class="nd">@DisplayName</span><span class="p">(</span><span class="s">"a detection far from every track opens a new track"</span><span class="p">)</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">distantDetectionCreatesTrack</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">correlator</span><span class="p">.</span><span class="na">ingest</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">1000L</span><span class="p">,</span><span class="w"> </span><span class="mf">24.0</span><span class="p">,</span><span class="w"> </span><span class="mf">54.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9</span><span class="p">));</span>
+<span class="w">        </span><span class="n">correlator</span><span class="p">.</span><span class="na">ingest</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">1100L</span><span class="p">,</span><span class="w"> </span><span class="mf">40.0</span><span class="p">,</span><span class="w"> </span><span class="mf">10.0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9</span><span class="p">));</span>
+<span class="w">        </span><span class="n">assertEquals</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="n">correlator</span><span class="p">.</span><span class="na">trackCount</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@Test</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">rejectsInvalidConfidence</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">assertThrows</span><span class="p">(</span><span class="n">IllegalArgumentException</span><span class="p">.</span><span class="na">class</span><span class="p">,</span>
+<span class="w">                     </span><span class="p">()</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@ParameterizedTest</span>
+<span class="w">    </span><span class="nd">@CsvSource</span><span class="p">({</span><span class="s">"0.9, true"</span><span class="p">,</span><span class="w"> </span><span class="s">"0.8, true"</span><span class="p">,</span><span class="w"> </span><span class="s">"0.79, false"</span><span class="p">})</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">confidenceThreshold</span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="n">confidence</span><span class="p">,</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="n">expected</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kd">var</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">confidence</span><span class="p">);</span>
+<span class="w">        </span><span class="n">assertEquals</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">isHighConfidence</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="nd">@AfterEach</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">tearDown</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">correlator</span><span class="p">.</span><span class="na">close</span><span class="p">();</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Mockito, which you will meet on almost any Java program:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import static</span><span class="w"> </span><span class="nn">org.mockito.Mockito.*</span><span class="p">;</span>
+
+<span class="nd">@Test</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">publishesOnlyHighConfidence</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TrackPublisher</span><span class="w"> </span><span class="n">publisher</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mock</span><span class="p">(</span><span class="n">TrackPublisher</span><span class="p">.</span><span class="na">class</span><span class="p">);</span>
+<span class="w">    </span><span class="kd">var</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IngestService</span><span class="p">(</span><span class="n">publisher</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">service</span><span class="p">.</span><span class="na">handle</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="n">L</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.95</span><span class="p">));</span>
+<span class="w">    </span><span class="n">service</span><span class="p">.</span><span class="na">handle</span><span class="p">(</span><span class="k">new</span><span class="w"> </span><span class="n">Detection</span><span class="p">(</span><span class="s">"RDR-1"</span><span class="p">,</span><span class="w"> </span><span class="mi">1L</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mf">0.10</span><span class="p">));</span>
+
+<span class="w">    </span><span class="n">verify</span><span class="p">(</span><span class="n">publisher</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="p">(</span><span class="mi">1</span><span class="p">)).</span><span class="na">publish</span><span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="n">Track</span><span class="p">.</span><span class="na">class</span><span class="p">));</span>
+<span class="w">    </span><span class="n">verifyNoMoreInteractions</span><span class="p">(</span><span class="n">publisher</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Maven layout and commands, which you should be able to recite:</p>
+<div class="codehilite"><pre><span></span><code>pom.xml
+src/main/java/lm/prep/Track.java
+src/main/resources/application.properties
+src/test/java/lm/prep/TrackTest.java
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>mvn<span class="w"> </span>clean<span class="w"> </span>verify<span class="w">              </span><span class="c1"># compile, test, package, run integration checks</span>
+mvn<span class="w"> </span>-DskipTests<span class="w"> </span>package<span class="w">       </span><span class="c1"># when you only want the artifact</span>
+mvn<span class="w"> </span>dependency:tree<span class="w">           </span><span class="c1"># find where a transitive version came from</span>
+mvn<span class="w"> </span>versions:display-dependency-updates
+</code></pre></div>
+
+<p><code>mvn dependency:tree</code> is genuinely the tool you use for the COTS/FOSS upgrade
+work described in the posting. Mention it when that topic comes up.</p>
+<h2 id="8-modern-java-features-worth-naming">8. Modern Java features worth naming</h2>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="n">detections</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="p">();</span><span class="w">          </span><span class="c1">// 10: local type inference</span>
+
+<span class="n">String</span><span class="w"> </span><span class="n">status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">state</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">                      </span><span class="c1">// 14: switch expressions</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">ACTIVE</span><span class="p">,</span><span class="w"> </span><span class="n">ENGAGED</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">"live"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="n">DROPPED</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">"gone"</span><span class="p">;</span>
+<span class="w">    </span><span class="k">default</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="k">throw</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">IllegalStateException</span><span class="p">(</span><span class="n">state</span><span class="p">.</span><span class="na">name</span><span class="p">());</span>
+<span class="p">};</span>
+
+<span class="n">String</span><span class="w"> </span><span class="n">sql</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"""</span>
+<span class="s">        SELECT track_id, last_seen</span>
+<span class="s">          FROM tracks</span>
+<span class="s">         WHERE state = 'ACTIVE'</span>
+<span class="s">        """</span><span class="p">;</span><span class="w">                                          </span><span class="c1">// 15: text blocks</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w"> </span><span class="k">instanceof</span><span class="w"> </span><span class="n">Detection</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="na">confidence</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.8</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">   </span><span class="c1">// 16: pattern matching</span>
+<span class="w">    </span><span class="n">publish</span><span class="p">(</span><span class="n">d</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kd">sealed</span><span class="w"> </span><span class="kd">interface</span> <span class="nc">Message</span><span class="w"> </span><span class="kd">permits</span><span class="w"> </span><span class="n">Heartbeat</span><span class="p">,</span><span class="w"> </span><span class="n">TrackUpdate</span><span class="p">,</span><span class="w"> </span><span class="n">Alert</span><span class="w"> </span><span class="p">{}</span><span class="w">   </span><span class="c1">// 17: sealed types</span>
+</code></pre></div>
+
+<h2 id="9-practice-problems">9. Practice problems</h2>
+<p><strong>J1.</strong> Implement <code>Map&lt;String, Integer&gt; wordCount(Path file)</code> using streams,
+lowercasing and ignoring punctuation.</p>
+<p><strong>J2.</strong> Write an LRU cache with a fixed capacity by extending <code>LinkedHashMap</code> and
+overriding <code>removeEldestEntry</code>.</p>
+<p><strong>J3.</strong> Given <code>List&lt;Detection&gt;</code>, return the top three sensors by average
+confidence, using streams only.</p>
+<p><strong>J4.</strong> Implement a thread-safe counter three ways: <code>synchronized</code>,
+<code>AtomicLong</code>, and <code>LongAdder</code>. Explain when each is right.</p>
+<p><strong>J5.</strong> Write a producer-consumer pipeline: one thread reads lines from a file
+into a <code>BlockingQueue</code>, four consumers parse and count, and the main thread
+prints totals after a clean shutdown.</p>
+<p><strong>J6.</strong> Given a class whose <code>equals</code> is defined but <code>hashCode</code> is not,
+demonstrate the bug with a <code>HashSet</code> and then fix it.</p>
+<h2 id="10-ten-java-questions-to-have-answers-for">10. Ten Java questions to have answers for</h2>
+<ol>
+<li><strong><code>==</code> vs <code>.equals()</code>?</strong> Reference identity vs value equality. String
+   interning makes <code>==</code> misleadingly work sometimes; never rely on it.</li>
+<li><strong>Why must equals and hashCode agree?</strong> Section 1.</li>
+<li><strong><code>ArrayList</code> vs <code>LinkedList</code>?</strong> Almost always <code>ArrayList</code>; better cache
+   locality, and <code>LinkedList</code>'s O(1) insert requires you to already hold the
+   node.</li>
+<li><strong>Checked vs unchecked exceptions?</strong> Section 4.</li>
+<li><strong>What is <code>final</code>?</strong> On a variable, single assignment; on a method, cannot be
+   overridden; on a class, cannot be subclassed. Final reference does not mean
+   immutable object.</li>
+<li><strong>Interface vs abstract class?</strong> Interface for capability and multiple
+   inheritance of type, with default methods since Java 8; abstract class when
+   you need shared state or constructors.</li>
+<li><strong><code>static</code>?</strong> Belongs to the class, not the instance. Static state is a
+   frequent source of concurrency and testability problems.</li>
+<li><strong>How does <code>HashMap</code> work?</strong> Array of buckets, hash then index, collisions
+   chained and converted to a balanced tree past a threshold. Resizes at the
+   load factor.</li>
+<li><strong>String immutability?</strong> Enables safe sharing, caching of hash codes, and
+   interning. Use <code>StringBuilder</code> for loops.</li>
+<li><strong>How would you find a memory leak in production?</strong> Section 6, said calmly:
+    heap dump, histogram, dominator tree, find the retaining path.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/02-python.html">&larr; 3. Python Refresher</a><a class="next" href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

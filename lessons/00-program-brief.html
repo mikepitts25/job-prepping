@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. Program and role brief &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li class="active"><a href="../lessons/00-program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/02-python.html">3. Python Refresher</a></li><li><a href="../lessons/03-java.html">4. Java Refresher</a></li><li><a href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/05-ood.html">6. OO Design &amp; SOLID</a></li><li><a href="../lessons/06-linux.html">7. Linux / RHEL</a></li><li><a href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/08-testing-ci.html">9. Testing &amp; CI/CD</a></li><li><a href="../lessons/09-containers.html">10. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/10-architecture.html">11. Architecture &amp; Software Factory</a></li><li><a href="../lessons/11-cyber.html">12. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/13-mock-interview.html">14. Mock Interview Bank</a></li><li><a href="../lessons/14-cheatsheets.html">15. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="1-program-and-role-brief">1. Program and role brief</h1>
+<p>Before any technical prep, you need to be able to talk about the program for
+three minutes without hedging. Interviewers on defense programs notice
+immediately whether a candidate understood what they applied to.</p>
+<h2 id="what-eadge-t-is">What EADGE-T is</h2>
+<p>EADGE-T stands for <strong>Extended Air Defence Ground Environment &ndash;
+Transformation</strong>. Lockheed Martin won it with the United Arab Emirates as launch
+customer, and it has been described as the first end-to-end integrated air and
+missile defense system of its kind.</p>
+<p>Functionally it is a <strong>command and control (C2) system for integrated air and
+missile defense (IAMD)</strong>. Break that into the pieces you can name out loud:</p>
+<ol>
+<li><strong>Sensors.</strong> Ground-based radars and other sources produce detections and
+   tracks. Different sensors, different vendors, different message formats,
+   different update rates, different coordinate frames.</li>
+<li><strong>Correlation and fusion.</strong> Those inputs get correlated into a single
+   consistent air picture, so that one aircraft seen by three radars is one
+   track, not three.</li>
+<li><strong>Battle management.</strong> Operators and decision aids evaluate threats, assign
+   engagements, and deconflict weapons.</li>
+<li><strong>Effectors.</strong> Missile systems, including THAAD and Patriot PAC-3, are
+   integrated so that the C2 layer can task them coherently rather than each
+   running independently.</li>
+<li><strong>Communications and data links.</strong> Everything above is distributed across
+   geographically separated sites and has to keep working over constrained,
+   sometimes degraded links.</li>
+</ol>
+<p>If you want a one-sentence framing to say in the interview: <em>"It takes a set of
+separately procured radars and missile systems and makes them behave like one
+air defense system, with one air picture and one battle management chain."</em></p>
+<h2 id="what-tech-refresh-means">What "Tech Refresh" means</h2>
+<p>A fielded defense system typically runs on hardware and operating system
+baselines that were locked years ago. Over time three pressures build:</p>
+<ul>
+<li><strong>Obsolescence.</strong> Servers, network gear, and displays go end-of-life. Spares
+  become unobtainable. Vendors stop supporting the firmware.</li>
+<li><strong>Security debt.</strong> The OS and the third-party libraries accumulate published
+  vulnerabilities. The accreditation that lets the system operate depends on
+  closing them.</li>
+<li><strong>Toolchain drift.</strong> The compilers, build systems, and test infrastructure age
+  out of support, and nobody can reproduce a clean build.</li>
+</ul>
+<p>A tech refresh addresses all three at once: new hardware, a current OS baseline,
+updated COTS and FOSS dependencies, and a modern build and deployment pipeline.
+The posting names exactly this: hardware modernization plus foundational
+cybersecurity enhancements.</p>
+<p>The engineering character of the work follows from that. It is <strong>change under
+constraint</strong>. The system already works and already has an accredited behavior
+that operators depend on. Your changes must not alter the mission behavior while
+substantially altering everything underneath it. That is a specific discipline,
+and demonstrating that you understand it is worth more in this interview than
+any algorithm.</p>
+<h2 id="what-the-role-actually-does-day-to-day">What the role actually does day to day</h2>
+<p>From the posting, expanded into the daily reality:</p>
+<p><strong>Modernize and maintain applications.</strong> You will spend real time upgrading a
+dependency from an old version to a current one, discovering that an API changed
+underneath you, and reworking calling code so behavior stays identical. Java
+library major-version bumps, Python 2-to-3 remnants, a logging framework
+replaced because of a CVE, an XML parser swapped for one that is not vulnerable
+to entity expansion.</p>
+<p><strong>Migrate legacy capability into the Software Factory.</strong> Take something that
+built on a developer's machine with a hand-maintained script and get it building
+reproducibly in a GitLab or Jenkins pipeline, with unit tests, static analysis,
+and artifact publishing. See <a href="10-architecture.html">lesson 11</a> for what
+"Software Factory" means at LM.</p>
+<p><strong>Write unit tests and automated test capability.</strong> On legacy code with little
+coverage, this is characterization testing: capture existing behavior in tests
+first, then refactor with a net under you.</p>
+<p><strong>Integration work.</strong> Baseline merges (bringing a long-lived development line
+together with a released baseline), defect resolution against a tracker, peer
+reviews, and troubleshooting integration failures that appear only when several
+subsystems run together.</p>
+<p><strong>Collaboration across disciplines.</strong> Systems engineers own requirements,
+cybersecurity owns the hardening posture, integration and test own the lab.
+You will negotiate across all of them. See <a href="11-cyber.html">lesson 12</a>.</p>
+<h2 id="the-vocabulary-you-should-be-comfortable-with">The vocabulary you should be comfortable with</h2>
+<p>You do not need to be an air-defense expert. You need to not be lost when these
+words appear.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IAMD</td>
+<td>Integrated Air and Missile Defense</td>
+</tr>
+<tr>
+<td>C2 / BMC2</td>
+<td>Command and control; battle management command and control</td>
+</tr>
+<tr>
+<td>Track</td>
+<td>The system's estimate of one object's state over time, from many detections</td>
+</tr>
+<tr>
+<td>Correlation</td>
+<td>Deciding that a new detection belongs to an existing track</td>
+</tr>
+<tr>
+<td>Fusion</td>
+<td>Combining multiple sources into one estimate</td>
+</tr>
+<tr>
+<td>Air picture</td>
+<td>The current set of tracks, shared across sites</td>
+</tr>
+<tr>
+<td>THAAD</td>
+<td>Terminal High Altitude Area Defense, an upper-tier missile defense system</td>
+</tr>
+<tr>
+<td>Patriot PAC-3</td>
+<td>A lower-tier air and missile defense system</td>
+</tr>
+<tr>
+<td>Link 16</td>
+<td>A tactical data link standard used to exchange the air picture</td>
+</tr>
+<tr>
+<td>Baseline</td>
+<td>A specific configuration-controlled version of the whole system</td>
+</tr>
+<tr>
+<td>SIL</td>
+<td>Systems Integration Lab, where the software meets representative hardware</td>
+</tr>
+<tr>
+<td>ATO</td>
+<td>Authority to Operate, the accreditation permitting fielded use</td>
+</tr>
+<tr>
+<td>RMF</td>
+<td>Risk Management Framework, the process producing an ATO</td>
+</tr>
+<tr>
+<td>STIG</td>
+<td>Security Technical Implementation Guide, a hardening checklist</td>
+</tr>
+<tr>
+<td>CDRL</td>
+<td>Contract Data Requirements List, the deliverable documents</td>
+</tr>
+<tr>
+<td>IV&amp;V</td>
+<td>Independent Verification and Validation</td>
+</tr>
+<tr>
+<td>FMS</td>
+<td>Foreign Military Sales, the mechanism for a program like this</td>
+</tr>
+</tbody>
+</table>
+<h2 id="program-history-know-it-handle-it-gracefully">Program history: know it, handle it gracefully</h2>
+<p>In 2017 Lockheed Martin took a roughly $120 million charge on the program and
+publicly described its solution as having "proven to be less mature than needed
+for this highly complex effort." That is a matter of public record and you may
+be interviewed by people who lived through it.</p>
+<p>Do not raise it as a gotcha. But if the topic of program challenges comes up, it
+is entirely reasonable to say something like: <em>"I know the program had a hard
+stretch several years back on integration maturity. That is part of why the work
+interests me. Bringing a fielded, complex baseline onto modern infrastructure
+without destabilizing it is a specific skill, and it is the kind of work I like."</em></p>
+<p>That answer shows you did your homework, does not gossip, and reframes the
+history as the reason the job exists.</p>
+<h2 id="the-expat-dimension">The expat dimension</h2>
+<p>This is a two to three year assignment in the United Arab Emirates, most likely
+Abu Dhabi. The team is geographically dispersed, meaning you will work daily
+with people in Colorado Springs and elsewhere in the United States across an
+eight to eleven hour time difference depending on the season.</p>
+<p>They will assess whether you have thought about this seriously. Vagueness reads
+as a flight risk, and a candidate who leaves an expat assignment at month eight
+is expensive. <a href="12-behavioral.html">Lesson 13</a> covers how to prepare that
+conversation.</p>
+<h2 id="clearance-and-eligibility">Clearance and eligibility</h2>
+<p>Roles on this program typically require US citizenship and a security clearance,
+commonly Secret, with the ability to obtain an interim. There may also be an
+international assignment eligibility screen: medical clearance, family status,
+and passport and visa processing for the UAE. Know your own status precisely
+before the interview, including whether any prior clearance is still current or
+would need reinstatement.</p>
+<h2 id="three-minute-program-summary-to-rehearse">Three-minute program summary to rehearse</h2>
+<p>Say this out loud until it flows.</p>
+<blockquote>
+<p>EADGE-T is Lockheed Martin's integrated air and missile defense C2 system for
+the UAE. It fuses inputs from a set of separately procured sensors into a
+single air picture, and gives battle managers one place to evaluate threats
+and task effectors including THAAD and Patriot. The current Tech Refresh
+effort modernizes the hardware and OS baseline and closes out foundational
+cybersecurity gaps, which in software terms means updating COTS and FOSS
+dependencies, migrating builds into the Software Factory CI/CD pipelines, and
+building real automated test coverage on code that historically was verified
+mostly by hand in the lab. The hard part is not any one of those changes. It
+is doing all of them to a fielded, accredited system without changing mission
+behavior. That is why the automated test work matters so much: it is the only
+thing that lets you move fast on infrastructure while proving to the customer
+that the mission thread is untouched.</p>
+</blockquote>
+<p>If you can deliver that, you are ahead of most candidates before a line of code
+is written.</p>
+<nav class="pager"><span></span><a class="next" href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

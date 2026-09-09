@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Linux and RHEL &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/00-program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/02-python.html">3. Python Refresher</a></li><li><a href="../lessons/03-java.html">4. Java Refresher</a></li><li><a href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/05-ood.html">6. OO Design &amp; SOLID</a></li><li class="active"><a href="../lessons/06-linux.html">7. Linux / RHEL</a></li><li><a href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/08-testing-ci.html">9. Testing &amp; CI/CD</a></li><li><a href="../lessons/09-containers.html">10. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/10-architecture.html">11. Architecture &amp; Software Factory</a></li><li><a href="../lessons/11-cyber.html">12. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/13-mock-interview.html">14. Mock Interview Bank</a></li><li><a href="../lessons/14-cheatsheets.html">15. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="7-linux-and-rhel">7. Linux and RHEL</h1>
+<p>The posting names RHEL and Windows. Fielded defense systems run RHEL, hardened
+per STIG. You will be expected to be self-sufficient on a terminal: find things,
+read logs, diagnose a service that will not start, and not need a sysadmin for
+routine work.</p>
+<p>Do these on a real shell. Reading them does nothing.</p>
+<h2 id="1-navigation-and-files">1. Navigation and files</h2>
+<div class="codehilite"><pre><span></span><code>pwd<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/opt/eadge<span class="p">;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>-<span class="w">          </span><span class="c1"># cd - returns to the previous directory</span>
+ls<span class="w"> </span>-lah<span class="w">                           </span><span class="c1"># long, all, human-readable sizes</span>
+ls<span class="w"> </span>-lt<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w">                     </span><span class="c1"># newest first: which file just changed?</span>
+tree<span class="w"> </span>-L<span class="w"> </span><span class="m">2</span><span class="w">                         </span><span class="c1"># if installed</span>
+du<span class="w"> </span>-sh<span class="w"> </span>/var/log/*<span class="w">  </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-h<span class="w">      </span><span class="c1"># what is eating the disk</span>
+df<span class="w"> </span>-h<span class="w">                             </span><span class="c1"># filesystem usage</span>
+stat<span class="w"> </span>config.yaml<span class="w">                  </span><span class="c1"># size, permissions, timestamps, inode</span>
+file<span class="w"> </span>mystery.bin<span class="w">                  </span><span class="c1"># what kind of file is this</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>cp<span class="w"> </span>-a<span class="w"> </span>src/<span class="w"> </span>dest/<span class="w">                  </span><span class="c1"># -a preserves permissions, times, symlinks</span>
+mv<span class="w"> </span>old<span class="w"> </span>new
+rm<span class="w"> </span>-rf<span class="w"> </span>build/<span class="w">                     </span><span class="c1"># think before you type this</span>
+mkdir<span class="w"> </span>-p<span class="w"> </span>a/b/c
+ln<span class="w"> </span>-s<span class="w"> </span>/opt/app/current<span class="w"> </span>/opt/app/live<span class="w">     </span><span class="c1"># symlink; note the argument order</span>
+tar<span class="w"> </span>-czf<span class="w"> </span>backup.tgz<span class="w"> </span>logs/<span class="w">         </span><span class="c1"># create gzip</span>
+tar<span class="w"> </span>-xzf<span class="w"> </span>backup.tgz<span class="w"> </span>-C<span class="w"> </span>/tmp/out<span class="w">   </span><span class="c1"># extract to a directory</span>
+</code></pre></div>
+
+<h2 id="2-finding-things-which-is-most-of-the-job">2. Finding things, which is most of the job</h2>
+<div class="codehilite"><pre><span></span><code>find<span class="w"> </span>/opt<span class="w"> </span>-name<span class="w"> </span><span class="s2">"*.log"</span><span class="w"> </span>-mtime<span class="w"> </span>-1<span class="w">              </span><span class="c1"># modified in the last day</span>
+find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-size<span class="w"> </span>+100M<span class="w">                     </span><span class="c1"># large files</span>
+find<span class="w"> </span>/var/log<span class="w"> </span>-name<span class="w"> </span><span class="s2">"*.gz"</span><span class="w"> </span>-mtime<span class="w"> </span>+30<span class="w"> </span>-delete<span class="w">  </span><span class="c1"># careful</span>
+find<span class="w"> </span>.<span class="w"> </span>-name<span class="w"> </span><span class="s2">"*.py"</span><span class="w"> </span>-exec<span class="w"> </span>grep<span class="w"> </span>-l<span class="w"> </span><span class="s2">"TODO"</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+<span class="w">  </span><span class="c1"># combine</span>
+
+grep<span class="w"> </span>-rn<span class="w"> </span><span class="s2">"TrackCorrelator"</span><span class="w"> </span>src/<span class="w">                </span><span class="c1"># recursive, with line numbers</span>
+grep<span class="w"> </span>-rin<span class="w"> </span>--include<span class="o">=</span><span class="s2">"*.java"</span><span class="w"> </span><span class="s2">"deprecated"</span><span class="w"> </span>.<span class="w">    </span><span class="c1"># case-insensitive, filtered</span>
+grep<span class="w"> </span>-c<span class="w"> </span>ERROR<span class="w"> </span>app.log<span class="w">                          </span><span class="c1"># count matches</span>
+grep<span class="w"> </span>-A3<span class="w"> </span>-B3<span class="w"> </span><span class="s2">"NullPointer"</span><span class="w"> </span>app.log<span class="w">             </span><span class="c1"># context lines</span>
+grep<span class="w"> </span>-v<span class="w"> </span>DEBUG<span class="w"> </span>app.log<span class="w">                          </span><span class="c1"># invert</span>
+grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">"ERROR|FATAL"</span><span class="w"> </span>app.log<span class="w">                  </span><span class="c1"># extended regex</span>
+
+which<span class="w"> </span>python3<span class="p">;</span><span class="w"> </span><span class="nb">type</span><span class="w"> </span>-a<span class="w"> </span>python3<span class="w">                 </span><span class="c1"># what will actually run</span>
+<span class="nb">command</span><span class="w"> </span>-v<span class="w"> </span>mvn<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"maven not installed"</span>
+</code></pre></div>
+
+<h2 id="3-reading-and-slicing-text">3. Reading and slicing text</h2>
+<p>These four commands answer a large share of real questions.</p>
+<div class="codehilite"><pre><span></span><code>head<span class="w"> </span>-50<span class="w"> </span>app.log<span class="p">;</span><span class="w"> </span>tail<span class="w"> </span>-50<span class="w"> </span>app.log
+tail<span class="w"> </span>-f<span class="w"> </span>app.log<span class="w">                    </span><span class="c1"># follow a live log</span>
+tail<span class="w"> </span>-f<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>--line-buffered<span class="w"> </span>ERROR
+less<span class="w"> </span>+F<span class="w"> </span>app.log<span class="w">                    </span><span class="c1"># follow inside less; Ctrl-C to scroll</span>
+
+wc<span class="w"> </span>-l<span class="w"> </span>app.log<span class="w">                      </span><span class="c1"># line count</span>
+sort<span class="w"> </span>file.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rn<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w">    </span><span class="c1"># the frequency-count idiom</span>
+cut<span class="w"> </span>-d<span class="s1">','</span><span class="w"> </span>-f2,4<span class="w"> </span>data.csv<span class="w">           </span><span class="c1"># columns from delimited text</span>
+awk<span class="w"> </span>-F<span class="s1">','</span><span class="w"> </span><span class="s1">'{ sum += $3 } END { print sum/NR }'</span><span class="w"> </span>data.csv
+awk<span class="w"> </span><span class="s1">'$0 ~ /ERROR/ { print $1, $5 }'</span><span class="w"> </span>app.log
+sed<span class="w"> </span>-n<span class="w"> </span><span class="s1">'100,200p'</span><span class="w"> </span>app.log<span class="w">          </span><span class="c1"># print a line range</span>
+sed<span class="w"> </span><span class="s1">'s/oldhost/newhost/g'</span><span class="w"> </span>conf.in<span class="w"> </span>&gt;<span class="w"> </span>conf.out
+tr<span class="w"> </span>-s<span class="w"> </span><span class="s1">' '</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">'A-Z'</span><span class="w"> </span><span class="s1">'a-z'</span>
+</code></pre></div>
+
+<p>The frequency idiom is worth memorizing exactly:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Which error message appears most in today's log?</span>
+grep<span class="w"> </span>ERROR<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">'{ $1=""; $2=""; print }'</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rn<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-10
+</code></pre></div>
+
+<h2 id="4-processes-and-resources">4. Processes and resources</h2>
+<div class="codehilite"><pre><span></span><code>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>java<span class="w">                 </span><span class="c1"># everything, then filter</span>
+ps<span class="w"> </span>-ef<span class="w"> </span>--forest<span class="w">                    </span><span class="c1"># process tree</span>
+pgrep<span class="w"> </span>-af<span class="w"> </span>eadge<span class="w">                    </span><span class="c1"># pids matching a pattern, with the command</span>
+top<span class="p">;</span><span class="w"> </span>htop<span class="w">                          </span><span class="c1"># interactive</span>
+<span class="nb">kill</span><span class="w"> </span><span class="m">4711</span><span class="w">                          </span><span class="c1"># SIGTERM: polite, lets it clean up</span>
+<span class="nb">kill</span><span class="w"> </span>-9<span class="w"> </span><span class="m">4711</span><span class="w">                       </span><span class="c1"># SIGKILL: last resort, no cleanup</span>
+pkill<span class="w"> </span>-f<span class="w"> </span><span class="s2">"python.*ingest"</span>
+
+uptime<span class="w">                             </span><span class="c1"># load averages: 1, 5, 15 minute</span>
+free<span class="w"> </span>-h<span class="w">                            </span><span class="c1"># memory, and note the buff/cache column</span>
+vmstat<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">5</span><span class="w">                         </span><span class="c1"># 5 samples, 1s apart</span>
+iostat<span class="w"> </span>-xz<span class="w"> </span><span class="m">1</span><span class="w">                       </span><span class="c1"># disk pressure; needs sysstat</span>
+lsof<span class="w"> </span>-p<span class="w"> </span><span class="m">4711</span><span class="w">                       </span><span class="c1"># what files/sockets does this process hold</span>
+lsof<span class="w"> </span>-i<span class="w"> </span>:8080<span class="w">                      </span><span class="c1"># who is listening on this port</span>
+</code></pre></div>
+
+<p>Interpreting load average is a good interview answer: it is runnable plus
+uninterruptible-sleep processes averaged over the interval. Compare it to core
+count. A load of 8 on 16 cores is fine; on 2 cores it is trouble. And high load
+with low CPU usually means I/O wait, not compute.</p>
+<h2 id="5-permissions">5. Permissions</h2>
+<div class="codehilite"><pre><span></span><code>ls<span class="w"> </span>-l<span class="w">                              </span><span class="c1"># -rwxr-xr--  1 user group</span>
+chmod<span class="w"> </span><span class="m">640</span><span class="w"> </span>secrets.conf<span class="w">             </span><span class="c1"># owner rw, group r, other none</span>
+chmod<span class="w"> </span>u+x<span class="w"> </span>run.sh
+chown<span class="w"> </span>appuser:appgroup<span class="w"> </span>/opt/eadge<span class="w">  </span><span class="c1"># -R for recursive</span>
+<span class="nb">umask</span><span class="w">                              </span><span class="c1"># default permission mask for new files</span>
+id<span class="p">;</span><span class="w"> </span>groups<span class="w">                         </span><span class="c1"># who am I, what groups</span>
+sudo<span class="w"> </span>-u<span class="w"> </span>appuser<span class="w"> </span>whoami<span class="w">             </span><span class="c1"># run as another user</span>
+getfacl<span class="w"> </span>/<span class="w"> </span>setfacl<span class="w">                  </span><span class="c1"># fine-grained ACLs</span>
+</code></pre></div>
+
+<p>Numeric permissions: read is 4, write is 2, execute is 1. So 750 means owner
+rwx, group rx, other nothing. Say it that way if asked.</p>
+<p>On a hardened RHEL box you will also meet SELinux:</p>
+<div class="codehilite"><pre><span></span><code>getenforce<span class="w">                         </span><span class="c1"># Enforcing / Permissive / Disabled</span>
+sestatus
+ls<span class="w"> </span>-Z<span class="w"> </span>/opt/eadge<span class="w">                   </span><span class="c1"># security context</span>
+ausearch<span class="w"> </span>-m<span class="w"> </span>avc<span class="w"> </span>-ts<span class="w"> </span>recent<span class="w">         </span><span class="c1"># what did SELinux just deny</span>
+restorecon<span class="w"> </span>-Rv<span class="w"> </span>/opt/eadge<span class="w">          </span><span class="c1"># reset contexts to policy defaults</span>
+semanage<span class="w"> </span>port<span class="w"> </span>-a<span class="w"> </span>-t<span class="w"> </span>http_port_t<span class="w"> </span>-p<span class="w"> </span>tcp<span class="w"> </span><span class="m">8080</span>
+</code></pre></div>
+
+<p><strong>Do not answer a permissions problem with "set SELinux to permissive."</strong> On an
+accredited system that is a security control you are not authorized to disable.
+The right answer is: read the AVC denial, then fix the label or add a policy
+module. That answer will impress a cyber engineer on the panel.</p>
+<h2 id="6-systemd-the-service-lifecycle">6. systemd, the service lifecycle</h2>
+<div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>eadge-ingest
+systemctl<span class="w"> </span>start<span class="p">|</span>stop<span class="p">|</span>restart<span class="w"> </span>eadge-ingest
+systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>eadge-ingest<span class="w">      </span><span class="c1"># start now and at boot</span>
+systemctl<span class="w"> </span>daemon-reload<span class="w">                  </span><span class="c1"># after editing a unit file</span>
+systemctl<span class="w"> </span>list-units<span class="w"> </span>--failed
+systemctl<span class="w"> </span>cat<span class="w"> </span>eadge-ingest<span class="w">               </span><span class="c1"># show the effective unit file</span>
+
+journalctl<span class="w"> </span>-u<span class="w"> </span>eadge-ingest<span class="w"> </span>-n<span class="w"> </span><span class="m">200</span><span class="w">        </span><span class="c1"># last 200 lines for one unit</span>
+journalctl<span class="w"> </span>-u<span class="w"> </span>eadge-ingest<span class="w"> </span>-f<span class="w">            </span><span class="c1"># follow</span>
+journalctl<span class="w"> </span>-u<span class="w"> </span>eadge-ingest<span class="w"> </span>--since<span class="w"> </span><span class="s2">"1 hour ago"</span>
+journalctl<span class="w"> </span>-p<span class="w"> </span>err<span class="w"> </span>-b<span class="w">                     </span><span class="c1"># errors since this boot</span>
+journalctl<span class="w"> </span>--disk-usage<span class="p">;</span><span class="w"> </span>journalctl<span class="w"> </span>--vacuum-time<span class="o">=</span>7d
+</code></pre></div>
+
+<p>A minimal unit file, which you should be able to sketch:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># /etc/systemd/system/eadge-ingest.service</span>
+<span class="k">[Unit]</span>
+<span class="na">Description</span><span class="o">=</span><span class="s">EADGE ingest service</span>
+<span class="na">After</span><span class="o">=</span><span class="s">network-online.target</span>
+<span class="na">Wants</span><span class="o">=</span><span class="s">network-online.target</span>
+
+<span class="k">[Service]</span>
+<span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<span class="na">User</span><span class="o">=</span><span class="s">appuser</span>
+<span class="na">Group</span><span class="o">=</span><span class="s">appgroup</span>
+<span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/opt/eadge</span>
+<span class="na">Environment</span><span class="o">=</span><span class="s">LOG_LEVEL=INFO</span>
+<span class="na">EnvironmentFile</span><span class="o">=</span><span class="s">-/etc/sysconfig/eadge-ingest</span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/eadge/venv/bin/python -m eadge.ingest</span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">5</span>
+<span class="na">StandardOutput</span><span class="o">=</span><span class="s">journal</span>
+<span class="na">StandardError</span><span class="o">=</span><span class="s">journal</span>
+<span class="c1"># hardening, the kind a STIG will ask for</span>
+<span class="na">NoNewPrivileges</span><span class="o">=</span><span class="s">true</span>
+<span class="na">PrivateTmp</span><span class="o">=</span><span class="s">true</span>
+<span class="na">ProtectSystem</span><span class="o">=</span><span class="s">strict</span>
+<span class="na">ReadWritePaths</span><span class="o">=</span><span class="s">/var/lib/eadge</span>
+
+<span class="k">[Install]</span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</code></pre></div>
+
+<h2 id="7-networking">7. Networking</h2>
+<div class="codehilite"><pre><span></span><code>ip<span class="w"> </span>a<span class="w">                               </span><span class="c1"># addresses (replaces ifconfig)</span>
+ip<span class="w"> </span>r<span class="w">                               </span><span class="c1"># routes</span>
+ss<span class="w"> </span>-tulpn<span class="w">                          </span><span class="c1"># listening TCP/UDP sockets with pids</span>
+ss<span class="w"> </span>-tan<span class="w"> </span>state<span class="w"> </span>established
+ping<span class="w"> </span>-c4<span class="w"> </span><span class="m">10</span>.1.2.3
+traceroute<span class="w"> </span><span class="m">10</span>.1.2.3
+dig<span class="w"> </span>radar-a.example.mil<span class="w"> </span>+short<span class="w">     </span><span class="c1"># DNS</span>
+nc<span class="w"> </span>-zv<span class="w"> </span><span class="m">10</span>.1.2.3<span class="w"> </span><span class="m">8080</span><span class="w">               </span><span class="c1"># is the port open</span>
+curl<span class="w"> </span>-sS<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-w<span class="w"> </span><span class="s1">'%{http_code} %{time_total}\n'</span><span class="w"> </span>http://svc:8080/health
+curl<span class="w"> </span>-v<span class="w"> </span>https://svc/api<span class="w">            </span><span class="c1"># see the TLS handshake and headers</span>
+tcpdump<span class="w"> </span>-i<span class="w"> </span>eth0<span class="w"> </span>-nn<span class="w"> </span>port<span class="w"> </span><span class="m">5000</span><span class="w"> </span>-c<span class="w"> </span><span class="m">20</span><span class="w">        </span><span class="c1"># actually look at the packets</span>
+firewall-cmd<span class="w"> </span>--list-all<span class="w">                    </span><span class="c1"># RHEL firewalld</span>
+firewall-cmd<span class="w"> </span>--add-port<span class="o">=</span><span class="m">8080</span>/tcp<span class="w"> </span>--permanent<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>firewall-cmd<span class="w"> </span>--reload
+</code></pre></div>
+
+<p><code>ss -tulpn</code> and <code>tcpdump</code> are the two that separate people who have debugged
+real integration problems from people who have not. On a multi-site system,
+"the service is up but the peer sees nothing" is usually a firewall rule, a
+route, a multicast TTL, or a bind address of <code>127.0.0.1</code> instead of <code>0.0.0.0</code>.
+Have that list ready.</p>
+<h2 id="8-packages-and-rhel-specifics">8. Packages and RHEL specifics</h2>
+<div class="codehilite"><pre><span></span><code>dnf<span class="w"> </span>list<span class="w"> </span>installed<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>openssl
+dnf<span class="w"> </span>info<span class="w"> </span>openssl
+dnf<span class="w"> </span>provides<span class="w"> </span>/usr/bin/python3<span class="w">      </span><span class="c1"># which package owns this file</span>
+dnf<span class="w"> </span>update<span class="w"> </span>--security<span class="w">              </span><span class="c1"># security errata only</span>
+dnf<span class="w"> </span>history<span class="p">;</span><span class="w"> </span>dnf<span class="w"> </span><span class="nb">history</span><span class="w"> </span>undo<span class="w"> </span><span class="m">42</span><span class="w">   </span><span class="c1"># yes, you can roll back a transaction</span>
+rpm<span class="w"> </span>-qa<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+rpm<span class="w"> </span>-qi<span class="w"> </span>httpd<span class="p">;</span><span class="w"> </span>rpm<span class="w"> </span>-ql<span class="w"> </span>httpd<span class="w">       </span><span class="c1"># info; file list</span>
+rpm<span class="w"> </span>-qf<span class="w"> </span>/usr/sbin/httpd<span class="w">            </span><span class="c1"># which package owns this file</span>
+rpm<span class="w"> </span>-V<span class="w"> </span>httpd<span class="w">                       </span><span class="c1"># verify against the package manifest</span>
+
+cat<span class="w"> </span>/etc/os-release<span class="p">;</span><span class="w"> </span>uname<span class="w"> </span>-a
+subscription-manager<span class="w"> </span>status<span class="w">        </span><span class="c1"># RHEL entitlement</span>
+</code></pre></div>
+
+<p><code>dnf update --security</code> and <code>rpm -V</code> are directly relevant to the tech refresh
+work. Bring them up in the CVE conversation (<a href="11-cyber.html">lesson 12</a>).</p>
+<h2 id="9-shell-scripting">9. Shell scripting</h2>
+<p>You should be able to write a defensible script on request.</p>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env bash</span>
+<span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail<span class="w">          </span><span class="c1"># exit on error, unset var, and pipeline failure</span>
+<span class="nv">IFS</span><span class="o">=</span><span class="s1">$'\n\t'</span>
+
+<span class="nv">LOG_DIR</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">LOG_DIR</span><span class="k">:-</span><span class="p">/var/log/eadge</span><span class="si">}</span><span class="s2">"</span>
+<span class="nv">RETENTION_DAYS</span><span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">1</span><span class="k">:-</span><span class="nv">30</span><span class="si">}</span><span class="s2">"</span>
+
+usage<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"usage: </span><span class="nv">$0</span><span class="s2"> [retention_days]"</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="nb">exit</span><span class="w"> </span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="o">}</span>
+<span class="o">[[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$RETENTION_DAYS</span><span class="s2">"</span><span class="w"> </span><span class="o">=</span>~<span class="w"> </span>^<span class="o">[</span><span class="m">0</span>-9<span class="o">]</span>+$<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span>usage
+
+log<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="nb">printf</span><span class="w"> </span><span class="s1">'%s %s\n'</span><span class="w"> </span><span class="s2">"</span><span class="k">$(</span>date<span class="w"> </span>-Is<span class="k">)</span><span class="s2">"</span><span class="w"> </span><span class="s2">"</span><span class="nv">$*</span><span class="s2">"</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span><span class="p">;</span><span class="w"> </span><span class="o">}</span>
+
+cleanup<span class="o">()</span><span class="w"> </span><span class="o">{</span><span class="w"> </span>log<span class="w"> </span><span class="s2">"cleaning up"</span><span class="p">;</span><span class="w"> </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="s2">"</span><span class="nv">$tmp</span><span class="s2">"</span><span class="p">;</span><span class="w"> </span><span class="o">}</span>
+<span class="nv">tmp</span><span class="o">=</span><span class="s2">"</span><span class="k">$(</span>mktemp<span class="k">)</span><span class="s2">"</span>
+<span class="nb">trap</span><span class="w"> </span>cleanup<span class="w"> </span>EXIT
+
+log<span class="w"> </span><span class="s2">"pruning logs older than </span><span class="si">${</span><span class="nv">RETENTION_DAYS</span><span class="si">}</span><span class="s2">d in </span><span class="si">${</span><span class="nv">LOG_DIR</span><span class="si">}</span><span class="s2">"</span>
+<span class="nv">count</span><span class="o">=</span><span class="k">$(</span>find<span class="w"> </span><span class="s2">"</span><span class="nv">$LOG_DIR</span><span class="s2">"</span><span class="w"> </span>-name<span class="w"> </span><span class="s1">'*.log.gz'</span><span class="w"> </span>-mtime<span class="w"> </span><span class="s2">"+</span><span class="si">${</span><span class="nv">RETENTION_DAYS</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>-print<span class="w"> </span>-delete<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l<span class="k">)</span>
+log<span class="w"> </span><span class="s2">"removed </span><span class="si">${</span><span class="nv">count</span><span class="si">}</span><span class="s2"> files"</span>
+</code></pre></div>
+
+<p><code>set -euo pipefail</code> is the single most useful line in shell scripting and a good
+thing to be able to explain: exit on any command failure, treat unset variables
+as errors, and make a pipeline fail if any stage fails rather than only the
+last.</p>
+<p>Loops and conditionals:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>host<span class="w"> </span><span class="k">in</span><span class="w"> </span>radar-a<span class="w"> </span>radar-b<span class="w"> </span>radar-c<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span>nc<span class="w"> </span>-z<span class="w"> </span>-w2<span class="w"> </span><span class="s2">"</span><span class="nv">$host</span><span class="s2">"</span><span class="w"> </span><span class="m">8080</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$host</span><span class="s2"> up"</span>
+<span class="w">  </span><span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$host</span><span class="s2"> DOWN"</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<span class="w">  </span><span class="k">fi</span>
+<span class="k">done</span>
+
+<span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="s1">','</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>sensor<span class="w"> </span>ts<span class="w"> </span>conf<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="o">[[</span><span class="w"> </span><span class="s2">"</span><span class="nv">$sensor</span><span class="s2">"</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="se">\#</span>*<span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="k">continue</span>
+<span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">"</span><span class="nv">$sensor</span><span class="s2"> -&gt; </span><span class="nv">$conf</span><span class="s2">"</span>
+<span class="k">done</span><span class="w"> </span>&lt;<span class="w"> </span>detections.csv
+</code></pre></div>
+
+<p>Always quote your variables. <code>"$var"</code>, not <code>$var</code>. Unquoted expansion with a
+space in a filename is a classic production incident.</p>
+<h2 id="10-troubleshooting-drills">10. Troubleshooting drills</h2>
+<p>Practice narrating these. Each is a plausible interview question.</p>
+<h3 id="the-service-will-not-start">"The service will not start."</h3>
+<div class="codehilite"><pre><span></span><code>systemctl<span class="w"> </span>status<span class="w"> </span>eadge-ingest<span class="w"> </span>-l<span class="w">          </span><span class="c1"># exit code and the last log lines</span>
+journalctl<span class="w"> </span>-u<span class="w"> </span>eadge-ingest<span class="w"> </span>-n<span class="w"> </span><span class="m">100</span><span class="w"> </span>--no-pager
+ls<span class="w"> </span>-l<span class="w"> </span>/opt/eadge/venv/bin/python<span class="w">          </span><span class="c1"># does the ExecStart path exist</span>
+sudo<span class="w"> </span>-u<span class="w"> </span>appuser<span class="w"> </span>/opt/eadge/venv/bin/python<span class="w"> </span>-m<span class="w"> </span>eadge.ingest<span class="w">   </span><span class="c1"># run it by hand</span>
+ss<span class="w"> </span>-tulpn<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">8080</span><span class="w">                     </span><span class="c1"># port already bound?</span>
+df<span class="w"> </span>-h<span class="p">;</span><span class="w"> </span>free<span class="w"> </span>-h<span class="w">                            </span><span class="c1"># disk full? out of memory?</span>
+ausearch<span class="w"> </span>-m<span class="w"> </span>avc<span class="w"> </span>-ts<span class="w"> </span>recent<span class="w">                </span><span class="c1"># SELinux denial?</span>
+</code></pre></div>
+
+<p>Order matters, and the order tells the story: unit status, then logs, then run
+it by hand as the service user, then resources, then security policy.</p>
+<h3 id="the-disk-is-full">"The disk is full."</h3>
+<div class="codehilite"><pre><span></span><code>df<span class="w"> </span>-h<span class="w">                                     </span><span class="c1"># which filesystem</span>
+du<span class="w"> </span>-xh<span class="w"> </span>/var<span class="w"> </span>--max-depth<span class="o">=</span><span class="m">2</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-h<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+journalctl<span class="w"> </span>--disk-usage
+lsof<span class="w"> </span>+L1<span class="w">                                  </span><span class="c1"># deleted files still held open by a process</span>
+</code></pre></div>
+
+<p>That last one is the answer that impresses. If a process holds a deleted log
+file open, <code>rm</code> does not free the space until the process closes it or restarts.
+<code>df</code> shows full while <code>du</code> shows nothing. Knowing this is a strong signal.</p>
+<h3 id="it-is-slow">"It is slow."</h3>
+<div class="codehilite"><pre><span></span><code>uptime<span class="w">                       </span><span class="c1"># is load high at all</span>
+top<span class="w"> </span>-o<span class="w"> </span>%CPU<span class="w">                  </span><span class="c1"># one process, or everything</span>
+vmstat<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">5</span><span class="w">                   </span><span class="c1"># look at the wa (I/O wait) column</span>
+iostat<span class="w"> </span>-xz<span class="w"> </span><span class="m">1</span><span class="w">                 </span><span class="c1"># %util near 100 means disk bound</span>
+free<span class="w"> </span>-h<span class="p">;</span><span class="w"> </span>cat<span class="w"> </span>/proc/meminfo<span class="w">   </span><span class="c1"># swapping?</span>
+ss<span class="w"> </span>-s<span class="w">                        </span><span class="c1"># socket counts; connection exhaustion</span>
+</code></pre></div>
+
+<p>Then narrow to the application: thread dump for Java, <code>py-spy</code> or <code>cProfile</code> for
+Python, and check the obvious ones first (a log level left at DEBUG in
+production is a shockingly common cause).</p>
+<h3 id="it-works-in-the-lab-and-fails-in-integration">"It works in the lab and fails in integration."</h3>
+<p>The highest-value question for this role. Structure the answer:</p>
+<ol>
+<li><strong>Confirm the difference is real.</strong> Same build artifact? Same version? Check
+   the checksum, not the tag.</li>
+<li><strong>Diff the environments.</strong> OS version, kernel, JVM or Python version, library
+   versions, environment variables, config files, locale and timezone, file
+   permissions, SELinux mode, firewall state.</li>
+<li><strong>Diff the data.</strong> Real sensor input differs from lab replay: bursts,
+   duplicates, out-of-order timestamps, unexpected fields, character encodings.</li>
+<li><strong>Diff the network.</strong> Latency, MTU, multicast routing, name resolution,
+   proxies, certificate trust.</li>
+<li><strong>Increase observability rather than guessing.</strong> Turn on debug logging in the
+   failing environment; capture packets; capture a thread dump at the moment of
+   failure.</li>
+<li><strong>Reduce.</strong> Get to the smallest reproducer, ideally an automated one, and
+   then add it to the test suite so the class of bug cannot come back.</li>
+</ol>
+<p>That last step is the one that earns the job.</p>
+<h2 id="11-windows-briefly">11. Windows, briefly</h2>
+<p>The posting names Windows too. You do not need depth, but know that operator
+workstations and some tooling are commonly Windows, and be able to say:
+PowerShell for scripting (<code>Get-Service</code>, <code>Get-EventLog</code>, <code>Get-Process</code>), Event
+Viewer for logs, services.msc for the service lifecycle, and that a
+cross-platform build must not assume path separators, line endings, or
+case-sensitive filesystems. That last point is a real source of integration
+defects and worth mentioning.</p>
+<nav class="pager"><a class="prev" href="../lessons/05-ood.html">&larr; 6. OO Design &amp; SOLID</a><a class="next" href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
