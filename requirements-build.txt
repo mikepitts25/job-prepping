@@ -1,0 +1,8 @@
+# Pinned so a local build and a CI build produce byte-identical HTML.
+#
+# Pygments matters as much as Markdown here: python-markdown's codehilite
+# extension silently emits unhighlighted markup when Pygments is absent, so a
+# machine without it builds a different site. That is what the CI staleness
+# check caught the first time this workflow ran.
+markdown==3.10.3
+pygments==2.21.0

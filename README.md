@@ -78,9 +78,13 @@ See [practice/README.md](practice/README.md) for the suggested order.
 Lesson content lives in `_src/*.md`. After editing, rebuild the HTML:
 
 ```bash
-pip install markdown
+pip install -r requirements-build.txt
 python3 build.py
 ```
+
+The build dependencies are pinned because python-markdown's `codehilite`
+extension silently emits unhighlighted markup when Pygments is missing, so an
+unpinned environment produces a different site.
 
 `build.py` renders each Markdown source into `lessons/`, wraps it in the shared
 layout with navigation, and regenerates `index.html`. Add a lesson by dropping a

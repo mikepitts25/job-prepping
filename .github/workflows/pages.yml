@@ -28,8 +28,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install the build dependency
-        run: python -m pip install --disable-pip-version-check markdown==3.10.3
+      - name: Install the build dependencies
+        # Pinned in requirements-build.txt. Pygments is not optional: without
+        # it codehilite emits unhighlighted markup, so the build would not
+        # reproduce the committed HTML.
+        run: python -m pip install --disable-pip-version-check -r requirements-build.txt
 
       - name: Rebuild the site from _src/
         run: python build.py
