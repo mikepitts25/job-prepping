@@ -72,7 +72,7 @@ to entity expansion.
 **Migrate legacy capability into the Software Factory.** Take something that
 built on a developer's machine with a hand-maintained script and get it building
 reproducibly in a GitLab or Jenkins pipeline, with unit tests, static analysis,
-and artifact publishing. See [lesson 12](architecture.html) for what
+and artifact publishing. See [lesson 13](architecture.html) for what
 "Software Factory" means at LM.
 
 **Write unit tests and automated test capability.** On legacy code with little
@@ -86,7 +86,7 @@ subsystems run together.
 
 **Collaboration across disciplines.** Systems engineers own requirements,
 cybersecurity owns the hardening posture, integration and test own the lab.
-You will negotiate across all of them. See [lesson 13](cyber.html).
+You will negotiate across all of them. See [lesson 14](cyber.html).
 
 ## The vocabulary you should be comfortable with
 
@@ -138,7 +138,7 @@ eight to eleven hour time difference depending on the season.
 
 They will assess whether you have thought about this seriously. Vagueness reads
 as a flight risk, and a candidate who leaves an expat assignment at month eight
-is expensive. [Lesson 15](behavioral.html) covers how to prepare that
+is expensive. [Lesson 16](behavioral.html) covers how to prepare that
 conversation.
 
 ## Clearance and eligibility

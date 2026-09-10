@@ -1,4 +1,4 @@
-# 16. Scenario answers
+# 17. Scenario answers
 
 Scenario questions are the ones that start "what would you do if" or "walk me
 through how you'd handle." They are the highest-signal part of a technical

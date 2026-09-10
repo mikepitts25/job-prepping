@@ -1,4 +1,4 @@
-# 10. Testing and CI/CD
+# 11. Testing and CI/CD
 
 Read the posting again: *"Developing unit tests and automated test capabilities
 to improve software quality, reliability, and deployment efficiency"* and
@@ -111,7 +111,7 @@ That opinion, stated with the reason, is a good answer.
 The deeper point: **if a class is hard to test, that is a design defect, not a
 testing problem.** Hard-to-test usually means it constructs its own
 dependencies, reads global state, or does five things. See
-[lesson 7](ood.html).
+[lesson 8](ood.html).
 
 ## 5. Testing the hard things
 

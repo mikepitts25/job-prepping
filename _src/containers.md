@@ -1,4 +1,4 @@
-# 11. Docker, Kubernetes and Helm
+# 12. Docker, Kubernetes and Helm
 
 These are listed under **desired** skills, not basic qualifications. That matters
 for how you prepare: you need working competence and honest boundaries, not
@@ -322,7 +322,7 @@ program wants."*
 6. Liveness versus readiness probes. (Section 5.)
 7. How do you handle secrets? (Not in the image, not in the repository. A secret
    store or Kubernetes Secrets with encryption at rest and RBAC, injected at
-   runtime. See [lesson 13](cyber.html).)
+   runtime. See [lesson 14](cyber.html).)
 8. What does Helm give you over plain manifests? (Section 6.)
 9. How do you debug a pod that will not start? (Section 5.)
 10. How would you run containers in an air-gapped environment? (Internal

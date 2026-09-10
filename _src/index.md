@@ -5,7 +5,7 @@ the thing that decides this interview. What decides it is whether you can talk
 credibly about shipping software in a large, regulated, integration-heavy
 program, and then not fumble a straightforward coding exercise.
 
-This site is built for that. Eighteen lessons, roughly 60 worked code examples, a
+This site is built for that. Nineteen lessons, roughly 80 worked code examples, a
 runnable practice repo, a 132-question mock bank and 16 worked scenario answers.
 
 ## The short version of what you are walking into
@@ -50,7 +50,7 @@ Every one of those rows has a lesson below.
 If your interview is more than two weeks out, work the lessons in order and do
 the practice repo alongside. If it is sooner, go straight to
 [the interview map](lessons/interview-map.html), pick the compressed plan,
-and prioritize lessons 4, 10, 15 and 16.
+and prioritize lessons 4, 5, 11 and 17.
 
 Type the code. Do not read it. The gap between "I recognize this" and "I can
 produce this while someone watches" is the entire problem you are solving in the

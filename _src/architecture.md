@@ -1,4 +1,4 @@
-# 12. Architecture and the Software Factory
+# 13. Architecture and the Software Factory
 
 The desired skills list "comprehensive understanding of Services, Microservices,
 Software Factories, Cloud-native and Service-Oriented Architectures." This

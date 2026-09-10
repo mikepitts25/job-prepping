@@ -1,4 +1,4 @@
-# 8. Linux and RHEL
+# 9. Linux and RHEL
 
 The posting names RHEL and Windows. Fielded defense systems run RHEL, hardened
 per STIG. You will be expected to be self-sufficient on a terminal: find things,
@@ -222,7 +222,7 @@ subscription-manager status        # RHEL entitlement
 ```
 
 `dnf update --security` and `rpm -V` are directly relevant to the tech refresh
-work. Bring them up in the CVE conversation ([lesson 13](cyber.html)).
+work. Bring them up in the CVE conversation ([lesson 14](cyber.html)).
 
 ## 9. Shell scripting
 

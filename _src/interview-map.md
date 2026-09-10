@@ -35,7 +35,7 @@ Have crisp answers to: are you a US citizen; what is your current clearance
 status; are you genuinely willing to relocate to the UAE for two to three years;
 what is your compensation expectation; when could you start. Do not improvise
 the comp number. Decide it beforehand and give a range with a rationale
-(see [lesson 15](behavioral.html)).
+(see [lesson 16](behavioral.html)).
 
 ### Hiring manager screen
 
@@ -49,7 +49,7 @@ This one decides the most. Prepare:
   mission-critical systems where the integration problem is the real problem,
   and I want the international assignment" beats anything generic.
 - Two or three **questions for them** that only someone who read about the
-  program would ask. Examples in [lesson 17](mock-interview.html).
+  program would ask. Examples in [lesson 18](mock-interview.html).
 
 ### Technical interview
 
@@ -57,15 +57,15 @@ Plan for a mix of:
 
 - One or two **small coding problems** in Python or Java, 15&ndash;25 minutes
   each. String and collection manipulation, parsing, a light algorithm.
-  See [lesson 6](dsa.html).
+  See [lesson 7](dsa.html).
 - **Language depth questions.** Python: mutability, generators, GIL, context
   managers, virtual environments. Java: collections, equals/hashCode,
-  concurrency, streams, memory. See lessons 4 and 5.
+  concurrency, streams, memory. See lessons 4, 5 and 6.
 - **Linux questions.** Find the file, follow the log, diagnose the full disk,
-  read the process list. See [lesson 8](linux.html).
+  read the process list. See [lesson 9](linux.html).
 - **Testing and CI questions.** How do you test legacy code with no tests; what
   goes in a pipeline; what makes a test suite trustworthy.
-  See [lesson 10](testing-ci.html).
+  See [lesson 11](testing-ci.html).
 - **A debugging scenario.** "The service works in the lab and fails in
   integration. Walk me through what you do." This is the highest-signal question
   they can ask for this role. Prepare a structured answer.
@@ -111,68 +111,74 @@ actual availability; the ordering matters more than the hours.
 a JDK 17+, Git, an editor, and the [practice repo](../practice/README.html).
 Rehearse the three-minute program summary out loud once.
 
-**Day 2 &ndash; Python core.** [Lesson 4](python.html) sections 1&ndash;5.
-Type every example. Do practice problems P1&ndash;P4.
+**Day 2 &ndash; Python foundations.** [Lesson 4](python.html) sections
+1&ndash;7: what Python is, names and objects, the built-in types, containers and
+control flow. Type every example into a REPL. This is the day that matters most
+if you are rusty, because it rebuilds the mental model rather than the syntax.
 
-**Day 3 &ndash; Python idioms and testing.** Rest of lesson 4. Write pytest
-tests for two of yesterday's solutions. Problems P5&ndash;P8.
+**Day 3 &ndash; Python: functions, classes, testing.** Rest of
+[lesson 4](python.html), then [lesson 5](python-practice.html) sections 1, 2 and
+7. Do the six REPL exercises at the end of lesson 4, especially the sixth. Write
+pytest tests for two practice problems.
 
-**Day 4 &ndash; Java refresher.** [Lesson 5](java.html). Compile and run
+**Day 4 &ndash; Java refresher.** [Lesson 6](java.html). Compile and run
 everything. Write one class with proper `equals`, `hashCode`, and `toString`
-from memory.
+from memory. If Python is still shaky, spend half of today on the rest of
+[lesson 5](python-practice.html) instead; Python is the language you will most
+likely be asked to code in.
 
-**Day 5 &ndash; Complexity and core structures.** [Lesson 6](dsa.html)
+**Day 5 &ndash; Complexity and core structures.** [Lesson 7](dsa.html)
 sections 1&ndash;4. Problems A1&ndash;A6, timed at 20 minutes each.
 
-**Day 6 &ndash; Algorithm patterns.** Lesson 6 sections 5&ndash;8. Problems
+**Day 6 &ndash; Algorithm patterns.** Lesson 7 sections 5&ndash;8. Problems
 A7&ndash;A14. Narrate out loud on at least three of them.
 
-**Day 7 &ndash; OO design.** [Lesson 7](ood.html) end to end, including the
+**Day 7 &ndash; OO design.** [Lesson 8](ood.html) end to end, including the
 design exercise. Then rest. Actually rest.
 
 ### Week 2: the job-shaped material
 
-**Day 8 &ndash; Linux and troubleshooting.** [Lesson 8](linux.html) plus the
+**Day 8 &ndash; Linux and troubleshooting.** [Lesson 9](linux.html) plus the
 drills. Do them on a real shell, not from memory.
 
-**Day 9 &ndash; Git, GitLab, Agile.** [Lesson 9](git-agile.html). Do the
+**Day 9 &ndash; Git, GitLab, Agile.** [Lesson 10](git-agile.html). Do the
 merge-conflict exercise for real in a scratch repo.
 
-**Day 10 &ndash; Testing and CI/CD.** [Lesson 10](testing-ci.html). Write a
+**Day 10 &ndash; Testing and CI/CD.** [Lesson 11](testing-ci.html). Write a
 `.gitlab-ci.yml` for the practice repo and be able to explain each stage.
 
 **Day 11 &ndash; Containers and architecture.** Lessons
 [10](containers.html) and [11](architecture.html). Write and run a
 Dockerfile for the practice service.
 
-**Day 12 &ndash; Cyber and sustainment.** [Lesson 13](cyber.html). Prepare
+**Day 12 &ndash; Cyber and sustainment.** [Lesson 14](cyber.html). Prepare
 your answer to the dependency-upgrade question, which is nearly certain to
 appear in some form.
 
-**Day 13 &ndash; Behavioral and your bridge.** [Lesson 14](adoc-bridge.html)
-and [lesson 15](behavioral.html). Write out your positioning statement and six
+**Day 13 &ndash; Behavioral and your bridge.** [Lesson 15](adoc-bridge.html)
+and [lesson 16](behavioral.html). Write out your positioning statement and six
 STAR stories in full. Rehearse the expat answer with someone else in the room.
 
-**Day 14 &ndash; Mock and taper.** Work [lesson 17](mock-interview.html)
+**Day 14 &ndash; Mock and taper.** Work [lesson 18](mock-interview.html)
 under time pressure. Two coding problems, timed and narrated, then six scenario
-answers from [lesson 16](scenarios.html) out loud. Then stop. Skim
+answers from [lesson 17](scenarios.html) out loud. Then stop. Skim
 [the cheat sheets](cheatsheets.html) the morning of, and nothing else.
 
 ## Compressed plans
 
 **Seven days:** Days 1, 2, 3, 5, 6, 10, 13, 14 compressed into one week. Skip
-lessons 11 and 12 as study; skim them for vocabulary only.
+lessons 12 and 13 as study; skim them for vocabulary only.
 
 **Three days:** Day one, lesson 4 plus problems A1&ndash;A8 timed. Day two,
-lesson 10 plus lesson 13's upgrade answer plus lesson 1's program summary and
-lesson 2's vocabulary. Day three, lesson 14's positioning statement and six STAR
-stories written out in full, plus lesson 16's scenario answers out loud. If
+lesson 11 plus lesson 14's upgrade answer plus lesson 1's program summary and
+lesson 2's vocabulary. Day three, lesson 15's positioning statement and six STAR
+stories written out in full, plus lesson 17's scenario answers out loud. If
 you only have three days, behavioral and program fluency return more than
 algorithms.
 
 **One evening:** [Cheat sheets](cheatsheets.html), the program summary in
-lesson 1, your positioning statement from lesson 14, and six STAR stories from
-lesson 15. In that order.
+lesson 1, your positioning statement from lesson 15, and six STAR stories from
+lesson 16. In that order.
 
 ## During the interview
 

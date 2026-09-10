@@ -1,4 +1,4 @@
-# 9. Git, GitLab and Agile
+# 10. Git, GitLab and Agile
 
 The posting names Git, GitLab, Jira and Confluence in the basic qualifications,
 and describes an Agile Scrum environment with "baseline merges, defect
@@ -175,7 +175,7 @@ Things worth being able to say: MRs can require N approvals and green pipelines
 before merge; protected branches prevent force pushes; a merge train serializes
 merges so each is tested against the result of the ones ahead of it; and
 `CODEOWNERS` routes review to the right team automatically. Pipelines are
-covered in [lesson 10](testing-ci.html).
+covered in [lesson 11](testing-ci.html).
 
 ## 6. Branching strategies
 

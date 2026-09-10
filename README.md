@@ -4,10 +4,14 @@ A GitHub Pages study site for the **Senior Software Engineer &ndash; EADGE-T Tec
 Refresh &ndash; EXPAT UAE** role at Lockheed Martin, plus a runnable practice
 repo.
 
-Eighteen lessons covering every skill named in the job posting, roughly sixty
+Nineteen lessons covering every skill named in the job posting, roughly eighty
 worked code examples, a 132-question mock interview bank, sixteen worked
 scenario answers, and 106 passing tests across Python and Java practice
 modules.
+
+The two Python lessons assume no prior knowledge and build the language from
+first principles, explaining why each construct exists rather than only how to
+type it.
 
 ## Read it
 
@@ -42,21 +46,22 @@ python3 -m http.server 8000
 | 1 | Program and role brief: what EADGE-T is and what the job actually does |
 | 2 | Track data, standards and fusion: plots, tracks, Link 16, ASTERIX, data reduction |
 | 3 | Interview map and a 14-day study plan |
-| 4 | Python refresher |
-| 5 | Java refresher |
-| 6 | Data structures, algorithms, and 24 practice problems |
-| 7 | Object-oriented design, SOLID, and a live design exercise |
-| 8 | Linux / RHEL and production troubleshooting |
-| 9 | Git, GitLab, baseline merges, Scrum and Kanban |
-| 10 | Testing and CI/CD |
-| 11 | Docker, Kubernetes and Helm |
-| 12 | Architecture and the Software Factory |
-| 13 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
-| 14 | Turning the Qatar ADOC product owner role into credible answers |
-| 15 | Behavioral questions and the expat conversation |
-| 16 | Sixteen worked scenario answers, with the follow-ups |
-| 17 | Mock interview bank, 132 questions |
-| 18 | Cheat sheets for the morning of |
+| 4 | Python foundations: the language from zero, and why each piece exists |
+| 5 | Python in practice: standard library, generators, decorators, testing |
+| 6 | Java refresher |
+| 7 | Data structures, algorithms, and 24 practice problems |
+| 8 | Object-oriented design, SOLID, and a live design exercise |
+| 9 | Linux / RHEL and production troubleshooting |
+| 10 | Git, GitLab, baseline merges, Scrum and Kanban |
+| 11 | Testing and CI/CD |
+| 12 | Docker, Kubernetes and Helm |
+| 13 | Architecture and the Software Factory |
+| 14 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
+| 15 | Turning the Qatar ADOC product owner role into credible answers |
+| 16 | Behavioral questions and the expat conversation |
+| 17 | Sixteen worked scenario answers, with the follow-ups |
+| 18 | Mock interview bank, 132 questions |
+| 19 | Cheat sheets for the morning of |
 
 ## Practice
 

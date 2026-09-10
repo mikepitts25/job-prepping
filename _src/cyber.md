@@ -1,4 +1,4 @@
-# 13. Cybersecurity and sustainment
+# 14. Cybersecurity and sustainment
 
 The posting says the Tech Refresh delivers "foundational cybersecurity
 enhancements" and that you will be "integrating COTS and FOSS updates." You will
@@ -74,7 +74,7 @@ mvn org.owasp:dependency-check-maven:check
   forty-library bump.
 - Run the full regression suite, not the subset near the change. If coverage is
   thin, this is exactly where you invest in the characterization tests from
-  [lesson 10](testing-ci.html).
+  [lesson 11](testing-ci.html).
 - Regenerate the SBOM and re-scan.
 
 **4. Close the loop.** Update the record so the finding is demonstrably closed,

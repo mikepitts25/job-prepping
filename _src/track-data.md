@@ -237,7 +237,7 @@ suspect, pending) is data, not decoration.
 publish/subscribe middleware standard common in this domain, with quality of
 service policies for reliability, durability, deadline and latency budget.
 Older systems often used CORBA. Some use proprietary buses or plain multicast.
-See [lesson 12](architecture.html).
+See [lesson 13](architecture.html).
 
 ## 5. Coordinate frames, time and units
 
@@ -269,7 +269,7 @@ altitude disagreements that look like a tracking bug.
   extrapolation, because a track's position is time-tagged and consumers
   extrapolate it forward.
 - Use monotonic clocks for durations. Wall clock can step backwards on a
-  correction. See [lesson 10](testing-ci.html).
+  correction. See [lesson 11](testing-ci.html).
 - Know the difference between **time of measurement** and **time of report**.
   Conflating them is a real and subtle defect class.
 
@@ -461,7 +461,7 @@ lesson learned in this domain:
   publicly releasable. For a foreign military sales program, export control and
   foreign disclosure rules apply on top of classification, and the interviewer
   will respect "I can talk about that at an unclassified level" far more than
-  the alternative. See [lesson 13](cyber.html).
+  the alternative. See [lesson 14](cyber.html).
 - Speculate about EADGE-T's internal design. Ask instead. "Is your fusion
   centralized or track-level?" is a much better use of the same thirty seconds
   than a guess.
