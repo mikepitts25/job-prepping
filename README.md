@@ -11,16 +11,22 @@ modules.
 
 ## Read it
 
-Published at **https://mikepitts25.github.io/job-prepping/**, served from
-`main` via Settings → Pages → "Deploy from a branch", branch `main`, folder
-`/ (root)`.
+Published at **https://mikepitts25.github.io/job-prepping/**.
 
-Every push to `main` triggers a rebuild, visible under the repository's Actions
-tab as "pages build and deployment". If a deploy fails, check whether the
-**build** job or the **deploy** job failed. A failed deploy job that sat at
-`updating_pages` until it timed out is a GitHub-side stall rather than a problem
-with the content: re-run the failed job from the Actions tab and it normally
-succeeds.
+Deployment runs through `.github/workflows/pages.yml`, so the repository's
+**Settings → Pages → Source must be set to "GitHub Actions"**, not "Deploy from
+a branch".
+
+Every push to `main` rebuilds the site from `_src/` and republishes. The build
+job fails rather than publishing if either check does not hold:
+
+- the committed HTML does not match a fresh build of the Markdown sources, which
+  means someone edited `_src/` and forgot to run `build.py`
+- any internal link does not resolve
+
+The workflow sets `cancel-in-progress: true` on the `pages` concurrency group so
+a newer push supersedes an older deployment. GitHub's stock template leaves that
+false, which lets one stalled deployment block every later run.
 
 To read it without publishing:
 

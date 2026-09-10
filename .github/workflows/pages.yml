@@ -1,0 +1,85 @@
+name: Deploy site to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time. cancel-in-progress is true so that a newer push
+# supersedes an older deployment rather than queueing behind one that has
+# stalled. GitHub's stock template sets this to false; that is the setting
+# that let a stuck deployment block every later run.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install the build dependency
+        run: python -m pip install --disable-pip-version-check markdown==3.10.3
+
+      - name: Rebuild the site from _src/
+        run: python build.py
+
+      - name: Fail if the committed HTML is stale
+        # build.py is deterministic, so a fresh build of the committed Markdown
+        # must reproduce the committed HTML byte for byte. If it does not,
+        # someone edited _src/ and forgot to rebuild, and the published site
+        # would silently lag the sources.
+        run: |
+          if ! git diff --quiet -- index.html lessons practice/README.html; then
+            echo "::error::Committed HTML differs from a fresh build of _src/. Run 'python3 build.py' and commit the result."
+            git --no-pager diff --stat -- index.html lessons practice/README.html
+            exit 1
+          fi
+          echo "Committed HTML matches a fresh build."
+
+      - name: Check for broken internal links
+        run: |
+          python - <<'PY'
+          import glob, os, re, sys
+
+          broken = []
+          for path in glob.glob('*.html') + glob.glob('lessons/*.html') + glob.glob('practice/*.html'):
+              base = os.path.dirname(path)
+              for href in re.findall(r'href="([^"#]+)"', open(path, encoding='utf-8').read()):
+                  if href.startswith(('http://', 'https://', 'mailto:')):
+                      continue
+                  target = os.path.normpath(os.path.join(base, href))
+                  if not os.path.exists(target):
+                      broken.append(f'{path} -> {href}')
+
+          if broken:
+              print('::error::Broken internal links:')
+              for item in broken:
+                  print(f'  {item}')
+              sys.exit(1)
+          print('All internal links resolve.')
+          PY
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
