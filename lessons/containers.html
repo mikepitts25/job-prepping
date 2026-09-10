@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11. Docker, Kubernetes and Helm &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li class="active"><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="11-docker-kubernetes-and-helm">11. Docker, Kubernetes and Helm</h1>
+<p>These are listed under <strong>desired</strong> skills, not basic qualifications. That matters
+for how you prepare: you need working competence and honest boundaries, not
+depth. A candidate who explains containers clearly and says "I have used
+Kubernetes manifests but not written a Helm chart from scratch" is in good shape.
+A candidate who bluffs and gets three questions deep is not.</p>
+<h2 id="1-what-a-container-actually-is">1. What a container actually is</h2>
+<p>The answer that distinguishes people who understand this from people who have
+only used it:</p>
+<blockquote>
+<p>A container is a normal Linux process, isolated with kernel features rather
+than virtualized. <strong>Namespaces</strong> give it its own view of the process table,
+network stack, mounts, hostname and users. <strong>cgroups</strong> limit what it can
+consume in CPU, memory and I/O. The filesystem comes from a stack of
+read-only image layers with a thin writable layer on top, joined by a union
+filesystem. There is no guest kernel, which is why a container starts in
+milliseconds while a VM starts in tens of seconds.</p>
+</blockquote>
+<p>Follow-on: <strong>container versus VM.</strong> A VM virtualizes hardware and runs its own
+kernel, giving stronger isolation at the cost of size and startup time. A
+container shares the host kernel. The security consequence is real and worth
+noting: kernel isolation is weaker than hypervisor isolation, which is why
+multi-tenant or high-assurance environments still often use VMs, sometimes with
+containers inside them.</p>
+<p><strong>Image versus container.</strong> The image is the immutable template. The container
+is a running instance of it. Same relationship as a class and an object, which
+is a serviceable analogy in an interview.</p>
+<h2 id="2-docker-commands">2. Docker commands</h2>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>eadge-ingest:1.4.0<span class="w"> </span>.
+docker<span class="w"> </span>images<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>ps<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>ps<span class="w"> </span>-a
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>-e<span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w"> </span>eadge-ingest:1.4.0
+docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>ingest<span class="w"> </span>-v<span class="w"> </span>/data:/data:ro<span class="w"> </span>eadge-ingest:1.4.0
+docker<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>ingest
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>ingest<span class="w"> </span>/bin/sh<span class="w">          </span><span class="c1"># get a shell inside</span>
+docker<span class="w"> </span>inspect<span class="w"> </span>ingest<span class="w"> </span><span class="p">|</span><span class="w"> </span>less
+docker<span class="w"> </span>stats<span class="w">                            </span><span class="c1"># live resource usage</span>
+docker<span class="w"> </span>stop<span class="w"> </span>ingest<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>rm<span class="w"> </span>ingest
+docker<span class="w"> </span>system<span class="w"> </span>df<span class="p">;</span><span class="w"> </span>docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w"> </span>-a<span class="w">    </span><span class="c1"># reclaim disk</span>
+docker<span class="w"> </span><span class="nb">history</span><span class="w"> </span>eadge-ingest:1.4.0<span class="w">       </span><span class="c1"># what each layer added</span>
+</code></pre></div>
+
+<h2 id="3-a-dockerfile-worth-defending">3. A Dockerfile worth defending</h2>
+<div class="codehilite"><pre><span></span><code><span class="c"># ---- build stage -------------------------------------------------------</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">registry.access.redhat.com/ubi9/python-311</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/build</span>
+<span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--prefix<span class="o">=</span>/install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+<span class="k">COPY</span><span class="w"> </span>src/<span class="w"> </span>src/
+<span class="k">COPY</span><span class="w"> </span>pyproject.toml<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--prefix<span class="o">=</span>/install<span class="w"> </span>.
+
+<span class="c"># ---- runtime stage -----------------------------------------------------</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">registry.access.redhat.com/ubi9/python-311-minimal</span>
+<span class="k">LABEL</span><span class="w"> </span>org.opencontainers.image.source<span class="o">=</span><span class="s2">"https://gitlab.internal/eadge/ingest"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">      </span>org.opencontainers.image.version<span class="o">=</span><span class="s2">"1.4.0"</span>
+
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>build<span class="w"> </span>/install<span class="w"> </span>/usr/local
+
+<span class="k">RUN</span><span class="w"> </span>useradd<span class="w"> </span>--system<span class="w"> </span>--uid<span class="w"> </span><span class="m">10001</span><span class="w"> </span>--no-create-home<span class="w"> </span>appuser
+<span class="k">USER</span><span class="w"> </span><span class="s">10001</span>
+
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/opt/eadge</span>
+<span class="k">ENV</span><span class="w"> </span><span class="nv">PYTHONUNBUFFERED</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PYTHONDONTWRITEBYTECODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>INFO
+
+<span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>3s<span class="w"> </span>--start-period<span class="o">=</span>10s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>CMD<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health').status==200 else 1)"</span>
+
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">8080</span>
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">"python"</span><span class="p">,</span><span class="w"> </span><span class="s2">"-m"</span><span class="p">,</span><span class="w"> </span><span class="s2">"eadge.ingest"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Every choice here is defensible, and being able to justify them is what gets
+asked:</p>
+<ul>
+<li><strong>Multi-stage build.</strong> Compilers and build tooling never reach the runtime
+  image. Smaller image, smaller attack surface, fewer CVEs to remediate.</li>
+<li><strong><code>COPY requirements.txt</code> before the source.</strong> Layer caching. Source changes
+  every commit, dependencies rarely, so dependency installation is cached.
+  Getting the order wrong makes every build slow.</li>
+<li><strong>Non-root <code>USER</code>.</strong> A hard requirement in any hardened environment, and
+  usually an explicit STIG or Kubernetes policy control.</li>
+<li><strong>UBI base image.</strong> Red Hat Universal Base Images are the natural choice on a
+  RHEL program: same package ecosystem, redistributable, and supported for
+  vulnerability remediation.</li>
+<li><strong>Pinned versions.</strong> In <code>requirements.txt</code>, exact. Not <code>latest</code>, not a range.
+  Reproducibility is a configuration-management requirement here, not a
+  preference.</li>
+<li><strong><code>HEALTHCHECK</code>.</strong> The orchestrator needs to know the difference between a
+  running process and a working service.</li>
+<li><strong><code>ENTRYPOINT</code> in exec form</strong>, so the process is PID 1 and receives signals,
+  which means <code>docker stop</code> shuts down gracefully instead of being killed after
+  the timeout.</li>
+<li><strong><code>.dockerignore</code>.</strong> Keep <code>.git</code>, tests, and local virtualenvs out of the
+  build context.</li>
+</ul>
+<p>Layers and caching, said briefly: each instruction creates a layer; layers are
+cached and shared; a change invalidates that layer and everything after it.
+Combining <code>RUN</code> commands with <code>&amp;&amp;</code> and cleaning package caches in the same layer
+keeps the image small, because deleting a file in a later layer does not shrink
+the earlier one.</p>
+<h2 id="4-docker-compose-for-the-local-development-story">4. docker compose, for the local development story</h2>
+<div class="codehilite"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ingest</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"8080:8080"</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">LOG_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBUG</span>
+<span class="w">      </span><span class="nt">DATABASE_URL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgresql://dev:dev@db:5432/dev</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">db</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> condition</span><span class="p">:</span><span class="w"> </span><span class="nv">service_healthy</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">volumes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"./src:/opt/eadge/src:ro"</span><span class="p p-Indicator">]</span>
+
+<span class="w">  </span><span class="nt">db</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"CMD-SHELL"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">dev"</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+
+<p>The value to name: a new developer on a dispersed team gets a working
+environment with one command instead of a two-day setup document. On a program
+with people in several time zones, that is a real productivity argument.</p>
+<h2 id="5-kubernetes-enough-to-be-useful">5. Kubernetes, enough to be useful</h2>
+<p><strong>What it is for.</strong> Declarative orchestration. You describe the desired state,
+controllers continuously reconcile actual state toward it. That reconciliation
+loop is the central idea; lead with it.</p>
+<p><strong>Objects to know:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pod</strong></td>
+<td>One or more co-located containers; the unit of scheduling</td>
+</tr>
+<tr>
+<td><strong>ReplicaSet</strong></td>
+<td>Keeps N pod replicas running</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Manages ReplicaSets; gives you rolling updates and rollback</td>
+</tr>
+<tr>
+<td><strong>StatefulSet</strong></td>
+<td>For workloads with stable identity and storage</td>
+</tr>
+<tr>
+<td><strong>DaemonSet</strong></td>
+<td>One pod per node, typically log or metrics agents</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td>Stable virtual IP and DNS name in front of a changing set of pods</td>
+</tr>
+<tr>
+<td><strong>Ingress</strong></td>
+<td>HTTP routing from outside the cluster</td>
+</tr>
+<tr>
+<td><strong>ConfigMap</strong></td>
+<td>Non-secret configuration</td>
+</tr>
+<tr>
+<td><strong>Secret</strong></td>
+<td>Sensitive values; base64-encoded, so enable encryption at rest</td>
+</tr>
+<tr>
+<td><strong>PersistentVolumeClaim</strong></td>
+<td>Storage request</td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td>Scoping and isolation boundary</td>
+</tr>
+<tr>
+<td><strong>Job / CronJob</strong></td>
+<td>Run to completion, once or on a schedule</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+<span class="nt">metadata</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">eadge-ingest</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">eadge-ingest</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">eadge-ingest</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">runAsNonRoot</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">        </span><span class="nt">runAsUser</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10001</span>
+<span class="w">        </span><span class="nt">seccompProfile</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">RuntimeDefault</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ingest</span>
+<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.internal/eadge-ingest:1.4.0</span><span class="w">     </span><span class="c1"># never :latest</span>
+<span class="w">          </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> containerPort</span><span class="p">:</span><span class="w"> </span><span class="nv">8080</span><span class="w"> </span><span class="p p-Indicator">}]</span>
+<span class="w">          </span><span class="nt">env</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LOG_LEVEL</span>
+<span class="w">              </span><span class="nt">valueFrom</span><span class="p">:</span>
+<span class="w">                </span><span class="nt">configMapKeyRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">ingest-config</span><span class="p p-Indicator">,</span><span class="nt"> key</span><span class="p">:</span><span class="w"> </span><span class="nv">log_level</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">requests</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"250m"</span><span class="p p-Indicator">,</span><span class="nt"> memory</span><span class="p">:</span><span class="w"> </span><span class="s">"256Mi"</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="nt">limits</span><span class="p">:</span><span class="w">   </span><span class="p p-Indicator">{</span><span class="nt"> cpu</span><span class="p">:</span><span class="w"> </span><span class="s">"1"</span><span class="p p-Indicator">,</span><span class="nt">    memory</span><span class="p">:</span><span class="w"> </span><span class="s">"512Mi"</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">          </span><span class="nt">livenessProbe</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">httpGet</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> path</span><span class="p">:</span><span class="w"> </span><span class="nv">/health/live</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">8080</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="nt">initialDelaySeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="w">            </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20</span>
+<span class="w">          </span><span class="nt">readinessProbe</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">httpGet</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> path</span><span class="p">:</span><span class="w"> </span><span class="nv">/health/ready</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">8080</span><span class="w"> </span><span class="p p-Indicator">}</span>
+<span class="w">            </span><span class="nt">periodSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="w">          </span><span class="nt">securityContext</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">            </span><span class="nt">readOnlyRootFilesystem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">            </span><span class="nt">capabilities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> drop</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"ALL"</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</code></pre></div>
+
+<p><strong>Liveness versus readiness</strong> is the most commonly asked Kubernetes question and
+it has a crisp answer: <strong>liveness</strong> failing means the container is broken and
+gets restarted; <strong>readiness</strong> failing means it is temporarily unable to serve
+and gets removed from the Service endpoints without a restart. Confusing them
+causes restart loops during slow startup, which is why <code>startupProbe</code> exists.</p>
+<p><strong>Requests versus limits:</strong> requests drive scheduling and guarantee, limits cap
+consumption. Exceeding a memory limit gets the container OOM-killed; exceeding a
+CPU limit gets it throttled, not killed. That distinction gets asked.</p>
+<div class="codehilite"><pre><span></span><code>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>staging<span class="w"> </span>-o<span class="w"> </span>wide
+kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>eadge-ingest-7d9c<span class="w"> </span>-n<span class="w"> </span>staging<span class="w">      </span><span class="c1"># events are at the bottom</span>
+kubectl<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>deploy/eadge-ingest<span class="w"> </span>-n<span class="w"> </span>staging
+kubectl<span class="w"> </span>logs<span class="w"> </span>pod-name<span class="w"> </span>--previous<span class="w">                       </span><span class="c1"># the crashed instance</span>
+kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>pod-name<span class="w"> </span>--<span class="w"> </span>/bin/sh
+kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deploy/eadge-ingest
+kubectl<span class="w"> </span>rollout<span class="w"> </span>undo<span class="w"> </span>deploy/eadge-ingest<span class="w">               </span><span class="c1"># rollback</span>
+kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>-n<span class="w"> </span>staging<span class="w"> </span>--sort-by<span class="o">=</span>.lastTimestamp
+kubectl<span class="w"> </span>top<span class="w"> </span>pods
+kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deployment.yaml
+kubectl<span class="w"> </span>diff<span class="w"> </span>-f<span class="w"> </span>deployment.yaml<span class="w">                        </span><span class="c1"># what would change</span>
+</code></pre></div>
+
+<p><strong>Debugging a <code>CrashLoopBackOff</code></strong>, a likely scenario question: <code>describe</code> the
+pod and read the events and the last exit code, <code>logs --previous</code> for the output
+of the instance that died, then check the usual causes in order. Bad image tag
+or pull secret, a missing ConfigMap or Secret, a failing liveness probe with too
+short a delay, an OOM kill visible as exit code 137, a read-only filesystem the
+app tries to write to, or the application simply exiting because a required
+environment variable is absent.</p>
+<h2 id="6-helm">6. Helm</h2>
+<p><strong>What problem it solves.</strong> Kubernetes manifests are static YAML. You need the
+same application deployed to lab, staging and production with different replica
+counts, image tags, resource sizes and endpoints. Copying the YAML three times
+means it drifts. Helm templates the manifests and manages the result as a
+versioned <strong>release</strong> you can upgrade and roll back as a unit.</p>
+<div class="codehilite"><pre><span></span><code>chart/
+  Chart.yaml           # name, version, appVersion
+  values.yaml          # defaults
+  values-prod.yaml     # per-environment overrides
+  templates/
+    deployment.yaml
+    service.yaml
+    configmap.yaml
+    _helpers.tpl       # shared template snippets
+  charts/              # vendored dependencies
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># templates/deployment.yaml</span>
+<span class="nt">spec</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.replicaCount</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Chart.Name</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">"{{</span><span class="nv"> </span><span class="s">.Values.image.repository</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">.Values.image.tag</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">default</span><span class="nv"> </span><span class="s">.Chart.AppVersion</span><span class="nv"> </span><span class="s">}}"</span>
+<span class="w">          </span><span class="nt">resources</span><span class="p">:</span>
+<span class="w">            </span><span class="p p-Indicator">{{</span><span class="nv">- toYaml .Values.resources | nindent 12</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>helm<span class="w"> </span>lint<span class="w"> </span>./chart
+helm<span class="w"> </span>template<span class="w"> </span>./chart<span class="w"> </span>-f<span class="w"> </span>values-prod.yaml<span class="w">     </span><span class="c1"># render locally, review the diff</span>
+helm<span class="w"> </span>install<span class="w"> </span>eadge-ingest<span class="w"> </span>./chart<span class="w"> </span>-n<span class="w"> </span>staging
+helm<span class="w"> </span>upgrade<span class="w"> </span>--install<span class="w"> </span>eadge-ingest<span class="w"> </span>./chart<span class="w"> </span>-n<span class="w"> </span>prod<span class="w"> </span>-f<span class="w"> </span>values-prod.yaml<span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>--set<span class="w"> </span>image.tag<span class="o">=</span><span class="m">1</span>.4.1<span class="w"> </span>--wait<span class="w"> </span>--atomic<span class="w"> </span>--timeout<span class="w"> </span>5m
+helm<span class="w"> </span><span class="nb">history</span><span class="w"> </span>eadge-ingest<span class="w"> </span>-n<span class="w"> </span>prod
+helm<span class="w"> </span>rollback<span class="w"> </span>eadge-ingest<span class="w"> </span><span class="m">3</span><span class="w"> </span>-n<span class="w"> </span>prod
+helm<span class="w"> </span>uninstall<span class="w"> </span>eadge-ingest<span class="w"> </span>-n<span class="w"> </span>prod
+</code></pre></div>
+
+<p>Two practices to name: <strong><code>helm template</code> and review the rendered diff before
+upgrading a production release</strong> rather than trusting the values file, and
+<strong><code>--atomic</code></strong>, which rolls back automatically on a failed upgrade so you are
+never left half-deployed.</p>
+<p>If asked what you dislike about Helm, an honest and well-regarded answer is that
+templating YAML with a text templating engine produces confusing failures,
+whitespace bugs, and charts that are hard to review. Kustomize takes the
+overlay approach instead. Both are in wide use.</p>
+<h2 id="7-where-this-fits-on-a-program-like-eadge-t">7. Where this fits on a program like EADGE-T</h2>
+<p>Do not assume a cloud-native deployment on an operational air defense site.
+Realistically:</p>
+<ul>
+<li><strong>Development and CI</strong> almost certainly use containers, because reproducible
+  builds and disposable test environments are exactly what the tech refresh is
+  buying.</li>
+<li><strong>The operational deployment</strong> may be containerized on-premises, may be
+  virtual machines, or may still be bare metal with a formal installation
+  procedure, depending on the accreditation baseline. Air-gapped operation is
+  likely, which means a mirrored internal registry, no pulls from Docker Hub, and
+  images that must be imported through a controlled process.</li>
+<li><strong>Kubernetes at the edge</strong> in a disconnected environment is a real pattern but
+  brings its own accreditation burden.</li>
+</ul>
+<p>The best thing you can say here: <em>"I would not assume containers on the
+operational side without knowing the accreditation baseline. Where I would push
+hardest is in the build and test environments, because reproducible, disposable
+test environments are the direct enabler for the automated test capability the
+program wants."</em></p>
+<h2 id="8-questions-to-be-ready-for">8. Questions to be ready for</h2>
+<ol>
+<li>Container versus VM. (Section 1.)</li>
+<li>Why multi-stage builds? (Smaller, fewer CVEs, no build tooling at runtime.)</li>
+<li>Why is layer order important? (Caching, section 3.)</li>
+<li><code>CMD</code> versus <code>ENTRYPOINT</code>? (<code>ENTRYPOINT</code> is the executable, <code>CMD</code> supplies
+   default arguments; <code>CMD</code> alone is overridden entirely by <code>docker run</code> args.)</li>
+<li>How do you get data out of a container? (Volumes and bind mounts; the
+   writable layer is discarded when the container is removed.)</li>
+<li>Liveness versus readiness probes. (Section 5.)</li>
+<li>How do you handle secrets? (Not in the image, not in the repository. A secret
+   store or Kubernetes Secrets with encryption at rest and RBAC, injected at
+   runtime. See <a href="cyber.html">lesson 13</a>.)</li>
+<li>What does Helm give you over plain manifests? (Section 6.)</li>
+<li>How do you debug a pod that will not start? (Section 5.)</li>
+<li>How would you run containers in an air-gapped environment? (Internal
+    registry mirror, images imported through a controlled transfer, no external
+    pulls, digest pinning, and a vulnerability scan on import.)</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/testing-ci.html">&larr; 10. Testing &amp; CI/CD</a><a class="next" href="../lessons/architecture.html">12. Architecture &amp; Software Factory &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

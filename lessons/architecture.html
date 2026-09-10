@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12. Architecture and the Software Factory &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li class="active"><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="12-architecture-and-the-software-factory">12. Architecture and the Software Factory</h1>
+<p>The desired skills list "comprehensive understanding of Services, Microservices,
+Software Factories, Cloud-native and Service-Oriented Architectures." This
+lesson gives you the vocabulary and, more importantly, the judgment to use it
+without sounding like you are reciting a conference talk.</p>
+<h2 id="1-service-oriented-architecture">1. Service-oriented architecture</h2>
+<p>SOA is the older term and it is the one that fits a program like this. The idea:
+decompose a system into services that expose capabilities over a network
+contract, so that consumers depend on the contract rather than the
+implementation.</p>
+<p>Classic SOA in defense systems tends to mean coarse-grained services, an
+enterprise service bus or a publish-subscribe middleware, formal interface
+control documents, and strong versioning discipline because the consumers are
+other programs you cannot redeploy at will.</p>
+<p><strong>Microservices</strong> is SOA with smaller services, independent deployment,
+per-service data ownership, and an emphasis on team autonomy. The differences
+that matter in practice: microservices push away from a central bus toward
+lightweight protocols, and they trade operational simplicity for deployment
+independence.</p>
+<p>The senior framing: <em>"Microservices buy you independent deployability, and you
+pay for it in operational complexity, distributed debugging, and network failure
+modes. That trade is worth it when independent deployment is genuinely the
+constraint, which usually means many teams shipping at different rates. On a
+system that deploys as a qualified baseline on a scheduled window, that
+particular benefit is worth much less, so the calculus is different. What still
+pays off is clean service boundaries and versioned contracts, whether or not
+they deploy separately."</em></p>
+<p>That answer will do more for you than an enthusiastic endorsement.</p>
+<h2 id="2-the-distributed-systems-facts-you-should-have-ready">2. The distributed systems facts you should have ready</h2>
+<ul>
+<li><strong>The fallacies of distributed computing.</strong> The network is not reliable,
+  latency is not zero, bandwidth is not infinite, the network is not secure,
+  topology changes, there is more than one administrator, transport cost is not
+  zero, the network is not homogeneous. On a geographically dispersed air
+  defense system, every single one of these is a live design constraint rather
+  than a slogan.</li>
+<li><strong>CAP.</strong> In a partition you choose availability or consistency. Real systems
+  choose per-operation. For an air picture, availability of a slightly stale
+  track usually beats unavailability of a perfect one, but you must know which
+  operations are the exception.</li>
+<li><strong>Idempotency.</strong> A retried message must not double-apply. Give messages ids
+  and make handlers idempotent. This is the single most useful reliability
+  property in a message-driven system.</li>
+<li><strong>At-most-once, at-least-once, exactly-once.</strong> Exactly-once delivery does not
+  exist end to end; what you can build is at-least-once delivery plus idempotent
+  processing, which is observably equivalent. Saying that precisely is a strong
+  signal.</li>
+<li><strong>Backpressure.</strong> When a consumer is slower than a producer, something must
+  give. Bound your queues and choose consciously between blocking, dropping, and
+  shedding load. An unbounded queue is a deferred crash.</li>
+<li><strong>Timeouts, retries, and circuit breakers.</strong> Every remote call gets a timeout.
+  Retries need jitter and a budget, or you build a synchronized retry storm that
+  finishes off a struggling service. A circuit breaker stops calling a dependency
+  that is failing so it can recover.</li>
+<li><strong>Clock skew.</strong> Never assume two machines agree on the time. Use monotonic
+  clocks for durations, and be explicit about the time source when ordering
+  events across sites.</li>
+</ul>
+<h2 id="3-communication-styles">3. Communication styles</h2>
+<table>
+<thead>
+<tr>
+<th>Style</th>
+<th>Use when</th>
+<th>Watch out for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Synchronous request/response</strong> (REST, gRPC)</td>
+<td>Caller needs an answer now</td>
+<td>Coupling, cascading failure, timeout budgets</td>
+</tr>
+<tr>
+<td><strong>Asynchronous messaging</strong> (queue)</td>
+<td>Work can be deferred; producer and consumer decoupled</td>
+<td>Ordering, duplicate delivery, poison messages</td>
+</tr>
+<tr>
+<td><strong>Publish/subscribe</strong></td>
+<td>Many consumers of the same event</td>
+<td>Slow consumers, fan-out cost, no backpressure by default</td>
+</tr>
+<tr>
+<td><strong>Streaming</strong></td>
+<td>Continuous high-rate data</td>
+<td>Partitioning, replay, retention</td>
+</tr>
+</tbody>
+</table>
+<p>For a sensor-fusion system, publish/subscribe is the natural fit, which is why
+<strong>DDS</strong> (Data Distribution Service) is common in this domain. If it comes up:
+DDS is a publish/subscribe middleware standard with rich quality-of-service
+policies (reliability, durability, deadline, latency budget), peer-to-peer
+discovery, and no central broker, which is why real-time defense and robotics
+systems use it. You are not expected to have used it. Knowing what it is and why
+it exists is enough and it is a nice thing to know on this program.</p>
+<p>Other names worth recognizing: Kafka for durable partitioned streaming, RabbitMQ
+or ActiveMQ for classic brokered messaging, ZeroMQ for lightweight patterns, and
+<strong>Link 16</strong> as the tactical data link standard that actually carries the air
+picture between platforms.</p>
+<h2 id="4-api-design">4. API design</h2>
+<div class="codehilite"><pre><span></span><code>GET    /api/v1/tracks?state=active&amp;updated_since=2026-09-09T12:00:00Z
+GET    /api/v1/tracks/{trackId}
+POST   /api/v1/tracks
+PUT    /api/v1/tracks/{trackId}
+PATCH  /api/v1/tracks/{trackId}
+DELETE /api/v1/tracks/{trackId}
+</code></pre></div>
+
+<p>Know the status codes and their meanings: 200 ok, 201 created, 202 accepted,
+204 no content, 400 bad request, 401 unauthenticated, 403 unauthorized, 404 not
+found, 409 conflict, 422 unprocessable, 429 rate limited, 500 server error, 503
+unavailable. Know that GET, PUT and DELETE are idempotent while POST is not, and
+know that this is why retry logic can safely repeat the first three.</p>
+<p><strong>Versioning</strong> is where a defense program differs from a startup. You cannot
+redeploy the consumers. So: version the contract explicitly, never make a
+breaking change in place, add fields rather than repurposing them, and support
+the old version until every consumer has migrated on a schedule you agreed in
+writing. If asked how you would change a message format used by three other
+programs, that is the answer, and the second half of it is that the change goes
+through an interface control working group, not a merge request.</p>
+<h2 id="5-the-software-factory">5. The Software Factory</h2>
+<p>This is the term in the posting, so be able to speak to it directly.</p>
+<p>A software factory is a standardized, reusable set of pipelines, tooling,
+hardened base images, environments and processes that programs plug into,
+instead of every program inventing its own build and deployment stack. In the
+defense world the model was popularized by efforts such as the Air Force's
+Kessel Run and Platform One, and every major prime now runs an internal
+equivalent. Lockheed Martin's is what the posting refers to.</p>
+<p><strong>What it typically provides:</strong></p>
+<ul>
+<li>Source control and merge-request workflow with enforced approvals.</li>
+<li>Standard CI templates so a new repository gets a compliant pipeline on day
+  one.</li>
+<li>Hardened, accredited base container images that are already STIG-configured
+  and scanned.</li>
+<li>Integrated security scanning: SAST, software composition analysis, secret
+  scanning, container image scanning, with results routed into the compliance
+  record.</li>
+<li>An artifact repository with immutable, signed, traceable artifacts.</li>
+<li>Automated generation of some of the evidence that accreditation requires, so
+  the security paperwork is a byproduct of the pipeline rather than a separate
+  manual campaign.</li>
+<li>A <strong>continuous ATO</strong> ambition: because the controls are continuously
+  evidenced, changes can be authorized far faster than a traditional
+  accreditation cycle allows.</li>
+</ul>
+<p><strong>Why a program migrates into it</strong>, which is exactly what the posting says you
+would be doing: the legacy build is a hand-maintained script on a machine
+someone configured in 2016, nobody can reproduce it, security evidence is
+gathered by hand each cycle, and every release costs a manual campaign. Moving
+into the factory makes the build reproducible, the artifacts traceable, and the
+security evidence continuous.</p>
+<p><strong>What is hard about the migration</strong>, and saying this shows you have done it:</p>
+<ul>
+<li>The legacy build has undocumented assumptions: a tool at a fixed path, a
+  network share, a license server, a specific compiler patch level.</li>
+<li>Tests that were never automated because they required hardware. You need
+  simulators, recorded data replay, or hardware in the loop wired into the
+  pipeline.</li>
+<li>Dependencies that are not in any registry, delivered once by a vendor on
+  media.</li>
+<li>The factory's hardened base images may be missing something the application
+  needs, and adding it requires justification.</li>
+<li>Air-gapped constraints: no public package repositories, so everything comes
+  from an internal mirror with its own approval process.</li>
+<li>Cultural: people who have released this system by hand for a decade need to
+  trust the pipeline before they will rely on it.</li>
+</ul>
+<p>Have an answer to <em>"how would you approach migrating a legacy build into our
+pipeline?"</em> It is close to a certainty. Structure it: inventory the current
+build and make it reproducible on a clean machine first; get it green in the
+pipeline with tests skipped; add the automatable tests; add scanning with a
+baselined backlog; add artifact publishing with immutable tags; then move the
+deployment step last. One capability at a time, each one merged and working
+before the next.</p>
+<h2 id="6-cloud-native-stated-carefully">6. Cloud-native, stated carefully</h2>
+<p>The twelve-factor ideas that transfer regardless of cloud:</p>
+<ul>
+<li>Configuration in the environment, not baked into the artifact.</li>
+<li>Stateless processes, with state pushed to backing services.</li>
+<li>Explicit, isolated, pinned dependencies.</li>
+<li>Logs as an event stream to stdout, not files the application manages.</li>
+<li>Strict dev/prod parity, which is the whole argument for containerized test
+  environments.</li>
+<li>Disposability: fast startup, graceful shutdown on SIGTERM.</li>
+</ul>
+<p>Say the caveat too: an operational air defense site may be disconnected, on
+premises, and accredited as a fixed baseline. "Cloud-native" there means the
+engineering practices, not a public cloud. The practices that survive are
+containerized reproducibility, declarative configuration, health endpoints, and
+observability. The ones that do not survive are elastic autoscaling and
+continuous deployment straight to production.</p>
+<h2 id="7-observability">7. Observability</h2>
+<p>For a fielded system that engineers cannot easily reach, this is
+disproportionately important. The three pillars:</p>
+<p><strong>Logs.</strong> Structured, ideally JSON, with a correlation id threaded through every
+service so one operational event can be reconstructed across components. Log
+levels used consistently. No secrets, no full payloads.</p>
+<p><strong>Metrics.</strong> Counters, gauges, histograms. The ones that matter for an ingest
+and fusion system: messages per second per sensor, <strong>age of the last message per
+sensor</strong> (the one that detects a silent sensor), queue depth, drop count,
+end-to-end latency percentiles, track count, error rate by type, and resource
+saturation.</p>
+<p><strong>Traces.</strong> Distributed tracing shows one request's path across services with
+timing at each hop. OpenTelemetry is the vendor-neutral standard worth naming.</p>
+<p>Two things to say that show operational maturity:</p>
+<ul>
+<li><strong>Percentiles, not averages.</strong> The average latency is fine while the 99th
+  percentile is catastrophic. Operators feel the tail.</li>
+<li><strong>Alert on symptoms users experience, not on causes.</strong> Alert that the air
+  picture is stale, not that CPU is at 80 percent. Every alert should have a
+  runbook and a human action; an alert nobody acts on trains people to ignore
+  the console.</li>
+</ul>
+<h2 id="8-data-and-persistence">8. Data and persistence</h2>
+<p>Worth having a position on, since it comes up.</p>
+<ul>
+<li><strong>Relational</strong> when you have structured data with relationships and you want
+  transactions and constraints. This is most of the time, and the default answer.</li>
+<li><strong>Key-value or document</strong> for high-volume, schema-flexible, or
+  denormalized-read workloads.</li>
+<li><strong>Time series</strong> for metrics and historical track data, where the query is
+  "everything for this id in this window."</li>
+<li><strong>In-memory</strong> for the hot current picture, with periodic persistence, because
+  the live air picture is read constantly and rebuilt on restart from the
+  sensors anyway.</li>
+</ul>
+<p>Basic SQL you should still be able to write on a whiteboard:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">sensor_id</span><span class="p">,</span>
+<span class="w">       </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w">                </span><span class="k">AS</span><span class="w"> </span><span class="n">detections</span><span class="p">,</span>
+<span class="w">       </span><span class="k">AVG</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">confidence</span><span class="p">)</span><span class="w">       </span><span class="k">AS</span><span class="w"> </span><span class="n">avg_confidence</span><span class="p">,</span>
+<span class="w">       </span><span class="k">MAX</span><span class="p">(</span><span class="n">d</span><span class="p">.</span><span class="n">observed_at</span><span class="p">)</span><span class="w">      </span><span class="k">AS</span><span class="w"> </span><span class="n">last_seen</span>
+<span class="w">  </span><span class="k">FROM</span><span class="w"> </span><span class="n">detections</span><span class="w"> </span><span class="n">d</span>
+<span class="w">  </span><span class="k">JOIN</span><span class="w"> </span><span class="n">sensors</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">sensor_id</span>
+<span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">d</span><span class="p">.</span><span class="n">observed_at</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">NOW</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nb">INTERVAL</span><span class="w"> </span><span class="s1">'1 hour'</span>
+<span class="w"> </span><span class="k">GROUP</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">s</span><span class="p">.</span><span class="n">sensor_id</span>
+<span class="k">HAVING</span><span class="w"> </span><span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">10</span>
+<span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">avg_confidence</span><span class="w"> </span><span class="k">DESC</span>
+<span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Know the join types, know that <code>WHERE</code> filters rows before grouping while
+<code>HAVING</code> filters groups after, know what an index costs on write and buys on
+read, and know what <code>EXPLAIN</code> is for. That is enough for this role.</p>
+<h2 id="9-practical-architecture-questions">9. Practical architecture questions</h2>
+<ol>
+<li><strong>Monolith or microservices for a new subsystem?</strong> Start with a well-modularized
+   monolith unless you have a specific reason not to. You can extract a service
+   from clean module boundaries; you cannot easily un-distribute a system you
+   split too early.</li>
+<li><strong>How do you handle a slow downstream dependency?</strong> Timeout, bounded retry
+   with jitter, circuit breaker, fall back to cached or degraded output, and
+   make the degradation visible in metrics rather than silent.</li>
+<li><strong>How do you version a message format?</strong> Section 4.</li>
+<li><strong>How would you make this system testable end to end without hardware?</strong>
+   Recorded data replay, sensor simulators, and a contract test per adapter so
+   the simulator and the real device are held to the same interface.</li>
+<li><strong>What is the failure mode you worry about most?</strong> A good answer for this
+   domain: silent degradation. A crash is loud and someone fixes it. A sensor
+   that quietly stops updating, or a correlation that quietly starts producing
+   duplicate tracks, can persist for a long time. That is why last-message-age
+   and track-count metrics with alerting are not optional.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/containers.html">&larr; 11. Docker, Kubernetes &amp; Helm</a><a class="next" href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

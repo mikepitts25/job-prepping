@@ -4,9 +4,10 @@ A GitHub Pages study site for the **Senior Software Engineer &ndash; EADGE-T Tec
 Refresh &ndash; EXPAT UAE** role at Lockheed Martin, plus a runnable practice
 repo.
 
-Fifteen lessons covering every skill named in the job posting, roughly sixty
-worked code examples, a 120-question mock interview bank with model answers, and
-76 passing tests across Python and Java practice modules.
+Eighteen lessons covering every skill named in the job posting, roughly sixty
+worked code examples, a 132-question mock interview bank, sixteen worked
+scenario answers, and 106 passing tests across Python and Java practice
+modules.
 
 ## Read it
 
@@ -31,20 +32,23 @@ python3 -m http.server 8000
 | Lesson | Topic |
 | --- | --- |
 | 1 | Program and role brief: what EADGE-T is and what the job actually does |
-| 2 | Interview map and a 14-day study plan |
-| 3 | Python refresher |
-| 4 | Java refresher |
-| 5 | Data structures, algorithms, and 24 practice problems |
-| 6 | Object-oriented design, SOLID, and a live design exercise |
-| 7 | Linux / RHEL and production troubleshooting |
-| 8 | Git, GitLab, baseline merges, Scrum and Kanban |
-| 9 | Testing and CI/CD |
-| 10 | Docker, Kubernetes and Helm |
-| 11 | Architecture and the Software Factory |
-| 12 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
-| 13 | Behavioral questions and the expat conversation |
-| 14 | Mock interview bank, 120 questions |
-| 15 | Cheat sheets for the morning of |
+| 2 | Track data, standards and fusion: plots, tracks, Link 16, ASTERIX, data reduction |
+| 3 | Interview map and a 14-day study plan |
+| 4 | Python refresher |
+| 5 | Java refresher |
+| 6 | Data structures, algorithms, and 24 practice problems |
+| 7 | Object-oriented design, SOLID, and a live design exercise |
+| 8 | Linux / RHEL and production troubleshooting |
+| 9 | Git, GitLab, baseline merges, Scrum and Kanban |
+| 10 | Testing and CI/CD |
+| 11 | Docker, Kubernetes and Helm |
+| 12 | Architecture and the Software Factory |
+| 13 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
+| 14 | Turning the Qatar ADOC product owner role into credible answers |
+| 15 | Behavioral questions and the expat conversation |
+| 16 | Sixteen worked scenario answers, with the follow-ups |
+| 17 | Mock interview bank, 132 questions |
+| 18 | Cheat sheets for the morning of |
 
 ## Practice
 
@@ -52,7 +56,7 @@ python3 -m http.server 8000
 cd practice/python
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-pytest -q                          # 54 tests, all passing
+pytest -q                          # 84 tests, all passing
 PREP_TARGET=exercises pytest -q    # grade your own attempts
 
 cd ../java
@@ -81,3 +85,7 @@ Role and program details come from the public job posting and program coverage:
 - [Senior Software Engineer &ndash; EADGE-T Tech Refresh &ndash; EXPAT UAE (ClearanceJobs)](https://www.clearancejobs.com/jobs/9040193/senior-software-engineer-eadge-t-tech-refresh-expat-uae)
 - [Software Engineer &ndash; EADGE-T Tech Refresh (Lockheed Martin Jobs)](https://www.lockheedmartinjobs.com/job/colorado-springs/software-engineer-eadge-t-tech-refresh/694/97890638880)
 - [Lockheed Martin preferred bidder for UAE's air-defence system (The National)](https://www.thenationalnews.com/business/lockheed-martin-preferred-bidder-for-uae-s-air-defence-system-1.289304)
+
+Track data standards in lesson 2 are drawn from EUROCONTROL's published ASTERIX
+specifications and open documentation of the tactical data link standards; each
+lesson lists its own sources.

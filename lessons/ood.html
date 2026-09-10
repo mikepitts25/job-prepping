@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Object-oriented design and SOLID &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li class="active"><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="7-object-oriented-design-and-solid">7. Object-oriented design and SOLID</h1>
+<p>The posting names "object-oriented design principles" explicitly. On a
+sustainment program this is not academic. Legacy code that resists change is the
+central daily problem, and design vocabulary is how you argue for restructuring
+it in a code review.</p>
+<h2 id="1-the-four-pillars-with-the-answer-they-want">1. The four pillars, with the answer they want</h2>
+<p><strong>Encapsulation.</strong> Hide internal state behind an interface so that invariants
+are enforced in one place. The practical payoff: you can change the internal
+representation without changing every caller.</p>
+<p><strong>Abstraction.</strong> Expose the operation, not the mechanism. <code>SensorAdapter.parse</code>
+does not tell callers whether the wire format is XML or a binary struct.</p>
+<p><strong>Inheritance.</strong> Reuse and specialize. Use it sparingly. Inheritance is the
+tightest coupling in object-oriented design because a subclass depends on the
+parent's implementation, not just its interface.</p>
+<p><strong>Polymorphism.</strong> One call site, many behaviors, selected at runtime. This is
+what lets you add a fifth sensor type without touching the correlator.</p>
+<p>If asked "inheritance or composition," the answer is <strong>composition by default</strong>.
+Inheritance expresses "is a" and should be reserved for genuine subtyping.
+Composition expresses "has a" and keeps the pieces replaceable and testable.</p>
+<h2 id="2-solid-with-a-defense-flavored-example-each">2. SOLID, with a defense-flavored example each</h2>
+<p><strong>S &mdash; Single responsibility.</strong> A class should have one reason to change.</p>
+<blockquote>
+<p>A <code>TrackManager</code> that parses wire messages, correlates detections, <em>and</em>
+writes to the database has three reasons to change: a new message format, a
+new correlation rule, a new persistence layer. Split it.</p>
+</blockquote>
+<p><strong>O &mdash; Open/closed.</strong> Open for extension, closed for modification.</p>
+<blockquote>
+<p>Adding a new radar type should mean writing a new <code>SensorAdapter</code>
+implementation and registering it, not editing a switch statement in the
+ingest loop. Every edit to shared code on an accredited baseline costs
+regression testing.</p>
+</blockquote>
+<p><strong>L &mdash; Liskov substitution.</strong> A subtype must be usable wherever the base
+type is expected, without surprising the caller.</p>
+<blockquote>
+<p>A <code>ReadOnlyTrackStore</code> that extends <code>TrackStore</code> and throws on <code>save()</code>
+violates this. Callers that legitimately hold a <code>TrackStore</code> now break. Model
+it as two interfaces instead.</p>
+</blockquote>
+<p><strong>I &mdash; Interface segregation.</strong> Many small interfaces beat one large one.</p>
+<blockquote>
+<p>A <code>SensorAdapter</code> interface with <code>parse</code>, <code>calibrate</code>, <code>selfTest</code>, and
+<code>firmwareUpdate</code> forces every simple file-based adapter to stub three methods.
+Split into <code>Parser</code>, <code>Calibratable</code>, and <code>Diagnosable</code>.</p>
+</blockquote>
+<p><strong>D &mdash; Dependency inversion.</strong> Depend on abstractions, not concretions.</p>
+<blockquote>
+<p>The correlator should take a <code>TrackStore</code> interface in its constructor, not
+construct a <code>PostgresTrackStore</code> internally. That is what makes it unit
+testable with an in-memory fake, which is exactly the "automated test
+capability" the posting asks for.</p>
+</blockquote>
+<p>That last point is the strongest link between design vocabulary and this job.
+Make it explicitly if SOLID comes up.</p>
+<h2 id="3-other-principles-worth-naming">3. Other principles worth naming</h2>
+<ul>
+<li><strong>DRY</strong>, do not repeat yourself. But do not abstract two things that merely
+  look alike; premature deduplication couples unrelated code.</li>
+<li><strong>YAGNI</strong>, you aren't gonna need it. Especially true on a program where every
+  line carries verification cost.</li>
+<li><strong>Law of Demeter.</strong> <code>order.getCustomer().getAddress().getCity()</code> reaches
+  through three objects. Ask for what you need.</li>
+<li><strong>Composition over inheritance</strong>, covered above.</li>
+<li><strong>Fail fast.</strong> Validate at the boundary and throw immediately rather than
+  propagating a bad value into the system.</li>
+<li><strong>Make illegal states unrepresentable.</strong> A <code>Detection</code> whose constructor
+  rejects a confidence outside 0..1 cannot exist in a bad state anywhere
+  downstream.</li>
+</ul>
+<h2 id="4-patterns-you-are-likely-to-be-asked-about">4. Patterns you are likely to be asked about</h2>
+<p>Know these six cold. Be able to name a real use, not just recite the structure.</p>
+<h3 id="strategy">Strategy</h3>
+<p>Swap an algorithm at runtime.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CorrelationStrategy</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">,</span> <span class="n">detection</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span> <span class="o">...</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">NearestNeighbor</span><span class="p">(</span><span class="n">CorrelationStrategy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">distance</span><span class="p">(</span><span class="n">track</span><span class="o">.</span><span class="n">position</span><span class="p">,</span> <span class="n">detection</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ProbabilisticGating</span><span class="p">(</span><span class="n">CorrelationStrategy</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">score</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">,</span> <span class="n">detection</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">mahalanobis</span><span class="p">(</span><span class="n">track</span><span class="p">,</span> <span class="n">detection</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Correlator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">strategy</span><span class="p">:</span> <span class="n">CorrelationStrategy</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">strategy</span> <span class="o">=</span> <span class="n">strategy</span>      <span class="c1"># injected, so it is testable and swappable</span>
+</code></pre></div>
+
+<p>Real use here: configuration selects the correlation rule per deployment without
+recompiling.</p>
+<h3 id="factory">Factory</h3>
+<p>Centralize construction when the concrete type depends on input.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">ADAPTERS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"legacy_radar"</span><span class="p">:</span> <span class="n">LegacyRadarAdapter</span><span class="p">,</span>
+    <span class="s2">"link16"</span><span class="p">:</span> <span class="n">Link16Adapter</span><span class="p">,</span>
+    <span class="s2">"csv_replay"</span><span class="p">:</span> <span class="n">CsvReplayAdapter</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_adapter</span><span class="p">(</span><span class="n">kind</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SensorAdapter</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ADAPTERS</span><span class="p">[</span><span class="n">kind</span><span class="p">](</span><span class="o">**</span><span class="n">config</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown adapter type: </span><span class="si">{</span><span class="n">kind</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="kc">None</span>
+</code></pre></div>
+
+<p>Adding an adapter is now one dictionary entry, which satisfies open/closed.</p>
+<h3 id="adapter">Adapter</h3>
+<p>Make an incompatible interface fit. This is the pattern that names half the work
+on an integration program: wrapping a vendor library or legacy message format
+behind your own interface so the rest of the system never sees it.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="kd">class</span> <span class="nc">VendorRadarAdapter</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">SensorAdapter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">private</span><span class="w"> </span><span class="kd">final</span><span class="w"> </span><span class="n">VendorSdkClient</span><span class="w"> </span><span class="n">sdk</span><span class="p">;</span><span class="w">      </span><span class="c1">// third-party, awkward API</span>
+
+<span class="w">    </span><span class="nd">@Override</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">List</span><span class="o">&lt;</span><span class="n">Detection</span><span class="o">&gt;</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="kt">byte</span><span class="o">[]</span><span class="w"> </span><span class="n">raw</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">VendorFrame</span><span class="w"> </span><span class="n">frame</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sdk</span><span class="p">.</span><span class="na">decodeFrame</span><span class="p">(</span><span class="n">raw</span><span class="p">);</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">frame</span><span class="p">.</span><span class="na">getPlots</span><span class="p">().</span><span class="na">stream</span><span class="p">()</span>
+<span class="w">                    </span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="k">this</span><span class="p">::</span><span class="n">toDetection</span><span class="p">)</span>
+<span class="w">                    </span><span class="p">.</span><span class="na">toList</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The strategic value is upgrade isolation: when the vendor SDK goes from 3.x to
+4.x during a tech refresh, exactly one class changes. Say that.</p>
+<h3 id="observer-publish-subscribe">Observer / publish-subscribe</h3>
+<p>One producer, many interested consumers, decoupled.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TrackPublisher</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_subscribers</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">callable</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">subscribe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscribers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">publish</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">track</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subscribers</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">fn</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s2">"subscriber failed; continuing"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Note the try/except: one bad subscriber must not take down the publish loop.
+That detail is a good signal in a reliability-focused interview.</p>
+<h3 id="decorator">Decorator</h3>
+<p>Add behavior without changing the wrapped object.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">functools</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">retry</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrap</span><span class="p">(</span><span class="n">fn</span><span class="p">):</span>
+        <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">inner</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">fn</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">exc</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="n">last</span> <span class="o">=</span> <span class="n">e</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"attempt </span><span class="si">%d</span><span class="s2">/</span><span class="si">%d</span><span class="s2"> failed: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">attempt</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+                    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">delay</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">attempt</span><span class="p">))</span>
+            <span class="k">raise</span> <span class="n">last</span>
+        <span class="k">return</span> <span class="n">inner</span>
+    <span class="k">return</span> <span class="n">wrap</span>
+
+<span class="nd">@retry</span><span class="p">(</span><span class="n">times</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">exc</span><span class="o">=</span><span class="ne">TimeoutError</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">fetch_status</span><span class="p">(</span><span class="n">host</span><span class="p">):</span> <span class="o">...</span>
+</code></pre></div>
+
+<h3 id="singleton-and-the-honest-answer">Singleton, and the honest answer</h3>
+<p>Everyone knows it; the senior answer is that it is usually a mistake. It is
+global mutable state, it makes testing hard because you cannot substitute it,
+and in a concurrent program it needs careful initialization. Prefer one instance
+created at composition root and injected. Say that; it lands well.</p>
+<p>Also worth naming if they come up: <strong>Builder</strong> for objects with many optional
+fields, <strong>Facade</strong> for simplifying a subsystem, <strong>Template Method</strong> for a fixed
+algorithm with variable steps, and <strong>Repository</strong> for abstracting persistence.</p>
+<h2 id="5-refactoring-legacy-code-which-is-the-actual-job">5. Refactoring legacy code, which is the actual job</h2>
+<p>Expect a question like <em>"you inherit a 3,000-line class with no tests and need to
+change one behavior. What do you do?"</em> Here is a defensible answer.</p>
+<ol>
+<li><strong>Do not refactor first.</strong> Understand what it does and what depends on it.
+   Read the change history for why it looks that way.</li>
+<li><strong>Get a test harness around it</strong>, even a bad one. Characterization tests:
+   run the existing code, capture the output, assert that it stays the same.
+   You are not asserting correctness, you are pinning current behavior.</li>
+<li><strong>Find a seam.</strong> A seam is a place you can change behavior without editing
+   the code in place: an interface, a constructor parameter, a factory. If there
+   is no seam, introduce the smallest possible one.</li>
+<li><strong>Make the change small and reversible.</strong> On an accredited baseline, a large
+   diff is a regression-test bill.</li>
+<li><strong>Refactor after, not before, and separately.</strong> Behavior change and structure
+   change go in different commits so a reviewer can tell them apart, and so a
+   revert is surgical.</li>
+<li><strong>Leave the campsite cleaner</strong>, in proportion. Improve what you touched.</li>
+</ol>
+<p>Vocabulary worth using: <em>characterization test</em>, <em>seam</em>, <em>strangler fig</em> (route
+traffic incrementally from the old implementation to the new one), <em>branch by
+abstraction</em>, <em>feature toggle</em>.</p>
+<h2 id="6-a-design-exercise-to-work-through">6. A design exercise to work through</h2>
+<p><strong>Prompt:</strong> <em>Design a service that ingests position reports from several
+heterogeneous sensors, maintains a current track picture, and publishes updates
+to downstream consumers. Sensors have different formats and update rates. Some
+are unreliable.</em></p>
+<p>This is very likely the shape of any design question you get. Work it.</p>
+<h3 id="step-1-clarify-before-designing">Step 1: clarify before designing</h3>
+<ul>
+<li>How many sensors, and what update rate? Ten sensors at 1 Hz is a laptop. A
+  thousand at 50 Hz is a different design.</li>
+<li>How many concurrent tracks? Hundreds or hundreds of thousands?</li>
+<li>Is this soft real-time or hard real-time? What is the latency budget?</li>
+<li>Do consumers need every update, or the latest state? That decides push versus
+  poll and whether you can drop messages.</li>
+<li>What happens if a sensor floods us, or goes silent?</li>
+<li>Does state need to survive a restart?</li>
+</ul>
+<p>Ask at least four of those. It is a large part of what a design question grades.</p>
+<h3 id="step-2-name-the-components">Step 2: name the components</h3>
+<div class="codehilite"><pre><span></span><code> sensors --&gt; [ Adapter per sensor type ]
+                     |  normalized Detection
+                     v
+             [ Ingest queue (bounded) ]
+                     |
+                     v
+             [ Correlator ] &lt;---&gt; [ Track store ]
+                     |  TrackUpdate
+                     v
+             [ Publisher ] --&gt; subscribers
+                     |
+                     v
+             [ Metrics + health ]
+</code></pre></div>
+
+<h3 id="step-3-justify-each-boundary">Step 3: justify each boundary</h3>
+<ul>
+<li><strong>Adapter per sensor.</strong> Isolates format churn. New sensor equals new class.
+  Vendor upgrade touches one file. (Adapter pattern, open/closed.)</li>
+<li><strong>Normalized <code>Detection</code> type.</strong> Everything downstream is format-agnostic.
+  Make it immutable so it can cross thread boundaries safely.</li>
+<li><strong>Bounded queue.</strong> This is the important one. An unbounded queue converts a
+  fast producer into an out-of-memory crash. Bounded gives you a decision point:
+  block the producer, or drop with a counted metric. For sensor data, dropping
+  the <em>oldest</em> is usually right, because a stale position is worthless. Say that
+  tradeoff explicitly.</li>
+<li><strong>Correlator behind a strategy interface.</strong> The matching rule is the part most
+  likely to change per deployment.</li>
+<li><strong>Track store behind an interface.</strong> In-memory for tests and for the hot path,
+  persistent implementation behind the same interface.</li>
+<li><strong>Publisher decoupled from correlator.</strong> A slow consumer must not stall
+  ingest. Per-subscriber queues, and a policy for a subscriber that falls
+  behind.</li>
+<li><strong>Metrics and health.</strong> Detections per second per sensor, queue depth, drop
+  count, correlation latency, track count, last-message-age per sensor. On a
+  fielded system, a silent sensor is the failure you must detect, and the only
+  way to detect it is an age metric.</li>
+</ul>
+<h3 id="step-4-name-what-you-would-test">Step 4: name what you would test</h3>
+<ul>
+<li>Adapter unit tests per format, including malformed and truncated input.</li>
+<li>Correlator tests with a fake clock and synthetic detections.</li>
+<li>A back-pressure test: producer faster than consumer, assert bounded memory and
+  a nonzero drop counter.</li>
+<li>A replay test: feed a recorded lab capture and compare the resulting track
+  picture against a golden output. This is the characterization test that lets
+  you refactor safely, and it is exactly the "automated test capability" the
+  posting wants.</li>
+</ul>
+<h3 id="step-5-name-what-you-deliberately-did-not-do">Step 5: name what you deliberately did not do</h3>
+<p>Saying this out loud is a strong senior move.</p>
+<blockquote>
+<p>I have not designed for horizontal scaling, because at ten sensors and a few
+thousand tracks a single process is simpler and simpler is more verifiable. If
+the numbers were ten times larger I would partition by sensor or by
+geographic region, and then I would need to solve cross-partition
+correlation, which is a real problem I would not want to take on unless the
+requirement forced it.</p>
+</blockquote>
+<h2 id="7-questions-on-this-topic-to-expect">7. Questions on this topic to expect</h2>
+<ol>
+<li>Explain SOLID with an example of one you have actually applied.</li>
+<li>When is inheritance the wrong tool?</li>
+<li>What is dependency injection and what problem does it solve? (Answer:
+   testability and lifecycle control, not just decoupling.)</li>
+<li>Difference between an interface and an abstract class, and when you pick
+   each.</li>
+<li>How do you make a class thread-safe? (Best answer: make it immutable. Then
+   confinement, then locks, in that order of preference.)</li>
+<li>How would you add a new sensor format to an existing ingest pipeline?</li>
+<li>Walk me through refactoring a class with no tests.</li>
+<li>What is a code smell you look for in review? (Good answers: a function that
+   needs a comment to explain what it does rather than why, boolean parameters,
+   deeply nested conditionals, a class that grew a second responsibility, a test
+   that asserts nothing.)</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/dsa.html">&larr; 6. Data Structures &amp; Algorithms</a><a class="next" href="../lessons/linux.html">8. Linux / RHEL &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
