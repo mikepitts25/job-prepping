@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>12. Cybersecurity and sustainment &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/00-program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/02-python.html">3. Python Refresher</a></li><li><a href="../lessons/03-java.html">4. Java Refresher</a></li><li><a href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/05-ood.html">6. OO Design &amp; SOLID</a></li><li><a href="../lessons/06-linux.html">7. Linux / RHEL</a></li><li><a href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/08-testing-ci.html">9. Testing &amp; CI/CD</a></li><li><a href="../lessons/09-containers.html">10. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/10-architecture.html">11. Architecture &amp; Software Factory</a></li><li class="active"><a href="../lessons/11-cyber.html">12. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/13-mock-interview.html">14. Mock Interview Bank</a></li><li><a href="../lessons/14-cheatsheets.html">15. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="12-cybersecurity-and-sustainment">12. Cybersecurity and sustainment</h1>
+<p>The posting says the Tech Refresh delivers "foundational cybersecurity
+enhancements" and that you will be "integrating COTS and FOSS updates." You will
+be interviewed by or alongside a cybersecurity engineer. You do not need to be
+one. You need to demonstrate that you treat security as part of engineering
+rather than as somebody else's checklist.</p>
+<h2 id="1-the-vocabulary">1. The vocabulary</h2>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RMF</strong></td>
+<td>Risk Management Framework: the NIST process that produces an authorization</td>
+</tr>
+<tr>
+<td><strong>ATO</strong></td>
+<td>Authority to Operate, the accreditation permitting operational use</td>
+</tr>
+<tr>
+<td><strong>cATO</strong></td>
+<td>Continuous ATO, where a compliant pipeline continuously evidences controls</td>
+</tr>
+<tr>
+<td><strong>STIG</strong></td>
+<td>Security Technical Implementation Guide: DISA hardening configuration</td>
+</tr>
+<tr>
+<td><strong>SRG</strong></td>
+<td>Security Requirements Guide, the generic form a STIG specializes</td>
+</tr>
+<tr>
+<td><strong>SCAP / OpenSCAP</strong></td>
+<td>Automated scanning of a host against a hardening benchmark</td>
+</tr>
+<tr>
+<td><strong>CVE</strong></td>
+<td>A specific published vulnerability identifier</td>
+</tr>
+<tr>
+<td><strong>CVSS</strong></td>
+<td>The 0&ndash;10 severity score attached to a CVE</td>
+</tr>
+<tr>
+<td><strong>KEV</strong></td>
+<td>CISA's Known Exploited Vulnerabilities catalog: exploited in the wild</td>
+</tr>
+<tr>
+<td><strong>POA&amp;M</strong></td>
+<td>Plan of Action and Milestones: an accepted finding with a remediation plan</td>
+</tr>
+<tr>
+<td><strong>SBOM</strong></td>
+<td>Software Bill of Materials, the inventory of everything you ship</td>
+</tr>
+<tr>
+<td><strong>SCA</strong></td>
+<td>Software Composition Analysis, matching your SBOM against advisories</td>
+</tr>
+<tr>
+<td><strong>SAST / DAST</strong></td>
+<td>Static / dynamic application security testing</td>
+</tr>
+<tr>
+<td><strong>IAVA</strong></td>
+<td>Information Assurance Vulnerability Alert, a mandated remediation with a deadline</td>
+</tr>
+<tr>
+<td><strong>Air gap</strong></td>
+<td>No connection to external networks; everything arrives by controlled transfer</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2-the-dependency-upgrade-question">2. The dependency upgrade question</h2>
+<p>This is the single most predictable technical question for this posting, in some
+form: <em>"A library you depend on has a critical CVE. Walk me through what you
+do."</em> Have this answer ready and structured.</p>
+<p><strong>1. Establish the facts before reacting.</strong></p>
+<ul>
+<li>Which exact version are we on, in which components, in which baselines? An
+  SBOM answers this in seconds; without one you are grepping.</li>
+<li>Is the vulnerable code path actually reachable from our usage? A
+  deserialization CVE in a library we only use for formatting may not be
+  exploitable here. That determination is made carefully, documented, and
+  reviewed, not asserted to avoid work.</li>
+<li>What is the exposure? An internet-facing service and an air-gapped subsystem
+  have very different risk, even for the same CVE.</li>
+<li>Is it on the KEV catalog, and is there a mandated deadline such as an IAVA?
+  That changes the schedule from "prioritized" to "required by this date."</li>
+</ul>
+<p><strong>2. Choose the response.</strong></p>
+<ul>
+<li><strong>Upgrade</strong> to a fixed version. First choice.</li>
+<li><strong>Backport the patch</strong> if upgrading is blocked by a breaking API change and
+  the schedule cannot absorb it. Costs you a fork to maintain, so document it.</li>
+<li><strong>Mitigate</strong> by configuration, by disabling the feature, or by a network
+  control, then remediate properly on a plan.</li>
+<li><strong>Accept with a POA&amp;M</strong> when the risk is genuinely low and the fix is
+  genuinely expensive. This is a decision with a named owner and a date, not a
+  way of ignoring it.</li>
+</ul>
+<p><strong>3. Do the upgrade properly.</strong></p>
+<div class="codehilite"><pre><span></span><code>mvn<span class="w"> </span>dependency:tree<span class="w"> </span>-Dincludes<span class="o">=</span>org.example:vulnerable-lib<span class="w">   </span><span class="c1"># where did it come from?</span>
+pip-audit<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+mvn<span class="w"> </span>org.owasp:dependency-check-maven:check
+</code></pre></div>
+
+<ul>
+<li>Find out whether it is a direct or a transitive dependency. If transitive, the
+  right fix is usually upgrading the parent, not pinning an override, though an
+  override is a legitimate stopgap.</li>
+<li>Read the changelog between your version and the target for behavior changes,
+  not just API changes. Behavior changes are what break a fielded system.</li>
+<li>Upgrade one dependency at a time in its own merge request. When something
+  breaks in the lab three weeks later, you want a small reversible commit, not a
+  forty-library bump.</li>
+<li>Run the full regression suite, not the subset near the change. If coverage is
+  thin, this is exactly where you invest in the characterization tests from
+  <a href="08-testing-ci.html">lesson 9</a>.</li>
+<li>Regenerate the SBOM and re-scan.</li>
+</ul>
+<p><strong>4. Close the loop.</strong> Update the record so the finding is demonstrably closed,
+and note anything that would make the next upgrade cheaper.</p>
+<p><strong>5. Prevent the recurrence.</strong> Continuous dependency scanning in the pipeline so
+you learn about the next one on the day it publishes. And a deliberate policy on
+staying current: a library four major versions behind is not stable, it is
+accumulating an upgrade you will eventually be forced to do under a deadline.
+That last sentence is a good one to say out loud, because it reframes patching
+as risk management rather than chores.</p>
+<h2 id="3-secure-coding-the-practical-list">3. Secure coding, the practical list</h2>
+<p>You will not be quizzed on OWASP rankings, but you should not write obviously
+unsafe code in a live exercise.</p>
+<p><strong>Injection.</strong> Parameterize queries. Never build SQL or a shell command by
+string concatenation with untrusted input.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">"SELECT * FROM tracks WHERE id = </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="p">(</span><span class="n">track_id</span><span class="p">,))</span>    <span class="c1"># right</span>
+<span class="n">cur</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SELECT * FROM tracks WHERE id = '</span><span class="si">{</span><span class="n">track_id</span><span class="si">}</span><span class="s2">'"</span><span class="p">)</span>      <span class="c1"># wrong</span>
+
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">([</span><span class="s2">"grep"</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">path</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>               <span class="c1"># right</span>
+<span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="sa">f</span><span class="s2">"grep </span><span class="si">{</span><span class="n">pattern</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>              <span class="c1"># wrong</span>
+</code></pre></div>
+
+<p><strong>Deserialization.</strong> Never deserialize untrusted data into arbitrary objects.
+Python's <code>pickle</code> and Java's native serialization both allow code execution.
+Use a data-only format and validate against a schema.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>     <span class="c1"># right</span>
+<span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>          <span class="c1"># wrong: can construct arbitrary objects</span>
+</code></pre></div>
+
+<p><strong>XML.</strong> External entity expansion (XXE) and billion-laughs expansion are real
+and appear in exactly the kind of legacy message parsing this program has.
+Disable external entities and DTDs; use <code>defusedxml</code> in Python; set the secure
+processing feature in Java parsers.</p>
+<p><strong>Path traversal.</strong> Validate that a resolved path stays inside its intended
+root.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">base</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="s2">"/opt/eadge/data"</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="n">target</span> <span class="o">=</span> <span class="p">(</span><span class="n">base</span> <span class="o">/</span> <span class="n">user_supplied</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">is_relative_to</span><span class="p">(</span><span class="n">base</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"path escapes data directory"</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>Secrets.</strong> Never in source, never in a container image, never in a log line,
+never in a ticket. Environment variables injected at runtime, or a secret store.
+Rotate on exposure, and treat a secret committed to git as compromised even
+after you delete the commit, because the history and every clone still have it.</p>
+<p><strong>Input validation at the boundary.</strong> Validate size, type, range, and encoding
+where data enters. A detection with a confidence of 1e300 or a NaN latitude
+should be rejected at the adapter, not discovered by the correlator.</p>
+<p><strong>Cryptography.</strong> Use the platform library. Do not implement it. Do not use MD5
+or SHA-1 for anything security-relevant. Use a vetted password hash (bcrypt,
+scrypt, Argon2) rather than a plain digest. Verify TLS certificates; never
+disable verification "temporarily."</p>
+<p><strong>Least privilege.</strong> Services run as a non-root service account, with only the
+filesystem and network access they need. Containers non-root and read-only root
+filesystem.</p>
+<p><strong>Error messages.</strong> Do not return a stack trace or an internal path to an
+external caller. Log the detail internally, return a correlation id.</p>
+<p><strong>Logging.</strong> Good logs are a security control. Log authentication decisions,
+configuration changes, and privileged actions with enough context to
+reconstruct an event, and protect the logs from tampering.</p>
+<h2 id="4-hardening-a-rhel-host-in-outline">4. Hardening a RHEL host, in outline</h2>
+<p>Enough to talk credibly:</p>
+<ul>
+<li>Apply the STIG for the OS version, verified by an OpenSCAP scan against the
+  benchmark, with findings tracked.</li>
+<li>Remove unneeded packages and disable unneeded services. Minimize attack
+  surface.</li>
+<li>Enforce SELinux. Fix labels and write policy; do not set permissive.</li>
+<li>Firewall default-deny, with explicit allows.</li>
+<li>No shared accounts. Individual accounts, sudo with logging, key-based SSH,
+  no root login.</li>
+<li>Audit rules (<code>auditd</code>) for privileged actions and configuration changes.</li>
+<li>FIPS-validated cryptographic modules where required, which does constrain
+  which algorithms your application may use. Worth knowing that this exists,
+  because it occasionally breaks application code that assumed MD5 was
+  available.</li>
+<li>Time synchronization from an authorized source, since correlated logs across
+  sites depend on it.</li>
+<li>Patch cadence with a defined window, and a tested rollback.</li>
+</ul>
+<p>The application-side consequence to mention: <strong>hardening breaks things</strong>, and
+finding out which things is engineering work. A STIG that disables a cipher
+suite, enforces a umask, sets a mount option, or restricts a port will surface
+in your application as a mysterious failure. Anticipating that and testing
+against a hardened baseline in CI rather than a stock image is the mature move,
+and it is precisely the kind of contribution this role wants.</p>
+<h2 id="5-supply-chain">5. Supply chain</h2>
+<p>Increasingly central, and directly relevant to "integrating COTS and FOSS
+updates."</p>
+<ul>
+<li><strong>SBOM</strong> for every artifact, generated by the build, in CycloneDX or SPDX
+  format. It is what makes the next Log4Shell a one-hour query instead of a
+  two-week audit.</li>
+<li><strong>Provenance and signing.</strong> Sign artifacts and verify signatures at deploy.
+  Pin container images by digest, not by tag, since a tag can be moved.</li>
+<li><strong>Internal mirrors.</strong> In an air-gapped or controlled environment, no build
+  reaches a public registry. Everything comes from an internal repository whose
+  contents were reviewed and scanned on entry.</li>
+<li><strong>License compliance.</strong> FOSS carries license obligations. Copyleft terms can
+  be a genuine problem for delivered software on a government contract, so new
+  dependencies go through approval. If you introduce a library in a code review
+  and cannot say what its license is, expect that to be caught.</li>
+<li><strong>Dependency hygiene.</strong> Fewer dependencies is a security posture. Pulling a
+  package to avoid writing twelve lines is a bad trade when every package is
+  something you must monitor, scan, upgrade, and license-clear for the life of
+  the program.</li>
+</ul>
+<p>That last point is worth making. On a commercial team, adding a dependency is
+nearly free. Here it is not, and showing that you know the difference marks you
+as someone who understands the environment.</p>
+<h2 id="6-where-security-meets-the-schedule">6. Where security meets the schedule</h2>
+<p>A realistic interview question: <em>"Security wants a library upgraded this sprint
+and it breaks an interface. What do you do?"</em></p>
+<p>A good answer has these parts:</p>
+<ol>
+<li><strong>Get the actual constraint.</strong> Is there a mandated date, or is it a
+   prioritization? Those are different conversations.</li>
+<li><strong>Size the work honestly</strong>, including the regression testing, not just the
+   code change.</li>
+<li><strong>Offer options with tradeoffs</strong> rather than a yes or a no: full upgrade next
+   sprint, a backported patch now with the upgrade scheduled, or a compensating
+   control now with a POA&amp;M. Say what each costs and what risk each leaves.</li>
+<li><strong>Escalate early, with a recommendation.</strong> The failure mode is discovering in
+   week three that it does not fit. Bring it to the product owner and the
+   security lead in week one with numbers.</li>
+<li><strong>Do not silently accept an impossible commitment.</strong> On a dispersed team that
+   is how a schedule slips without anyone noticing until the demo.</li>
+</ol>
+<p>That answer demonstrates the collaboration the posting asks for and it shows
+you understand that "no" is rarely the useful response; "here are three options
+and what each costs" is.</p>
+<h2 id="7-clearance-and-handling-briefly">7. Clearance and handling, briefly</h2>
+<ul>
+<li>Know your own clearance status precisely, including dates.</li>
+<li>Never discuss classified detail in an interview. If asked about past work at a
+  level you cannot discuss, say so plainly: <em>"I can describe the engineering at
+  an unclassified level; the specifics of the mission data I would need to
+  handle in an appropriate setting."</em> That answer is expected and respected.
+  Volunteering more is a red flag.</li>
+<li>Understand basic handling: classified work happens on accredited systems, no
+  personal devices, controlled media, and export control (ITAR/EAR) restricts
+  who may receive technical data regardless of clearance. For a foreign military
+  sales program in the UAE, export control and foreign disclosure rules are a
+  daily consideration, not a formality.</li>
+<li>Expect that the process involves a background investigation and, for an
+  overseas assignment, additional screening.</li>
+</ul>
+<nav class="pager"><a class="prev" href="../lessons/10-architecture.html">&larr; 11. Architecture &amp; Software Factory</a><a class="next" href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

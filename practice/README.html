@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Practice repo &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/00-program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/01-interview-map.html">2. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/02-python.html">3. Python Refresher</a></li><li><a href="../lessons/03-java.html">4. Java Refresher</a></li><li><a href="../lessons/04-dsa.html">5. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/05-ood.html">6. OO Design &amp; SOLID</a></li><li><a href="../lessons/06-linux.html">7. Linux / RHEL</a></li><li><a href="../lessons/07-git-agile.html">8. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/08-testing-ci.html">9. Testing &amp; CI/CD</a></li><li><a href="../lessons/09-containers.html">10. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/10-architecture.html">11. Architecture &amp; Software Factory</a></li><li><a href="../lessons/11-cyber.html">12. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/12-behavioral.html">13. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/13-mock-interview.html">14. Mock Interview Bank</a></li><li><a href="../lessons/14-cheatsheets.html">15. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="practice-repo">Practice repo</h1>
+<p>Runnable practice for the <a href="../index.html">EADGE-T interview prep</a>. Two modules:
+a Python package with 54 tests, and a Maven project with 22 JUnit tests. Both
+pass as written, so you have a known-good baseline before you start changing
+things.</p>
+<p>The exercises are deliberately job-shaped. Version comparison for CVE triage,
+config diffing for a migration, bounded queues, rate limiting, out-of-order
+timestamp detection. These are closer to what you will be asked on this program
+than a binary tree puzzle is.</p>
+<h2 id="python">Python</h2>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>python
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+pytest<span class="w"> </span>-q<span class="w">                              </span><span class="c1"># 54 tests against the reference solutions</span>
+<span class="nv">PREP_TARGET</span><span class="o">=</span>exercises<span class="w"> </span>pytest<span class="w"> </span>-q<span class="w">        </span><span class="c1"># against your own attempts in exercises.py</span>
+pytest<span class="w"> </span>-q<span class="w"> </span>-k<span class="w"> </span>version<span class="w">                   </span><span class="c1"># one topic at a time</span>
+pytest<span class="w"> </span>--cov<span class="o">=</span>solutions<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+</code></pre></div>
+
+<p><code>exercises.py</code> holds the same functions as stubs, with the docstrings kept so
+you know what to build. Anything you have not written yet is reported as a skip
+rather than a failure, so you can work through them a few at a time.</p>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exercises.py</code></td>
+<td>Stubs. Type your solutions here.</td>
+</tr>
+<tr>
+<td><code>solutions.py</code></td>
+<td>Reference implementations, commented with the reasoning to say out loud.</td>
+</tr>
+<tr>
+<td><code>test_solutions.py</code></td>
+<td>The tests. Read them first: they are the edge-case answer key.</td>
+</tr>
+<tr>
+<td><code>conftest.py</code></td>
+<td>Turns a <code>NotImplementedError</code> into a skip when running against stubs.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="java">Java</h2>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span><span class="w"> </span>java
+mvn<span class="w"> </span>-B<span class="w"> </span><span class="nb">test</span><span class="w">                            </span><span class="c1"># 22 tests</span>
+mvn<span class="w"> </span>-B<span class="w"> </span><span class="nb">test</span><span class="w"> </span>-Dtest<span class="o">=</span>SensorStatsTest<span class="w">     </span><span class="c1"># one class</span>
+mvn<span class="w"> </span>-B<span class="w"> </span>clean<span class="w"> </span>verify
+mvn<span class="w"> </span>dependency:tree<span class="w">                    </span><span class="c1"># the command you use for CVE triage</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Class</th>
+<th>What it demonstrates</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Detection</code></td>
+<td>Record, compact constructor validation, chained exceptions</td>
+</tr>
+<tr>
+<td><code>SensorStats</code></td>
+<td>Streams, <code>groupingBy</code>, deterministic tie-breaking</td>
+</tr>
+<tr>
+<td><code>LruCache</code></td>
+<td><code>LinkedHashMap</code> access order, <code>removeEldestEntry</code></td>
+</tr>
+<tr>
+<td><code>BoundedIngestQueue</code></td>
+<td>Bounded queue, drop-oldest policy, atomic counters, a latch-based concurrency test</td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-work-through-this">How to work through this</h2>
+<p><strong>Do not read <code>solutions.py</code> first.</strong> Read the test file, write the function in
+<code>exercises.py</code>, run the tests, and only then compare. Reading a solution feels
+like learning and is not.</p>
+<p>For each problem:</p>
+<ol>
+<li>Read the test cases and say the edge cases out loud before writing anything.</li>
+<li>Set a 20-minute timer.</li>
+<li>Narrate while you type. Silence is the failure mode in a live round.</li>
+<li>When it passes, say the complexity out loud, in time and in space.</li>
+<li>Compare with the reference and read the comments, which are written as things
+   to say in an interview rather than as code explanations.</li>
+</ol>
+<h2 id="suggested-order">Suggested order</h2>
+<p><strong>Day one:</strong> <code>chunk</code>, <code>merge_counts</code>, <code>flatten</code>, <code>parse_detections</code>.
+<strong>Day two:</strong> <code>top_sensors</code>, <code>top_k_frequent</code>, <code>merge_intervals</code>, <code>log_levels_by_hour</code>.
+<strong>Day three:</strong> <code>find_time_regressions</code>, <code>RingBuffer</code>, <code>RateLimiter</code>.
+<strong>Day four:</strong> <code>compare_versions</code>, <code>packages_needing_upgrade</code>, <code>diff_config</code>.
+<strong>Day five:</strong> <code>startup_order</code>, <code>retry</code>, <code>average_speeds_kph</code>.
+<strong>Day six:</strong> redo the four you found hardest, from a blank file, timed.
+<strong>Day seven:</strong> the Java module, then write one new test of your own for each class.</p>
+<p>If you only have time for five, do <code>parse_detections</code>, <code>top_sensors</code>,
+<code>compare_versions</code>, <code>packages_needing_upgrade</code>, and <code>RateLimiter</code>. Those five
+cover parsing, aggregation, dependency triage, and bounded state, which is most
+of the surface area this role actually touches.</p>
+<h2 id="extending-it">Extending it</h2>
+<p>Good self-directed exercises once the basics pass:</p>
+<ul>
+<li>Add a <code>--json</code> command line interface over <code>top_sensors</code> using <code>argparse</code>.</li>
+<li>Write a property-based test with Hypothesis: for any list of intervals, no two
+  merged outputs overlap.</li>
+<li>Make <code>RateLimiter</code> bound its own memory by evicting clients idle for longer
+  than the window, and write the test that proves it.</li>
+<li>Port <code>diff_config</code> to Java and compare how the two read.</li>
+<li>Write a <code>Dockerfile</code> for the Python module and get <code>pytest</code> running inside it.</li>
+<li>Write a <code>.gitlab-ci.yml</code> that runs both modules, and explain each stage out
+  loud as if to an interviewer.</li>
+</ul>
+<p>The last two are the ones most directly aligned with the job description. Do
+them even if you feel they are not "real" practice.</p>
+
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
