@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. Git, GitLab and Agile &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li class="active"><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="9-git-gitlab-and-agile">9. Git, GitLab and Agile</h1>
+<p>The posting names Git, GitLab, Jira and Confluence in the basic qualifications,
+and describes an Agile Scrum environment with "baseline merges, defect
+resolution, peer reviews." That is a specific set of things to be fluent in.</p>
+<h2 id="1-git-you-use-every-day">1. Git you use every day</h2>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>status
+git<span class="w"> </span>add<span class="w"> </span>-p<span class="w">                          </span><span class="c1"># stage hunks selectively; do this more</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Fix off-by-one in dwell window merge"</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--graph<span class="w"> </span>--decorate<span class="w"> </span>--all
+git<span class="w"> </span>diff<span class="w">                            </span><span class="c1"># unstaged</span>
+git<span class="w"> </span>diff<span class="w"> </span>--staged<span class="w">                   </span><span class="c1"># what you are about to commit</span>
+git<span class="w"> </span>show<span class="w"> </span>HEAD~2
+git<span class="w"> </span>branch<span class="w"> </span>-vv<span class="w">                      </span><span class="c1"># local branches and their upstreams</span>
+git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>feature/EADGE-1234-adapter-upgrade
+git<span class="w"> </span>switch<span class="w"> </span>main
+git<span class="w"> </span>fetch<span class="w"> </span>origin
+git<span class="w"> </span>pull<span class="w"> </span>--ff-only<span class="w"> </span>origin<span class="w"> </span>main<span class="w">      </span><span class="c1"># refuse a surprise merge commit</span>
+git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>feature/EADGE-1234-adapter-upgrade
+</code></pre></div>
+
+<h2 id="2-git-you-use-when-something-is-wrong">2. Git you use when something is wrong</h2>
+<p>This is the section that matters in an interview, because everyone can commit
+and few can recover.</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>restore<span class="w"> </span>path/file<span class="w">               </span><span class="c1"># discard unstaged changes to a file</span>
+git<span class="w"> </span>restore<span class="w"> </span>--staged<span class="w"> </span>path/file<span class="w">      </span><span class="c1"># unstage, keep the edit</span>
+git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w">                  </span><span class="c1"># fix the last commit (only if unpushed)</span>
+git<span class="w"> </span>reset<span class="w"> </span>--soft<span class="w"> </span>HEAD~1<span class="w">             </span><span class="c1"># undo the commit, keep changes staged</span>
+git<span class="w"> </span>reset<span class="w"> </span>--mixed<span class="w"> </span>HEAD~1<span class="w">            </span><span class="c1"># undo the commit, keep changes unstaged</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD~1<span class="w">             </span><span class="c1"># undo the commit and the changes. Destructive.</span>
+git<span class="w"> </span>revert<span class="w"> </span>&lt;sha&gt;<span class="w">                    </span><span class="c1"># new commit that undoes an old one: safe on shared history</span>
+git<span class="w"> </span>stash<span class="w"> </span>push<span class="w"> </span>-m<span class="w"> </span><span class="s2">"wip adapter"</span><span class="p">;</span><span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span>list<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span>pop
+git<span class="w"> </span>cherry-pick<span class="w"> </span>&lt;sha&gt;<span class="w">               </span><span class="c1"># take one commit onto this branch</span>
+git<span class="w"> </span>reflog<span class="w">                          </span><span class="c1"># your safety net: every HEAD you have had</span>
+</code></pre></div>
+
+<p>Two rules to state clearly if asked:</p>
+<ul>
+<li><strong><code>revert</code> on shared branches, <code>reset</code> only on your own unpushed work.</strong>
+  Rewriting published history forces everyone else to recover their checkout,
+  which on a program with a dispersed team is a genuine disruption.</li>
+<li><strong><code>git reflog</code> recovers almost anything</strong> you thought you lost, including
+  after a bad <code>reset --hard</code>, for as long as the reflog retention holds.</li>
+</ul>
+<p>Finding the guilty change:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>log<span class="w"> </span>-S<span class="w"> </span><span class="s2">"correlationThreshold"</span><span class="w"> </span>--oneline<span class="w">    </span><span class="c1"># commits that changed this string</span>
+git<span class="w"> </span>log<span class="w"> </span>-p<span class="w"> </span>path/to/file<span class="w">                        </span><span class="c1"># full history of one file</span>
+git<span class="w"> </span>blame<span class="w"> </span>-L<span class="w"> </span><span class="m">40</span>,80<span class="w"> </span>path/to/file<span class="w">                </span><span class="c1"># who wrote these lines, and when</span>
+git<span class="w"> </span>bisect<span class="w"> </span>start<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>bisect<span class="w"> </span>bad<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>bisect<span class="w"> </span>good<span class="w"> </span>v4.2.0
+<span class="c1"># git checks out midpoints; you test each and say good/bad</span>
+git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>./scripts/repro_test.sh<span class="w">         </span><span class="c1"># automated bisect</span>
+git<span class="w"> </span>bisect<span class="w"> </span>reset
+</code></pre></div>
+
+<p><code>git bisect run</code> with a scripted reproducer is the answer to "how would you find
+which of 400 commits introduced this regression." It is an excellent thing to
+have ready.</p>
+<h2 id="3-merge-rebase-and-the-baseline-merge">3. Merge, rebase, and the baseline merge</h2>
+<p><strong>Merge</strong> creates a commit with two parents, preserving what actually happened.
+<strong>Rebase</strong> replays your commits onto a new base, producing a linear history but
+rewriting your commit SHAs.</p>
+<p>The defensible policy, and the one to state:</p>
+<ul>
+<li>Rebase your <strong>own unpublished</strong> feature branch onto the latest main to keep
+  the history clean before review.</li>
+<li><strong>Merge</strong> when integrating a shared or long-lived branch, especially a
+  baseline. Never rebase a branch other people have based work on.</li>
+</ul>
+<p>A <strong>baseline merge</strong>, as the posting uses the term, is bringing a long-lived
+development line together with a configuration-controlled released baseline.
+These are large, they touch files nobody has looked at in a year, and they are
+where regressions hide. How to do one without wrecking your week:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>switch<span class="w"> </span>integration/baseline-5.2
+git<span class="w"> </span>fetch<span class="w"> </span>origin
+git<span class="w"> </span>merge<span class="w"> </span>--no-ff<span class="w"> </span>origin/develop<span class="w">        </span><span class="c1"># explicit merge commit: the record matters</span>
+<span class="c1"># ... resolve ...</span>
+git<span class="w"> </span>merge<span class="w"> </span>--continue
+</code></pre></div>
+
+<ol>
+<li><strong>Do it in a scratch clone first</strong> to see the scale of the conflict set.</li>
+<li><strong>Merge in the direction policy says</strong>, and get agreement on that before
+   starting, not after.</li>
+<li><strong>Take the conflicts in batches by subsystem</strong>, not file by file top to
+   bottom, so you can hold the context.</li>
+<li><strong>When a conflict is not obviously yours, find the author.</strong> <code>git log</code> the
+   region on both sides. A wrong resolution here is a silent behavior change on
+   a fielded system.</li>
+<li><strong>Never resolve by taking one side wholesale</strong> to make the tool stop
+   complaining. That is how a fix gets silently reverted.</li>
+<li><strong>Run the full regression suite after</strong>, not just the tests near your changes.</li>
+<li><strong>Record what you decided.</strong> Non-obvious resolutions belong in the merge
+   commit message.</li>
+</ol>
+<p>Conflict mechanics:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>status<span class="w">                          </span><span class="c1"># unmerged paths</span>
+git<span class="w"> </span>diff<span class="w"> </span>--name-only<span class="w"> </span>--diff-filter<span class="o">=</span>U
+git<span class="w"> </span>checkout<span class="w"> </span>--ours<span class="w"> </span>path/file<span class="w">       </span><span class="c1"># keep the target branch version</span>
+git<span class="w"> </span>checkout<span class="w"> </span>--theirs<span class="w"> </span>path/file<span class="w">     </span><span class="c1"># keep the incoming version</span>
+git<span class="w"> </span>mergetool
+git<span class="w"> </span>merge<span class="w"> </span>--abort<span class="w">                   </span><span class="c1"># back out entirely and start over</span>
+git<span class="w"> </span>config<span class="w"> </span>merge.conflictstyle<span class="w"> </span>zdiff3<span class="w">    </span><span class="c1"># shows the common ancestor too: much better</span>
+</code></pre></div>
+
+<p>That last setting is a good detail. Three-way conflict markers with the base
+version let you see what each side actually changed, instead of guessing.</p>
+<h2 id="4-commits-and-reviews">4. Commits and reviews</h2>
+<p>Commit message format, which reviewers on regulated programs care about:</p>
+<div class="codehilite"><pre><span></span><code>EADGE-1234: Bound the ingest queue and drop oldest on overflow
+
+The ingest queue was unbounded. Under a sensor burst of &gt;20k msg/s the
+process grew until the OOM killer terminated it, losing the track picture.
+
+Bound the queue at 50,000 detections and drop the oldest entry on overflow,
+since a stale position report has no operational value. Emit a
+detections_dropped_total counter so the condition is visible in monitoring.
+
+Tested: new unit test reproduces the burst and asserts bounded memory plus a
+non-zero drop count. Full regression suite passes on the 5.2 baseline.
+</code></pre></div>
+
+<p>Subject line under about 72 characters, imperative mood, ticket id, then a body
+explaining <strong>why</strong>, not what. The diff already says what.</p>
+<p><strong>Reviewing well</strong> is part of a senior role, and they may ask what you look for:</p>
+<ul>
+<li>Does it do what the ticket says, and only that?</li>
+<li>Are the error paths handled, or only the happy path?</li>
+<li>What happens with empty, null, malformed, and enormous input?</li>
+<li>Are there tests, and would they actually fail if the code were wrong?</li>
+<li>Is anything logged that should not be? (Credentials, PII, full payloads.)</li>
+<li>Is a dependency added, and was that vetted? On this program that has license
+  and CVE implications.</li>
+<li>Is it reversible? Can this be backed out cleanly if the lab finds a problem?</li>
+<li>Readability: would someone unfamiliar understand it in six months.</li>
+</ul>
+<p><strong>Receiving review well</strong> matters too. Answer every comment, even if only to say
+you disagree and why. Do not take a stylistic note personally. If a discussion
+runs past three round trips in comments, get on a call; on a dispersed team that
+saves a day per exchange.</p>
+<h2 id="5-gitlab-specifics">5. GitLab specifics</h2>
+<p>The posting names GitLab, so know its vocabulary as distinct from GitHub:</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>GitLab term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pull request</td>
+<td><strong>Merge request</strong> (MR)</td>
+</tr>
+<tr>
+<td>Actions</td>
+<td><strong>CI/CD pipelines</strong>, defined in <code>.gitlab-ci.yml</code></td>
+</tr>
+<tr>
+<td>Runner</td>
+<td><strong>GitLab Runner</strong>, the agent executing jobs</td>
+</tr>
+<tr>
+<td>Package hosting</td>
+<td><strong>Package Registry</strong>, <strong>Container Registry</strong></td>
+</tr>
+<tr>
+<td>Protected branches</td>
+<td>Same, plus <strong>push rules</strong> and approval rules</td>
+</tr>
+<tr>
+<td>Issue tracking</td>
+<td><strong>Issues</strong>, <strong>Epics</strong>, <strong>Boards</strong></td>
+</tr>
+<tr>
+<td>Merge checks</td>
+<td><strong>Approval rules</strong>, <strong>Merge trains</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Things worth being able to say: MRs can require N approvals and green pipelines
+before merge; protected branches prevent force pushes; a merge train serializes
+merges so each is tested against the result of the ones ahead of it; and
+<code>CODEOWNERS</code> routes review to the right team automatically. Pipelines are
+covered in <a href="testing-ci.html">lesson 10</a>.</p>
+<h2 id="6-branching-strategies">6. Branching strategies</h2>
+<p>Be able to compare these, and to say which fits a program with formal baselines.</p>
+<p><strong>Trunk-based development.</strong> Everyone commits to main behind short-lived
+branches, feature flags hide incomplete work, releases are cut from main.
+Fastest feedback, requires strong automated testing.</p>
+<p><strong>GitFlow.</strong> <code>develop</code>, <code>release/*</code>, <code>hotfix/*</code>, <code>main</code>. Heavier, but it maps
+naturally onto formal release baselines and long qualification cycles, which is
+why defense programs often use something like it.</p>
+<p><strong>Release branch per baseline.</strong> A branch per fielded version, with fixes
+cherry-picked back. This is common when several deployed baselines must be
+maintained simultaneously, which is likely here.</p>
+<p>The mature answer: <em>"the right strategy is the one that matches your release
+cadence and your verification cost. If every release requires a lab
+qualification campaign, trunk-based with continuous deployment is fiction, and
+you want release branches. Where trunk-based ideas still pay off is in keeping
+feature branches short and merging often, so integration pain stays small."</em></p>
+<h2 id="7-scrum-mechanics">7. Scrum mechanics</h2>
+<p>The posting says Agile Scrum with a dispersed team, so expect questions.</p>
+<p><strong>Roles.</strong> Product Owner owns the backlog and priority. Scrum Master facilitates
+and removes impediments. The development team is cross-functional and
+self-organizing.</p>
+<p><strong>Artifacts.</strong> Product backlog, sprint backlog, increment. Definition of Done.</p>
+<p><strong>Events.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Purpose</th>
+<th>Common failure</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sprint planning</td>
+<td>Select and commit to sprint work</td>
+<td>Committing to more than capacity, every time</td>
+</tr>
+<tr>
+<td>Daily standup</td>
+<td>Sync and surface blockers</td>
+<td>Turns into a status report to the manager</td>
+</tr>
+<tr>
+<td>Sprint review</td>
+<td>Demo the increment to stakeholders</td>
+<td>Nothing demonstrable was built</td>
+</tr>
+<tr>
+<td>Retrospective</td>
+<td>Improve the process</td>
+<td>Same items raised every sprint, none actioned</td>
+</tr>
+<tr>
+<td>Backlog refinement</td>
+<td>Size and clarify upcoming work</td>
+<td>Skipped, so planning takes three hours</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Estimation.</strong> Story points are relative sizing, not hours, and velocity is a
+planning input for one team, not a productivity metric to compare teams. If an
+interviewer asks about estimating, that distinction is the answer.</p>
+<p><strong>Definition of Done</strong> on a program like this is stricter than commercial:
+code complete, unit tests written and passing, peer reviewed, static analysis
+clean, merged, documentation and any CDRL artifact updated, and verified in the
+integration environment. Being able to state that shows you understand where you
+are.</p>
+<p><strong>Kanban</strong>, which the posting also names, is a pull system: continuous flow,
+work-in-progress limits, and metrics of cycle time and throughput rather than
+velocity. It suits sustainment and defect work better than Scrum's fixed sprints,
+which is why teams often run a hybrid: Scrum for feature work, a Kanban lane for
+incoming defects. Saying that shows practical experience.</p>
+<h2 id="8-jira-and-confluence">8. Jira and Confluence</h2>
+<p>Enough vocabulary to sound like you have lived in them.</p>
+<ul>
+<li><strong>Issue types.</strong> Epic, Story, Task, Sub-task, Bug. On defense programs also
+  often a Change Request or Problem Report type tied to formal configuration
+  management.</li>
+<li><strong>Workflow.</strong> To Do, In Progress, In Review, In Test, Done, with transitions
+  that may be enforced.</li>
+<li><strong>Fields that matter.</strong> Fix version and affects version, which map to
+  baselines; components; priority and severity, which are different things;
+  linked issues (blocks, is blocked by, duplicates, relates to).</li>
+<li><strong>JQL</strong>, which is worth knowing one line of:
+  <code>project = EADGE AND status = "In Review" AND assignee = currentUser() ORDER BY updated DESC</code></li>
+<li><strong>Confluence</strong> holds design docs, meeting notes, runbooks, and onboarding.
+  A good habit to mention: when you solve a hard integration problem, write the
+  runbook page, because on a dispersed team the alternative is answering the
+  same question at 3 a.m. in six months.</li>
+</ul>
+<h2 id="9-working-across-time-zones">9. Working across time zones</h2>
+<p>This is not a soft topic for this job. You will be in the UAE and much of the
+team will be in the United States, roughly eight to eleven hours behind. Have a
+real answer.</p>
+<ul>
+<li><strong>Write, do not ping.</strong> Anything that can be a written update should be. Async
+  by default; a synchronous meeting is expensive when it costs somebody their
+  evening.</li>
+<li><strong>Protect one overlap window</strong> and spend it on the things that genuinely need
+  conversation: design disagreements, ambiguous requirements, live debugging.</li>
+<li><strong>Never end your day with a blocked colleague.</strong> Before you sign off, make
+  sure anyone waiting on you has what they need, because your reply is otherwise
+  a full day late.</li>
+<li><strong>Over-communicate state.</strong> Update the ticket, not just the person. On a
+  dispersed team, information in a direct message is information that is lost.</li>
+<li><strong>Rotate the pain.</strong> If a recurring meeting is always painful for the same
+  side, that is a fairness problem worth naming.</li>
+</ul>
+<h2 id="10-exercise-do-a-real-merge-conflict">10. Exercise: do a real merge conflict</h2>
+<p>Twenty minutes, on your own machine. Do not skip it; conflict mechanics are much
+harder to recall under observation than you expect.</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>/tmp/conflict-drill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/tmp/conflict-drill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>init
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.5\nwindow = 30\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>add<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Initial config"</span>
+
+git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>feature/raise-threshold
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.8\nwindow = 30\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">"Raise correlation threshold to 0.8"</span>
+
+git<span class="w"> </span>switch<span class="w"> </span>main
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.6\nwindow = 60\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">"Tune threshold and widen window"</span>
+
+git<span class="w"> </span>merge<span class="w"> </span>feature/raise-threshold<span class="w">        </span><span class="c1"># conflict</span>
+git<span class="w"> </span>config<span class="w"> </span>merge.conflictstyle<span class="w"> </span>zdiff3
+git<span class="w"> </span>merge<span class="w"> </span>--abort<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>merge<span class="w"> </span>feature/raise-threshold<span class="w">   </span><span class="c1"># now with base shown</span>
+cat<span class="w"> </span>config.txt<span class="w">                           </span><span class="c1"># read all three sections</span>
+<span class="c1"># resolve by hand to threshold = 0.8, window = 60</span>
+git<span class="w"> </span>add<span class="w"> </span>config.txt<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>merge<span class="w"> </span>--continue
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--graph
+</code></pre></div>
+
+<p>Then do it again with <code>git merge --abort</code>, with <code>--ours</code>, and with a rebase, so
+all four paths are muscle memory.</p>
+<nav class="pager"><a class="prev" href="../lessons/linux.html">&larr; 8. Linux / RHEL</a><a class="next" href="../lessons/testing-ci.html">10. Testing &amp; CI/CD &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

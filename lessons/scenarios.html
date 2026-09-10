@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>16. Scenario answers &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li class="active"><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="16-scenario-answers">16. Scenario answers</h1>
+<p>Scenario questions are the ones that start "what would you do if" or "walk me
+through how you'd handle." They are the highest-signal part of a technical
+interview for a sustainment role, because there is no memorized fact to recite
+and the interviewer learns how you actually think.</p>
+<p>Each answer below is written to be <strong>said out loud in sixty to ninety seconds</strong>.
+Longer than that and you have stopped answering and started lecturing. Brackets
+mark where you substitute your own specifics.</p>
+<h2 id="how-to-answer-any-scenario-question">How to answer any scenario question</h2>
+<p>Every good scenario answer has the same four beats, and once you internalize
+them you can improvise one for a question you have never heard.</p>
+<ol>
+<li><strong>Clarify or state assumptions.</strong> One question or one sentence. "Is this the
+   fielded site or the lab?" changes everything, and asking is a senior signal.</li>
+<li><strong>Establish facts before acting.</strong> Say what you would find out first, and in
+   what order. Interviewers are listening for whether you diagnose or guess.</li>
+<li><strong>Act, with the trade named.</strong> What you would do, and what it costs.</li>
+<li><strong>Close the loop.</strong> How you prevent the recurrence, and who you tell.</li>
+</ol>
+<p>Weak candidates jump straight to step three. The four-beat shape is most of
+what separates a senior answer from a competent one.</p>
+<p>Two habits that improve every answer:</p>
+<ul>
+<li><strong>Say what you would not do, and why.</strong> "I would not push a fix straight to
+  the site" is as informative as what you would do.</li>
+<li><strong>Name the person you would talk to.</strong> Systems engineering, cyber, the
+  integration lead, the product owner. This role is explicitly
+  cross-disciplinary, and answers that never mention another human read as
+  someone who works alone.</li>
+</ul>
+<hr />
+<h2 id="technical-scenarios">Technical scenarios</h2>
+<h3 id="1-it-works-in-the-lab-and-fails-in-integration">1. "It works in the lab and fails in integration."</h3>
+<p><strong>What they are testing:</strong> whether you have actually debugged a distributed
+system, or only read about it. This is the most likely scenario question for
+this role.</p>
+<blockquote>
+<p>First I would confirm the difference is real rather than assumed. Same build
+artifact in both places? I would check the checksum rather than the version
+label, because "same version" and "same bits" are different claims and the
+label is the one people get wrong.</p>
+<p>Then I would diff the three things that actually differ between environments.
+The environment: OS patch level, runtime version, library versions,
+environment variables, config files, locale, timezone, file permissions,
+whether the host is hardened. The data: integration sees real inputs, so
+bursts, duplicates, out-of-order timestamps, unexpected optional fields, and
+encodings the lab replay never produced. And the network: latency, MTU,
+multicast routing, name resolution, certificate trust.</p>
+<p>Rather than guess between those, I would raise observability in the failing
+environment. Debug logging on the suspect path, a packet capture if it is an
+interface problem, a thread dump or a stack sample at the moment of failure.
+I want evidence, not a theory.</p>
+<p>Then I would reduce to the smallest reproducer, and this is the part that
+matters: once I have it, it becomes an automated test, so this class of
+defect cannot come back silently. If it only reproduces with real data, I
+would capture that data as a replay fixture.</p>
+<p>What I would not do is start changing configuration in integration to see
+what helps. That destroys the evidence and you end up with a system that
+works and nobody knows why.</p>
+</blockquote>
+<p><strong>Follow-ups to expect:</strong> "What if you cannot reproduce it in the lab at all?"
+(Answer: then the lab is not representative, and closing that gap is itself the
+finding worth reporting.) "What if it is intermittent?" (Answer: capture
+continuously and wait for it, rather than trying to trigger it; and treat
+intermittent as a clue, usually timing, resource exhaustion or ordering.)</p>
+<hr />
+<h3 id="2-a-critical-cve-lands-in-a-library-you-use-what-now">2. "A critical CVE lands in a library you use. What now?"</h3>
+<p><strong>What they are testing:</strong> whether you treat security as engineering or as
+paperwork. Near-certain for this posting.</p>
+<blockquote>
+<p>First, facts before reaction. Which exact version, in which components, in
+which baselines. If we have an SBOM that is a five-minute query; if we do not,
+that is a finding in itself. Then: is the vulnerable code path actually
+reachable from how we use the library, and what is our exposure? A
+deserialization flaw in a library we only use for formatting on an air-gapped
+subsystem is a different risk from the same CVE on an exposed interface. That
+determination gets documented and reviewed, not asserted to avoid work.</p>
+<p>I would also check whether it is on the known-exploited list or covered by a
+mandated remediation with a deadline, because that changes the conversation
+from "prioritize" to "required by this date."</p>
+<p>Then the response, in order of preference: upgrade to a fixed version;
+backport the patch if upgrading is blocked by a breaking change we cannot
+absorb this cycle, accepting that we now maintain a fork and documenting it;
+mitigate by configuration or a network control with the real fix scheduled;
+or accept with a plan of action and milestones if the risk is genuinely low
+and the fix genuinely expensive. That last one is a decision with a named
+owner and a date, not a way of ignoring it.</p>
+<p>Doing the upgrade properly means finding out whether it is direct or
+transitive, reading the changelog for <strong>behavior</strong> changes rather than just
+API changes, doing one dependency per merge request so a later lab finding
+maps to a small reversible commit, and running the full regression rather
+than the tests near the change.</p>
+<p>And then closing the loop: regenerate the SBOM, and if we learned about this
+from an external notice rather than our own pipeline, get continuous
+dependency scanning in so the next one is not a surprise.</p>
+</blockquote>
+<p><strong>The sentence that lands:</strong> <em>"A library four major versions behind is not
+stable, it is accumulating an upgrade you will eventually be forced to do under
+a deadline."</em></p>
+<hr />
+<h3 id="3-you-need-to-change-behavior-in-a-3000-line-class-with-no-tests">3. "You need to change behavior in a 3,000-line class with no tests."</h3>
+<p><strong>What they are testing:</strong> discipline on legacy code. This is the daily reality
+of the job.</p>
+<blockquote>
+<p>I would not refactor first. First I would understand what it does and what
+depends on it, and read the change history, because on a fielded system the
+code usually looks that way for a reason someone had.</p>
+<p>Then I would get a net under it before touching anything: characterization
+tests. Not correctness tests, tests that pin what it does today, including
+the odd behaviors, because on an accredited system an odd behavior may be
+exactly what an operator depends on. Golden-file testing works well here.
+Capture the output for a set of representative inputs and assert it stays
+identical.</p>
+<p>With that in place I look for a seam, somewhere I can change behavior without
+editing the code in place: an interface, a constructor parameter, a factory.
+If there is no seam I introduce the smallest one that works.</p>
+<p>Then the change itself, small and reversible, and the refactoring in a
+separate commit from the behavior change so a reviewer can tell them apart and
+a revert is surgical.</p>
+<p>If one of my characterization tests legitimately has to change, that is not a
+nuisance, that is a conversation with the systems engineer about whether the
+old behavior was a requirement or an accident. That conversation is the
+valuable output.</p>
+</blockquote>
+<hr />
+<h3 id="4-migrate-this-legacy-build-into-our-pipeline">4. "Migrate this legacy build into our pipeline."</h3>
+<p><strong>What they are testing:</strong> exactly what the posting says you would be doing.</p>
+<blockquote>
+<p>I would start by making the existing build reproducible on a clean machine,
+before any pipeline work. That step alone usually surfaces the real problems:
+a tool at a fixed path, a network share, a license server, a compiler patch
+level, a dependency someone got on media from a vendor once. Until it builds
+from a clean checkout on a clean host, putting it in a pipeline just moves the
+mystery.</p>
+<p>Then one capability at a time, each merged and working before the next.
+First, green in the pipeline with tests skipped, so we have a reproducible
+build artifact. Then the tests that can be automated, and an honest inventory
+of the ones that cannot, because those need simulators, recorded data replay
+or hardware in the loop and that is its own project. Then static analysis and
+dependency scanning, with the existing findings baselined and new ones
+blocking, because if you gate on the whole legacy backlog the gate gets
+switched off within a week. Then artifact publishing with immutable tags. The
+deployment step last.</p>
+<p>Two things I would watch for on this kind of programme specifically. The
+hardened base images in the factory may be missing something the application
+assumes, and finding that out is engineering work, not a ticket for someone
+else. And in a controlled or air-gapped environment nothing comes from a
+public repository, so every dependency has to exist in the internal mirror
+first, which has its own lead time.</p>
+<p>The trap I would avoid is trying to do the whole migration as one change.
+That produces a six-week branch that conflicts with everything and cannot be
+reviewed.</p>
+</blockquote>
+<hr />
+<h3 id="5-a-defect-is-reported-at-the-fielded-site-you-are-on-point">5. "A defect is reported at the fielded site. You are on point."</h3>
+<p><strong>What they are testing:</strong> operational judgment and restraint.</p>
+<blockquote>
+<p>The first question is impact: is the system degraded, is the mission thread
+affected, is there a workaround the operators can use right now. That decides
+the pace of everything else, and it is a conversation with the site and with
+whoever owns the operational relationship, not something I decide alone.</p>
+<p>Then I want evidence before theories. Logs around the event, the exact
+configuration and baseline version at the site, what changed recently, and
+whether it has happened before. On a fielded system "what changed" is the
+highest-yield question there is, and the answer is often something that was
+not a software change at all.</p>
+<p>I would try to reproduce in the lab with the site's configuration and, if
+possible, the site's recorded data. If it will not reproduce, the difference
+between lab and site is itself a finding.</p>
+<p>On the fix: I would want the root cause, not the symptom, and I would be very
+reluctant to ship anything to an accredited system without it going through
+the normal verification path. If the operational pressure is real, the
+conversation is about a temporary mitigation with a named risk, agreed with
+the customer, and the proper fix on the normal cycle. What I would not do is
+push a hot patch because someone is unhappy. That is how you turn one problem
+into two.</p>
+<p>And afterwards, a written record: what happened, why, what we changed, and
+what test now covers it. On a dispersed team, if that is not written down it
+did not happen.</p>
+</blockquote>
+<hr />
+<h3 id="6-the-service-runs-out-of-memory-under-a-sensor-burst">6. "The service runs out of memory under a sensor burst."</h3>
+<p><strong>What they are testing:</strong> whether you understand backpressure. This is a
+domain-shaped question and a gift if you have read
+<a href="track-data.html">lesson 2</a>.</p>
+<blockquote>
+<p>The most likely cause is an unbounded queue somewhere between a fast producer
+and a slower consumer. An unbounded queue is not a buffer, it is a deferred
+crash: it converts a temporary rate mismatch into an out-of-memory kill, and
+you lose everything in flight rather than the small amount you could have
+chosen to lose.</p>
+<p>So I would confirm that with evidence first, a heap histogram or a profile
+showing what is accumulating, rather than assuming.</p>
+<p>The fix is to bound the queue, which forces a deliberate policy choice: block
+the producer, drop the oldest, or drop the newest. For position reports,
+dropping the oldest is usually right, because a stale position has no
+operational value, and that is a decision I would want confirmed with systems
+engineering rather than made unilaterally, because it is arguably a
+behavioral change.</p>
+<p>And critically, count the drops and expose the counter. A system that
+silently discards data is worse than one that crashes, because the crash gets
+investigated and the silent loss does not. Then an alert on a nonzero drop
+rate.</p>
+<p>For the test: a burst test that drives the producer faster than the consumer
+and asserts both that memory stays bounded and that the drop counter is
+nonzero. That second assertion matters, because a test that only checks
+memory would pass on an implementation that quietly threw everything away.</p>
+</blockquote>
+<p>There is a worked implementation of exactly this in the
+<a href="../practice/README.html">practice repo</a>, in both Python and Java. Mentioning
+that you have written one is fair and useful.</p>
+<hr />
+<h3 id="7-two-sites-disagree-about-the-air-picture">7. "Two sites disagree about the air picture."</h3>
+<p><strong>What they are testing:</strong> domain reasoning. Very strong ground for you.</p>
+<blockquote>
+<p>I would want to know first whether they disagree about the <strong>same</strong> object or
+about <strong>how many</strong> objects there are, because those are different problems.</p>
+<p>If one object is showing as two tracks, the classic causes are sensor
+registration error, where the sites' contributing sensors have position,
+azimuth, range or timing biases that put the same aircraft in two places, and
+correlation failure across the link, where two participants are reporting the
+same object under different track numbers. The second is dual designation and
+there are network procedures for resolving it, including reporting
+responsibility deciding who owns the track.</p>
+<p>If they disagree about the state of one track, I would look at time first.
+Track positions are time-tagged and consumers extrapolate, so clock skew
+between sites shows up as position disagreement that grows with extrapolation
+interval. Then coordinate frame and altitude reference, because ellipsoidal
+height, mean sea level and barometric altitude are three different numbers
+and mixing them looks exactly like a tracking bug.</p>
+<p>How I would investigate: capture the link traffic at both sites and the
+internal state, align them on one timeline, and compare. If the reported data
+agrees and the displayed picture does not, the problem is downstream of the
+link; if the reported data already disagrees, it is upstream.</p>
+<p>I want to be clear that I would not be the one tuning the tracker. That is
+specialist work. What I would own is making the disagreement observable and
+reproducible, which is usually where the time goes anyway.</p>
+</blockquote>
+<p>That last paragraph is important. It is honest, it shows you know the boundary
+of your competence, and it identifies the part you genuinely could own.</p>
+<hr />
+<h3 id="8-you-have-a-baseline-merge-with-hundreds-of-conflicts">8. "You have a baseline merge with hundreds of conflicts."</h3>
+<blockquote>
+<p>I would do it in a scratch clone first, purely to see the scale and shape of
+the conflict set before committing to an approach, and I would get agreement
+on the merge direction before starting rather than after.</p>
+<p>Then I would take the conflicts in batches by subsystem rather than
+alphabetically by file, so I can hold the context for one area at a time. I
+would turn on the conflict style that shows the common ancestor, because
+seeing what each side actually changed is very different from seeing two
+final states and guessing.</p>
+<p>The rule I hold to is that I never resolve by taking one side wholesale to
+make the tool stop complaining. That is how a fix silently gets reverted and
+nobody finds out for a year. Where a conflict is not obviously mine, I go and
+find the author of both sides.</p>
+<p>Afterwards, the full regression suite, not the tests near my changes, because
+the risk in a baseline merge is exactly the interaction you did not think
+about. And the non-obvious resolutions get recorded in the merge commit
+message, so the next person can see the decision rather than reverse-engineer
+it.</p>
+</blockquote>
+<hr />
+<h3 id="9-a-flaky-test-is-blocking-the-pipeline-and-the-team-wants-to-disable-it">9. "A flaky test is blocking the pipeline and the team wants to disable it."</h3>
+<p><strong>What they are testing:</strong> whether you hold a quality line under pressure.</p>
+<blockquote>
+<p>I would push back on disabling it, but not by just saying no.</p>
+<p>The reason a flaky test is urgent rather than annoying is that it teaches the
+whole team to re-run the pipeline instead of reading the failure. Once that
+habit forms, the suite stops protecting anything, including for real
+failures. So one flaky test is a threat to the value of every other test.</p>
+<p>What I would do immediately is take it off the blocking path, but into a
+quarantine with a ticket, an owner and a deadline, not into deletion.
+Quarantine without a deadline is deletion with extra steps.</p>
+<p>Then find the actual cause, and it is usually one of a small set: dependence
+on wall clock or timing, shared state between tests, test order dependence,
+a real race in the code under test, or an external dependency that should
+have been faked. That last one is worth saying plainly: quite often the flaky
+test is correctly reporting a real intermittent bug, and disabling it means
+shipping that bug.</p>
+<p>What I would not accept is adding a retry and calling it fixed. A retry hides
+the signal and the underlying race stays in the product.</p>
+</blockquote>
+<hr />
+<h3 id="10-hardening-the-os-broke-the-application">10. "Hardening the OS broke the application."</h3>
+<blockquote>
+<p>First, this is expected, not surprising. A hardening baseline changes cipher
+suites, umask, mount options, permitted ports, service accounts and mandatory
+access control labels, and applications routinely depend on the previous
+defaults without knowing it.</p>
+<p>So I would find the specific control rather than treating it as a black box.
+If it is a mandatory access control denial, the audit log names it exactly. If
+it is cryptographic, the failure usually shows up as a handshake or an
+algorithm-unavailable error, and a common one is an application that assumed
+a legacy digest was available.</p>
+<p>Then I would fix the application to work within the control, not disable the
+control. On an accredited system that control exists because someone accepted
+a risk on the basis that it was there, and turning it off is not a decision an
+engineer gets to make alone. If the application genuinely cannot work within
+it, that is a documented conversation with cyber about a compensating control
+or an exception, with a rationale.</p>
+<p>The systemic fix, and this is the part I would push for: build and test
+against the hardened baseline in CI rather than a stock image. Otherwise you
+discover every one of these in the lab, which is the most expensive place to
+discover anything.</p>
+</blockquote>
+<hr />
+<h2 id="people-and-process-scenarios">People and process scenarios</h2>
+<h3 id="11-security-wants-a-library-upgraded-this-sprint-it-breaks-an-interface">11. "Security wants a library upgraded this sprint. It breaks an interface."</h3>
+<blockquote>
+<p>First I would find out what kind of constraint the date actually is. A
+mandated remediation deadline and a prioritization request are different
+conversations, and people often say them the same way.</p>
+<p>Then I would size it honestly, including regression testing and the
+coordination with whoever consumes that interface, not just the code change.
+The temptation is to estimate the diff. The diff is rarely the cost.</p>
+<p>Then I would go back with options rather than a yes or a no, because "no" is
+almost never the useful answer. Something like: full upgrade next sprint with
+what that displaces; a backported patch now with the upgrade scheduled and
+the fork documented; or a compensating control now with an accepted plan and
+a date. Each with its cost and its residual risk.</p>
+<p>And I would do that in week one, not week three, with a recommendation
+attached. The failure mode on a dispersed team is discovering late that the
+commitment was never real, and by then you have spent the schedule and the
+credibility.</p>
+<p>If the interface is consumed by another programme, that is not a merge
+request, that is an interface change that goes through change control, and
+the lead time for that is the actual constraint.</p>
+</blockquote>
+<hr />
+<h3 id="12-you-are-behind-on-your-sprint-commitment">12. "You are behind on your sprint commitment."</h3>
+<p><strong>What they are testing:</strong> whether you go dark. They have been burned by this.</p>
+<blockquote>
+<p>The most important thing is when I say something, not what I say. As soon as
+I believe the commitment is at risk, which is usually well before it is
+provably at risk, I raise it. In standup and in the ticket, not in a private
+message, because on a dispersed team information in a direct message is
+information that is lost.</p>
+<p>What I bring is not just the problem. What is done, what is left, what my
+current estimate is, what I have already tried, and a recommendation: whether
+to descope, to get help, or to accept the slip. And I would say which one I
+think is right.</p>
+<p>If it is a technical blocker I would timebox my own investigation before
+asking, so I arrive with a specific question rather than "I am stuck," but I
+would keep that box small. Two hours of my own digging is diligence; two days
+is ego.</p>
+<p>And I would be honest about the cause in the retrospective, including if the
+cause was that I under-estimated it. Estimates only improve if the misses get
+discussed.</p>
+</blockquote>
+<hr />
+<h3 id="13-your-blocker-is-with-someone-nine-time-zones-away">13. "Your blocker is with someone nine time zones away."</h3>
+<p><strong>Direct relevance to this job. They will ask something like this.</strong></p>
+<blockquote>
+<p>The structural answer is that I try never to be in that position at the end
+of my day, because a question asked at 17:00 in Abu Dhabi lands at the start
+of their day and comes back at the start of mine, and that is a full day per
+exchange. So the discipline is to look ahead: what will I need from the US
+team, and ask it early enough that the answer arrives before I need it.</p>
+<p>When I am blocked anyway, three things. I make it visible in the ticket and
+the board, not just in a message, so it is not dependent on one person seeing
+it. I ask the question in a form that can be answered asynchronously, with
+the context, what I already tried, and what I will do with each possible
+answer, so they can unblock me in one message rather than three. And I find
+something else useful to do rather than idling, then come back.</p>
+<p>I would also protect the overlap window and spend it on the things that
+genuinely need conversation, which is design disagreement, ambiguous
+requirements and live debugging. Status does not need a meeting.</p>
+<p>And before I sign off, I check that I have not left anyone on their side
+blocked on me. That is the reciprocal obligation and it is the one people
+forget.</p>
+</blockquote>
+<hr />
+<h3 id="14-the-customer-asks-you-directly-for-something-out-of-scope">14. "The customer asks you directly for something out of scope."</h3>
+<p><strong>Very likely for an in-country role, and directly in your experience.</strong></p>
+<blockquote>
+<p>This happens constantly on an in-country assignment, and the wrong answers
+are both easy: saying yes on the spot, or saying no on the spot.</p>
+<p>What I would do is take it seriously and take it down. Understand what they
+actually need, which is often different from the thing they asked for, and
+ask the questions that get at the operational reason. Then be clear and
+respectful about the process: this is a good question, it is outside the
+current scope, here is how a change gets considered, and I will make sure it
+reaches the right people.</p>
+<p>What I would not do is commit on behalf of the programme. Even a soft "we can
+probably do that" becomes an expectation, and on an FMS programme an
+expectation set informally is very expensive to walk back. The relationship
+is damaged more by a commitment that quietly does not happen than by a
+straight answer at the time.</p>
+<p>Then I would actually follow through internally and close the loop with them,
+whatever the answer is, because the thing that builds trust is not saying yes,
+it is that what you said would happen happens.</p>
+</blockquote>
+<hr />
+<h3 id="15-a-junior-engineers-merge-request-is-not-good-enough">15. "A junior engineer's merge request is not good enough."</h3>
+<blockquote>
+<p>In review, specifically, about the code, with reasons. Not "this is wrong,"
+but what breaks and under what input. I try to make the failing case concrete
+because a concrete case teaches and an opinion does not.</p>
+<p>I separate blocking issues from preferences explicitly, because a reviewer
+who marks style opinions as blocking trains people to dread review, and then
+you stop getting early reviews, which is when review is cheapest.</p>
+<p>If it is a pattern rather than one instance, that is a conversation, not
+twelve more comments. And privately, and framed as what I want them to be
+able to do rather than what they did wrong.</p>
+<p>If we are past two or three rounds of comments, I get on a call. On a
+dispersed team that saves a day per round, and tone survives voice much better
+than it survives text.</p>
+<p>The thing I try to remember is that the goal is a better engineer in six
+months, not a better merge request today. Rewriting it myself gets the second
+and prevents the first.</p>
+</blockquote>
+<hr />
+<h3 id="16-you-disagree-with-the-technical-approach-the-lead-has-chosen">16. "You disagree with the technical approach the lead has chosen."</h3>
+<blockquote>
+<p>I would first make sure I understand the reasoning, and specifically what
+constraint it is satisfying, because on a programme like this the constraint
+is often something I cannot see: an accreditation requirement, an interface
+commitment to another programme, a customer expectation, or a history where
+the obvious approach was tried and failed.</p>
+<p>If after that I still disagree, I would put the concern in writing, concretely:
+what I think happens, under what conditions, and what it costs, plus an
+alternative. Concrete beats general; "I think this will not scale" is
+ignorable and "at the rate in the requirement this queues faster than it
+drains, here is the arithmetic" is not.</p>
+<p>If I am overruled, I implement the decision properly and I do not relitigate
+it. I might ask that we agree on what evidence would cause us to revisit,
+which is a reasonable thing to ask and makes the disagreement productive
+rather than a grudge.</p>
+<p>The exception is safety, security or something I think puts the mission at
+risk. That is not a preference and I would escalate it, once, formally, and
+then accept the outcome of that.</p>
+</blockquote>
+<hr />
+<h2 id="practising-these">Practising these</h2>
+<p>Do not memorize the wording. Memorize the four beats, then rebuild each answer
+in your own words, out loud, on a timer. If you can do that for these sixteen,
+you can improvise a credible answer to a scenario you have never seen, which is
+the actual goal.</p>
+<p>A useful drill: take any scenario above, and have someone ask you the two
+hardest follow-ups they can think of. Scenario answers are graded on the
+follow-ups more than the first pass, because that is where a rehearsed answer
+runs out and a real understanding keeps going.</p>
+<nav class="pager"><a class="prev" href="../lessons/behavioral.html">&larr; 15. Behavioral &amp; Expat Questions</a><a class="next" href="../lessons/mock-interview.html">17. Mock Interview Bank &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

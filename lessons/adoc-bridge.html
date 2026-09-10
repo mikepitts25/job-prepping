@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14. Your ADOC bridge &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python.html">4. Python Refresher</a></li><li><a href="../lessons/java.html">5. Java Refresher</a></li><li><a href="../lessons/dsa.html">6. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">7. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">8. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">9. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">10. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">11. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">12. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">13. Cybersecurity &amp; Sustainment</a></li><li class="active"><a href="../lessons/adoc-bridge.html">14. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">16. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">17. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">18. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="14-your-adoc-bridge">14. Your ADOC bridge</h1>
+<p>You were product owner on the Qatar ADOC programme. That is a much stronger
+hand than you seem to think it is, and it needs to be played deliberately
+rather than mentioned in passing.</p>
+<p>This lesson is about converting that experience into credible answers for a
+hands-on software role, without claiming a single thing you did not do.</p>
+<h2 id="1-why-this-is-the-strongest-thing-on-your-resume">1. Why this is the strongest thing on your resume</h2>
+<p>Publicly, the Qatar Air and Missile Defense Operations Center is a Foreign
+Military Sales programme, contracted through the US Air Force, to deliver an
+integrated air and missile defense command and control capability for Qatar. It
+integrates US air defense systems including Patriot, an early warning radar and
+THAAD, alongside European air defense systems and radars, and connects to
+Qatar's own Air Operations Center.</p>
+<p>Now read the EADGE-T description again. Integrated air and missile defense and
+air battle management for the UAE, connecting existing sensors and weapons
+including THAAD and Patriot PAC-3, delivered as a foreign military sale, in the
+Gulf.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Qatar ADOC</th>
+<th>EADGE-T</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mission</td>
+<td>Integrated air and missile defense C2</td>
+<td>Integrated air and missile defense C2</td>
+</tr>
+<tr>
+<td>Customer</td>
+<td>Gulf state ministry of defence, via FMS</td>
+<td>Gulf state ministry of defence, via FMS</td>
+</tr>
+<tr>
+<td>Integrates</td>
+<td>Patriot, EWR, THAAD, European systems, national AOC</td>
+<td>Patriot PAC-3, THAAD, existing sensors and weapons</td>
+</tr>
+<tr>
+<td>Core problem</td>
+<td>Making separately procured systems behave as one</td>
+<td>Making separately procured systems behave as one</td>
+</tr>
+<tr>
+<td>Region</td>
+<td>GCC</td>
+<td>GCC</td>
+</tr>
+<tr>
+<td>Prime</td>
+<td>Raytheon</td>
+<td>Lockheed Martin</td>
+</tr>
+</tbody>
+</table>
+<p><strong>These are the same programme with a different prime and a different flag.</strong>
+Almost nobody who applies to EADGE-T has stood inside the customer-facing side
+of a Gulf IAMD C2 delivery. You have. That is rare, it is directly relevant, and
+it is not something a stronger coder can acquire in a year.</p>
+<p>Your gap is recent hands-on software depth. Their gap, in most candidates, is
+any understanding of what this customer, this contract vehicle and this
+integration problem actually demand. You are trading in a market where your
+scarce good is genuinely scarce.</p>
+<p><strong>Two cautions before you use any of this.</strong></p>
+<p>First, discuss your ADOC work <strong>only at a level you know is releasable</strong>. An FMS
+programme carries classification, export control and foreign disclosure
+constraints on top of ordinary proprietary sensitivity. Anything specific about
+architecture, performance, deficiencies, schedule or customer positions is
+almost certainly not yours to share with a competitor's hiring panel, and
+Lockheed Martin is a competitor to Raytheon. The correct instinct is to speak
+about <strong>your role, your methods and your judgment</strong>, in general terms, and to
+say plainly when something is not discussable. Interviewers on defense
+programmes read that as professionalism, not evasion. A candidate who
+overshares about a competitor's programme is a candidate who will overshare
+about theirs.</p>
+<p>Second, do not let the parallel make you sound like you are applying to be a
+product owner. You are applying for a hands-on senior software engineering
+role. The domain background is your differentiator, not your job description.</p>
+<h2 id="2-the-honesty-rule">2. The honesty rule</h2>
+<p>You said it yourself: you did not do a lot of software on ADOC. So do not imply
+that you did. Not once, not by omission, not by a carefully ambiguous verb.</p>
+<p>This matters for two reasons. The obvious one is integrity. The practical one
+is that <strong>it will not survive contact.</strong> A technical interviewer who believes
+you built the correlator will ask a correlator question, and the answer you
+cannot give will cost you far more than the honest framing would have.</p>
+<p>The framing that works is a <strong>two-part sentence</strong>, used consistently:</p>
+<blockquote>
+<p>"On ADOC I owned [the specific thing you owned] rather than writing the
+production code. What that gave me was [the durable capability], and what I
+am doing now to close the hands-on gap is [the specific, verifiable thing]."</p>
+</blockquote>
+<p>Every scenario answer in this lesson uses that shape. It concedes the gap in
+the first clause, which buys you credibility for the second and third.</p>
+<p>The one thing that makes this framing work is that the third clause has to be
+true. Before the interview, have something real: the
+<a href="../practice/README.html">practice repo</a> with your own commits in it, a small
+tool you wrote, a certificate in progress, anything you can describe in
+specifics. "I have been brushing up" is worthless. "I have been working through
+a set of exercises I built around parsing and aggregation problems, and I have
+54 tests passing against my own implementations" is worth a great deal, and
+takes two weeks to make true.</p>
+<h2 id="3-translating-product-owner-work-into-engineering-signal">3. Translating product owner work into engineering signal</h2>
+<p>A product owner on a programme like ADOC does a lot of things that map cleanly
+onto what this role is graded on. The mapping is real, not a rhetorical trick.</p>
+<table>
+<thead>
+<tr>
+<th>What you did as PO</th>
+<th>What it demonstrates for this role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wrote and groomed backlog items against a requirements baseline</td>
+<td>You understand traceability from requirement to implementation to verification, which is the whole game on an accredited system</td>
+</tr>
+<tr>
+<td>Defined acceptance criteria</td>
+<td>You think in terms of verifiable behavior, which is exactly what a test is</td>
+</tr>
+<tr>
+<td>Ran or attended defect triage</td>
+<td>You know how severity and priority differ, and how a defect actually moves from a lab finding to a fix</td>
+</tr>
+<tr>
+<td>Prioritized across capability, defects and technical debt</td>
+<td>You have made the cost-of-delay argument to people who did not want to hear it</td>
+</tr>
+<tr>
+<td>Sat between systems engineering, software, integration and cyber</td>
+<td>The cross-discipline collaboration the posting explicitly asks for</td>
+</tr>
+<tr>
+<td>Worked customer expectations in country</td>
+<td>You know what an FMS customer needs to see, and how a demonstration lands</td>
+</tr>
+<tr>
+<td>Made scope calls against a fixed delivery date</td>
+<td>You have been accountable for a trade rather than commenting on one</td>
+</tr>
+<tr>
+<td>Participated in sprint reviews and retrospectives</td>
+<td>Real Agile experience, from the seat that has to say no</td>
+</tr>
+</tbody>
+</table>
+<p>None of those require you to have written the code. All of them are things a
+strong senior engineer is expected to do well, and most engineers do them
+poorly because they have never sat on the other side of the table.</p>
+<p><strong>The line to have ready:</strong></p>
+<blockquote>
+<p>"I have spent three years being the person who had to decide what got built
+and what got deferred, with a customer waiting and a fixed date. That changes
+how you write software. I do not need to be told why a story needs acceptance
+criteria, or why a test that cannot fail is worthless, or why the schedule
+conversation has to happen in week one rather than week five."</p>
+</blockquote>
+<h2 id="4-your-ninety-second-positioning-statement">4. Your ninety-second positioning statement</h2>
+<p>Rehearse this until it is smooth. It is the answer to "walk me through your
+background," and to "why you," and it is the frame everything else hangs on.</p>
+<blockquote>
+<p>"My background is integrated air and missile defense command and control in
+the Gulf. Most recently I was product owner on the Qatar ADOC programme, so I
+have been on the customer-facing side of exactly this problem: taking
+separately procured sensors and effectors and making them behave as one
+system, under a foreign military sales contract, with a Gulf ministry of
+defence as the customer.</p>
+<p>What I owned there was the backlog and the acceptance side rather than the
+production code, and I want to be straight about that, because the role I am
+interviewing for is hands-on. My engineering background is [X years] in
+[languages and domains], and over the last [period] my day-to-day drifted
+away from implementation. I have been deliberately rebuilding that: [the
+specific thing you have done].</p>
+<p>What I think I bring that is hard to hire is that I already understand this
+customer, this contract structure, and this class of integration problem. I
+know what an FMS acceptance event feels like and what the customer needs to
+see. And I want the overseas assignment, which I have already done once with
+my eyes open.</p>
+<p>What I would want from you is a real ramp on the codebase, and I would expect
+to earn my way in through test coverage and defect work before I touch
+anything in the mission thread."</p>
+</blockquote>
+<p>That last paragraph is the one that closes it. Asking for a ramp and proposing
+to start on tests and defects is exactly right for this role, and it signals
+that you are not going to arrive and immediately start redesigning things.</p>
+<h2 id="5-six-adaptable-scenarios-from-your-adoc-experience">5. Six adaptable scenarios from your ADOC experience</h2>
+<p>Fill the brackets with your real specifics. Do not invent numbers; if you do
+not remember a figure, use a truthful qualitative statement instead. "Several
+sprints" is fine. A fabricated "37 percent" is not, and a follow-up question
+will find it.</p>
+<p>Each of these ends in software judgment, which is what makes it usable in a
+technical interview rather than a management one.</p>
+<hr />
+<h3 id="scenario-a-cross-discipline-integration">Scenario A: cross-discipline integration</h3>
+<p><strong>Use for:</strong> "Tell me about working across disciplines." "Tell me about a time
+you had to align people who disagreed."</p>
+<blockquote>
+<p>On ADOC the recurring hard problem was not any one subsystem, it was the
+seams between them. [Describe a specific instance in general terms: two
+subsystems whose interpretation of an interface differed, or a capability
+that needed systems, software and integration to agree before anyone could
+start.]</p>
+<p>What I did was get the disagreement out of email and into one artifact.
+[Describe: a working session, an interface note, a decision log, a
+demonstration.] The specific thing I insisted on was that we write down the
+expected behavior in terms someone could verify, not in terms of intent,
+because "the interface shall provide track data" is not something you can
+test and "for this input the output shall be these fields with these units at
+this rate" is.</p>
+<p>The result was [outcome]. What I took from it, and what I would bring here, is
+that most integration failures are agreement failures that surface late. The
+engineering fix is to make the agreement executable as early as possible: a
+contract test, a simulator, a recorded scenario both sides run. That is
+cheaper than the meeting, and it does not decay.</p>
+</blockquote>
+<p><strong>Why it works:</strong> the action is genuinely PO-shaped, and the lesson lands on
+contract testing, which is a software answer.</p>
+<hr />
+<h3 id="scenario-b-prioritizing-under-a-fixed-date">Scenario B: prioritizing under a fixed date</h3>
+<p><strong>Use for:</strong> "How do you prioritize?" "Tell me about a hard trade-off."
+"A time you delivered under pressure."</p>
+<blockquote>
+<p>As product owner I had [describe the constraint: a delivery event, an
+acceptance milestone, a fixed customer date] and more scope than the team
+could complete. [Describe the specific competing items.]</p>
+<p>The way I worked it was to separate what the customer would actually
+demonstrate from what the team wanted to finish, and then to be explicit
+about what deferring each item cost. [Describe what you deferred and why.]
+The one thing I refused to trade was [the thing you protected, e.g. the
+verification evidence, or a defect affecting the mission thread], because
+[reason].</p>
+<p>I took it to [stakeholders] in [when: early], with a recommendation rather
+than a menu, and the decision was [outcome].</p>
+<p>The part relevant to this role is that the technical debt we deferred was
+written down as debt, with a named owner and a target release, rather than
+quietly absorbed. On a sustainment programme, undocumented deferrals are how
+a baseline becomes unmaintainable ten years later.</p>
+</blockquote>
+<p><strong>Why it works:</strong> ends on technical debt management, which is a sustainment
+concern and precisely this job.</p>
+<hr />
+<h3 id="scenario-c-defect-triage-and-the-lab-bottleneck">Scenario C: defect triage and the lab bottleneck</h3>
+<p><strong>Use for:</strong> "Tell me about a defect." "How do you decide what to fix?"
+"A time you improved a process."</p>
+<blockquote>
+<p>On ADOC the constrained resource was [the lab / the integration environment /
+the customer test window]. Defects came out of [where they came from] and
+everything competed for the same slot.</p>
+<p>The pattern I kept seeing was [describe honestly: e.g. issues that only
+appeared in the integrated environment, or defects that turned out to be
+configuration or environment differences rather than code]. [Describe what
+you did about it: how you changed triage, what you asked the team to capture
+before a lab run, how you got repeat offenders separated from genuinely new
+findings.]</p>
+<p>The outcome was [outcome].</p>
+<p>The engineering conclusion I drew, and it is why this specific job interests
+me, is that lab time is the scarce resource on a programme like this, and
+every defect you can catch before the lab is a slot you get back. That is the
+economic argument for automated test coverage, and it is a much better
+argument than test coverage as hygiene. When the posting talks about
+automated test capability improving deployment efficiency, that is what I
+think it means.</p>
+</blockquote>
+<p><strong>Why it works:</strong> this connects your real experience to the single most
+important theme in the job posting. This may be the best story you have.</p>
+<hr />
+<h3 id="scenario-d-a-requirement-that-was-wrong-or-ambiguous">Scenario D: a requirement that was wrong, or ambiguous</h3>
+<p><strong>Use for:</strong> "How do you handle a requirement you disagree with?" "Tell me
+about a time you pushed back."</p>
+<blockquote>
+<p>[Describe an instance where a requirement, as written, was ambiguous or would
+not have produced the operational outcome intended. Keep it general.]</p>
+<p>My first move was to assume I was missing context, because on this kind of
+system a requirement usually encodes something operational that is not
+obvious from the text. So I went to [who] and asked what the requirement was
+protecting against. [What you found out.]</p>
+<p>[If it was genuinely wrong:] I wrote up the specific concern, the consequence
+if we built it as written, and a proposed alternative, and raised it at
+[when, early]. The decision was [outcome], and I implemented the decision
+either way.</p>
+<p>What I would carry into an engineering role is that ambiguity in a
+requirement is cheap to fix at the analysis stage and extremely expensive
+after integration. So when I read a story now, the question I ask is "how
+would I verify this," and if I cannot answer that, the requirement is not
+done yet regardless of how it reads.</p>
+</blockquote>
+<hr />
+<h3 id="scenario-e-the-customer-relationship">Scenario E: the customer relationship</h3>
+<p><strong>Use for:</strong> "Tell me about working with a difficult stakeholder." "What is
+different about an FMS customer?" "Why do you want an overseas assignment?"</p>
+<blockquote>
+<p>Working with a Gulf ministry of defence customer is different from a
+commercial stakeholder in ways that took me time to learn. [Describe what you
+learned, in general and respectful terms. Good honest themes: the importance
+of the relationship and of face-to-face presence; that commitments are held
+to precisely; that a demonstration carries more weight than a status report;
+that the customer's own organizational realities shape what they can accept
+and when; that patience and consistency compound.]</p>
+<p>The concrete thing I changed in how I worked was [something specific: how you
+prepared for reviews, how you handled bad news, how you built the
+relationship outside the formal events].</p>
+<p>That is a large part of why I want this assignment specifically rather than a
+domestic role. I have already done the version of this where you are in
+country, in the region, working with the customer directly, and I know what
+it costs and what it gives back.</p>
+</blockquote>
+<p><strong>Why it works:</strong> it makes your expat willingness credible in a way no amount
+of enthusiasm can. You have done it. Say so.</p>
+<hr />
+<h3 id="scenario-f-the-honest-one-about-the-software-gap">Scenario F: the honest one about the software gap</h3>
+<p><strong>Use for:</strong> "Why are you moving from product owner back to engineering?"
+"Are you not overqualified / underqualified for this?" "Tell me about a
+weakness."</p>
+<blockquote>
+<p>I moved into the product owner role because [true reason]. I learned a great
+deal from it, particularly [what]. But the part of the work I actually want
+to be doing is building the thing, and on ADOC I was increasingly the person
+describing what should be built and then watching someone else have the
+interesting problem.</p>
+<p>I am clear-eyed that this is a step back toward hands-on work and that my
+implementation muscle needs rebuilding. That is why I am applying for a
+senior engineer role rather than a lead or a manager role. [Then the specific
+preparation you have done.]</p>
+<p>What I do not think I have lost is the judgment: knowing what to test,
+knowing where these systems break at the seams, knowing when a schedule
+commitment is not real. Syntax comes back in weeks. That took years.</p>
+</blockquote>
+<p><strong>Why it works:</strong> it answers the question they are definitely thinking about,
+before they have to ask it awkwardly. Volunteering it is a strength move.
+Waiting for them to dig it out is not.</p>
+<hr />
+<h2 id="6-handling-the-objection-directly">6. Handling the objection directly</h2>
+<p>If someone says, in effect, <em>"this is a hands-on coding role and your recent
+experience is product ownership"</em> — that is not a rejection, it is an invitation
+to resolve their concern. Answer it head on:</p>
+<blockquote>
+<p>"That is the right question to ask and I would ask it too. Let me answer it
+in three parts.</p>
+<p>First, the honest scope: on ADOC I owned the backlog and acceptance, not the
+production code. My hands-on background is [X], and it has been [period]
+since I was writing production software daily.</p>
+<p>Second, what I have done about it: [specific preparation, with an artifact].
+I am not asking you to take the ramp on faith; give me the coding exercise and
+judge it.</p>
+<p>Third, what you get that is hard to hire: I already know this mission, this
+customer, this contract structure and this class of integration problem, and
+I have already done an overseas assignment in the region. If you hire a
+stronger coder without that, you spend a year teaching them the domain and
+you carry the risk that the assignment does not suit them.</p>
+<p>Where I would expect to start is test coverage and defect work, because that
+is where I can be useful immediately while I learn the baseline properly."</p>
+</blockquote>
+<p>That answer is confident without being defensive, it concedes the real gap, and
+it puts the decision back on the evidence.</p>
+<h2 id="7-prepare-this-before-the-interview">7. Prepare this before the interview</h2>
+<p>Sit down for an hour and write out, from memory, what you actually know. You
+will be surprised how much there is, and the recall is much harder cold.</p>
+<p><strong>About the programme (only what is publicly releasable, at your own judgment):</strong></p>
+<ul>
+<li>What the system was for, in one sentence, at an unclassified level.</li>
+<li>The disciplines on the team and roughly how they were organized.</li>
+<li>The development process: sprint length, ceremonies, tooling, how a
+  requirement became a story became a verified capability.</li>
+<li>The delivery rhythm: how often a build went to the lab, how a customer event
+  worked.</li>
+</ul>
+<p><strong>About your role:</strong></p>
+<ul>
+<li>Team size, your reporting line, how many sprints, over how long.</li>
+<li>Concrete artifacts you produced: how many stories, epics, acceptance criteria.</li>
+<li>Decisions you personally made, with the trade you accepted.</li>
+<li>Two things that went well because of something you did.</li>
+<li>Two things that went badly and what you changed.</li>
+</ul>
+<p><strong>About the technology you were exposed to, honestly labelled:</strong></p>
+<p>Make three columns: <strong>used hands-on</strong>, <strong>worked alongside and understand</strong>,
+<strong>heard of only</strong>. Be strict about the boundaries. Then in the interview, use
+the right verb for the right column. That discipline is what lets you speak
+confidently about column two without anyone thinking you claimed column one.</p>
+<p><strong>About the gap:</strong></p>
+<ul>
+<li>The last time you wrote production code, and in what.</li>
+<li>What you have done in the last month, specifically.</li>
+<li>What you would want in a ramp.</li>
+</ul>
+<h2 id="8-landmines">8. Landmines</h2>
+<ul>
+<li><strong>Do not disclose competitor-sensitive or controlled information.</strong> Covered
+  above; it is the most important item here. If in doubt, do not.</li>
+<li><strong>Do not criticize Raytheon, the programme, or former colleagues.</strong> Even mild
+  criticism of a former programme reads as a preview of how you will talk about
+  theirs. If asked about difficulties, keep it structural and impersonal.</li>
+<li><strong>Do not present yourself as a product owner looking for a PO role.</strong> They
+  are hiring an engineer. If you would genuinely rather have the PO role, that
+  is a different application, and you should decide which one you want before
+  the screen.</li>
+<li><strong>Do not imply the two programmes are interchangeable in detail.</strong> They have
+  different primes, architectures and histories. The parallel is at the mission
+  and problem level, and that is where you should keep it. Overreaching here
+  reads as someone who does not understand how different two systems with the
+  same mission can be.</li>
+<li><strong>Do not oversell the region knowledge to people who live there.</strong> Some of
+  your panel will have been in the Gulf longer than you were. Offer it as
+  relevant experience, not expertise.</li>
+</ul>
+<h2 id="9-questions-to-ask-that-use-your-background">9. Questions to ask that use your background</h2>
+<p>These land differently coming from you than from a candidate without the
+history, and they will notice that.</p>
+<ul>
+<li>"How is the systems-to-software handoff structured here? On the programme I
+  came from, the seam between the requirements baseline and the sprint backlog
+  was where most of our friction lived, and I am curious how you handle it."</li>
+<li>"How much of the team's capacity goes to defect and sustainment work versus
+  new capability, and who arbitrates that?"</li>
+<li>"What does a customer acceptance event look like on this programme, and how
+  much of the evidence for it is generated automatically today?"</li>
+<li>"Lab access from the UAE side: what is the cycle time from a code change to
+  seeing it run against representative hardware?"</li>
+<li>"Where does the team feel the tech refresh is riskiest? I would rather know
+  now."</li>
+</ul>
+<p>The acceptance-evidence question is the best one in the list. It is a product
+owner's question asked in an engineer's terms, it goes straight to the automated
+test capability the posting is about, and only someone who has been through a
+customer acceptance event would think to ask it.</p>
+<h2 id="sources">Sources</h2>
+<p>Public reporting on the Qatar programme, for the parallel described in section
+1:</p>
+<ul>
+<li><a href="https://raytheon.mediaroom.com/2014-12-01-Raytheon-awarded-contract-to-provide-the-State-of-Qatar-with-Advanced-Integrated-Air-and-Missile-Defense-IAMD-Command-and-Control-System">Raytheon awarded contract to provide the State of Qatar with advanced IAMD command and control system</a></li>
+<li><a href="https://www.airforce-technology.com/news/newsraytheon-to-create-air-and-missile-defence-operation-centre-for-qatar-4457151/">Raytheon to create air and missile defence operation centre for Qatar (Airforce Technology)</a></li>
+<li><a href="https://www.hanscom.af.mil/News/Article-Display/Article/846889/qatar-moves-one-step-closer-to-receiving-us-air-and-missile-defense-operations/">Qatar moves one step closer to receiving U.S. Air and Missile Defense Operations Center (Hanscom AFB)</a></li>
+<li><a href="https://www.shephardmedia.com/news/digital-battlespace/raytheon-awarded-qatar-adoc-fms-contract/">Raytheon awarded Qatar ADOC FMS contract (Shephard Media)</a></li>
+</ul>
+<nav class="pager"><a class="prev" href="../lessons/cyber.html">&larr; 13. Cybersecurity &amp; Sustainment</a><a class="next" href="../lessons/behavioral.html">15. Behavioral &amp; Expat Questions &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
