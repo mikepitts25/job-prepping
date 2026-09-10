@@ -11,14 +11,16 @@ modules.
 
 ## Read it
 
-Open `index.html` locally, or publish it:
+Published at **https://mikepitts25.github.io/job-prepping/**, served from
+`main` via Settings → Pages → "Deploy from a branch", branch `main`, folder
+`/ (root)`.
 
-**Settings → Pages → Source: "Deploy from a branch" → Branch:
-`claude/lockheed-martin-interview-prep-0asm6i`, folder `/ (root)` → Save.**
-
-The site appears at `https://<your-username>.github.io/job-prepping/` after a
-minute or two. Merge the branch to `main` first if you would rather serve from
-there.
+Every push to `main` triggers a rebuild, visible under the repository's Actions
+tab as "pages build and deployment". If a deploy fails, check whether the
+**build** job or the **deploy** job failed. A failed deploy job that sat at
+`updating_pages` until it timed out is a GitHub-side stall rather than a problem
+with the content: re-run the failed job from the Actions tab and it normally
+succeeds.
 
 To read it without publishing:
 
