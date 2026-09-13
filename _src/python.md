@@ -111,6 +111,39 @@ REPL stands for read, evaluate, print, loop. **Use it constantly.** When you
 cannot remember what a method returns, do not guess and do not search: open a
 REPL and try it. This is the single fastest way to rebuild rusty knowledge.
 
+### How to read the code in these lessons
+
+Two kinds of code block appear from here on, and telling them apart will save
+you some confusion.
+
+**Blocks with `>>>` are REPL transcripts.** The `>>>` is the prompt Python
+prints; you do not type it. The line underneath, with no prompt, is what Python
+printed back.
+
+```python
+>>> 2 + 2
+4
+```
+
+You type `2 + 2`. Python prints `4`.
+
+**Blocks without `>>>` are program code**, meant for a file, and often only a
+fragment of one. A fragment usually assumes some variable already exists:
+
+```python
+sensors.append("radar-d")        # assumes 'sensors' was created earlier
+```
+
+Typing that into a fresh REPL gives you `NameError: name 'sensors' is not
+defined`, which is Python correctly telling you it has never heard of
+`sensors`. That is not a mistake on your part. Define the variable first, or
+read the fragment as an illustration rather than a recipe.
+
+A third case to watch for: a block may use a library that has to be imported, or
+installed first. If a name is unfamiliar and you get `NameError` or
+`ModuleNotFoundError`, look for a missing `import` before assuming you have done
+something wrong.
+
 **A script.** Put code in a file ending in `.py` and run it.
 
 ```bash
@@ -277,25 +310,73 @@ Floats are standard IEEE 754 doubles and carry the usual surprise:
 False
 ```
 
-This is not a Python bug; it is how binary floating point represents decimal
-fractions, and every language does it. The consequence for you: **never compare
-floats with `==`.** Compare with a tolerance:
+This is not a Python bug. Floats store numbers in **base 2**, and one tenth
+cannot be written exactly in base 2, for the same reason one third cannot be
+written exactly in base 10: you would need digits forever. So `0.1` is stored
+very slightly off, and the errors accumulate. Every language that uses IEEE 754
+floats does this, including Java, C and JavaScript.
+
+The consequence for you: **never compare floats with `==`.** Compare with a
+tolerance instead, meaning "close enough":
 
 ```python
 >>> abs((0.1 + 0.2) - 0.3) < 1e-9
 True
 ```
 
-In tests, use the helper:
+Read that as "the difference between the two is smaller than a billionth, so
+call them equal." `1e-9` is scientific notation for 0.000000001.
+
+When you get to writing tests in [lesson 5](python-practice.html), the testing
+library provides a tidier way to say the same thing. You do not need it yet, but
+so that it is not a surprise later:
 
 ```python
-assert result == pytest.approx(expected)
+>>> import pytest                       # a library you install; not built in
+>>> result = 0.1 + 0.2
+>>> expected = 0.3
+>>> result == expected
+False
+>>> result == pytest.approx(expected)   # "approximately equal"
+True
 ```
 
-For money or anything requiring exact decimal arithmetic, use the `decimal`
-module instead of floats.
+### When floats are the wrong tool: the `decimal` module
 
-Arithmetic:
+If you need exact decimal arithmetic, use the **`decimal` module** instead of
+floats. A **module** is a library of code that is not loaded until you ask for
+it. `decimal` ships with Python, so there is nothing to install, but the name
+does not exist until you import it:
+
+```python
+>>> from decimal import Decimal
+>>> Decimal("0.1") + Decimal("0.2")
+Decimal('0.3')
+>>> Decimal("0.1") + Decimal("0.2") == Decimal("0.3")
+True
+```
+
+Exact, because `Decimal` stores numbers in base 10.
+
+Build a `Decimal` from a **string**, not from a float. Passing a float means the
+damage has already been done before `Decimal` ever sees the value:
+
+```python
+>>> Decimal("0.1")
+Decimal('0.1')
+>>> Decimal(0.1)
+Decimal('0.1000000000000000055511151231257827021181583404541015625')
+```
+
+**Use `Decimal` for money, billing, and anything where somebody will check your
+arithmetic by hand.** It is slower and more verbose than a float, which is the
+price. For distances, speeds, sensor confidences and geometry, floats are the
+right tool and the tolerance comparison above is the right technique.
+
+### Arithmetic operators
+
+These are ordinary integers and floats. Nothing is imported and `decimal` is not
+involved.
 
 ```python
 7 / 2       # 3.5   -- true division, ALWAYS gives a float

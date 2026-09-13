@@ -106,6 +106,30 @@ printed.</p>
 <p>REPL stands for read, evaluate, print, loop. <strong>Use it constantly.</strong> When you
 cannot remember what a method returns, do not guess and do not search: open a
 REPL and try it. This is the single fastest way to rebuild rusty knowledge.</p>
+<h3 id="how-to-read-the-code-in-these-lessons">How to read the code in these lessons</h3>
+<p>Two kinds of code block appear from here on, and telling them apart will save
+you some confusion.</p>
+<p><strong>Blocks with <code>&gt;&gt;&gt;</code> are REPL transcripts.</strong> The <code>&gt;&gt;&gt;</code> is the prompt Python
+prints; you do not type it. The line underneath, with no prompt, is what Python
+printed back.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="mi">4</span>
+</code></pre></div>
+
+<p>You type <code>2 + 2</code>. Python prints <code>4</code>.</p>
+<p><strong>Blocks without <code>&gt;&gt;&gt;</code> are program code</strong>, meant for a file, and often only a
+fragment of one. A fragment usually assumes some variable already exists:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"radar-d"</span><span class="p">)</span>        <span class="c1"># assumes 'sensors' was created earlier</span>
+</code></pre></div>
+
+<p>Typing that into a fresh REPL gives you <code>NameError: name 'sensors' is not
+defined</code>, which is Python correctly telling you it has never heard of
+<code>sensors</code>. That is not a mistake on your part. Define the variable first, or
+read the fragment as an illustration rather than a recipe.</p>
+<p>A third case to watch for: a block may use a library that has to be imported, or
+installed first. If a name is unfamiliar and you get <code>NameError</code> or
+<code>ModuleNotFoundError</code>, look for a missing <code>import</code> before assuming you have done
+something wrong.</p>
 <p><strong>A script.</strong> Put code in a file ending in <code>.py</code> and run it.</p>
 <div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">'print("hello")'</span><span class="w"> </span>&gt;<span class="w"> </span>hello.py
 python3<span class="w"> </span>hello.py
@@ -237,20 +261,59 @@ Floats are standard IEEE 754 doubles and carry the usual surprise:</p>
 <span class="kc">False</span>
 </code></pre></div>
 
-<p>This is not a Python bug; it is how binary floating point represents decimal
-fractions, and every language does it. The consequence for you: <strong>never compare
-floats with <code>==</code>.</strong> Compare with a tolerance:</p>
+<p>This is not a Python bug. Floats store numbers in <strong>base 2</strong>, and one tenth
+cannot be written exactly in base 2, for the same reason one third cannot be
+written exactly in base 10: you would need digits forever. So <code>0.1</code> is stored
+very slightly off, and the errors accumulate. Every language that uses IEEE 754
+floats does this, including Java, C and JavaScript.</p>
+<p>The consequence for you: <strong>never compare floats with <code>==</code>.</strong> Compare with a
+tolerance instead, meaning "close enough":</p>
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">abs</span><span class="p">((</span><span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-9</span>
 <span class="kc">True</span>
 </code></pre></div>
 
-<p>In tests, use the helper:</p>
-<div class="codehilite"><pre><span></span><code><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>
+<p>Read that as "the difference between the two is smaller than a billionth, so
+call them equal." <code>1e-9</code> is scientific notation for 0.000000001.</p>
+<p>When you get to writing tests in <a href="python-practice.html">lesson 5</a>, the testing
+library provides a tidier way to say the same thing. You do not need it yet, but
+so that it is not a surprise later:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>                       <span class="c1"># a library you install; not built in</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="mf">0.1</span> <span class="o">+</span> <span class="mf">0.2</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">expected</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">==</span> <span class="n">expected</span>
+<span class="kc">False</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">result</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="n">expected</span><span class="p">)</span>   <span class="c1"># "approximately equal"</span>
+<span class="kc">True</span>
 </code></pre></div>
 
-<p>For money or anything requiring exact decimal arithmetic, use the <code>decimal</code>
-module instead of floats.</p>
-<p>Arithmetic:</p>
+<h3 id="when-floats-are-the-wrong-tool-the-decimal-module">When floats are the wrong tool: the <code>decimal</code> module</h3>
+<p>If you need exact decimal arithmetic, use the <strong><code>decimal</code> module</strong> instead of
+floats. A <strong>module</strong> is a library of code that is not loaded until you ask for
+it. <code>decimal</code> ships with Python, so there is nothing to install, but the name
+does not exist until you import it:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">from</span><span class="w"> </span><span class="nn">decimal</span><span class="w"> </span><span class="kn">import</span> <span class="n">Decimal</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.1"</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.2"</span><span class="p">)</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.3'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.1"</span><span class="p">)</span> <span class="o">+</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.2"</span><span class="p">)</span> <span class="o">==</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.3"</span><span class="p">)</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+<p>Exact, because <code>Decimal</code> stores numbers in base 10.</p>
+<p>Build a <code>Decimal</code> from a <strong>string</strong>, not from a float. Passing a float means the
+damage has already been done before <code>Decimal</code> ever sees the value:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">Decimal</span><span class="p">(</span><span class="s2">"0.1"</span><span class="p">)</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.1'</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">Decimal</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">Decimal</span><span class="p">(</span><span class="s1">'0.1000000000000000055511151231257827021181583404541015625'</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>Use <code>Decimal</code> for money, billing, and anything where somebody will check your
+arithmetic by hand.</strong> It is slower and more verbose than a float, which is the
+price. For distances, speeds, sensor confidences and geometry, floats are the
+right tool and the tolerance comparison above is the right technique.</p>
+<h3 id="arithmetic-operators">Arithmetic operators</h3>
+<p>These are ordinary integers and floats. Nothing is imported and <code>decimal</code> is not
+involved.</p>
 <div class="codehilite"><pre><span></span><code><span class="mi">7</span> <span class="o">/</span> <span class="mi">2</span>       <span class="c1"># 3.5   -- true division, ALWAYS gives a float</span>
 <span class="mi">7</span> <span class="o">//</span> <span class="mi">2</span>      <span class="c1"># 3     -- floor division, rounds toward negative infinity</span>
 <span class="mi">7</span> <span class="o">%</span> <span class="mi">2</span>       <span class="c1"># 1     -- remainder ("modulo")</span>
