@@ -1,4 +1,4 @@
-# 21. Mock interview bank
+# 26. Mock interview bank
 
 Work these under time pressure. Cover the answer, say yours out loud, then
 compare. Answering silently in your head is not practice.
@@ -20,7 +20,7 @@ willing to be sponsored.
 
 **3. Are you genuinely willing to relocate to the UAE for two to three years?**
 Yes, plus one specific sentence about why and one about having discussed it with
-family. See [lesson 19](behavioral.html).
+family. See [lesson 24](behavioral.html).
 
 **4. Why are you looking to leave your current role?**
 Toward something, never away from someone. Never criticize a current employer.
@@ -81,7 +81,7 @@ code.
 Story 5, with numbers.
 
 **17. How do you handle competing priorities?**
-[Lesson 19](behavioral.html), section 5.
+[Lesson 24](behavioral.html), section 5.
 
 **18. Tell me about a time you disagreed with a decision.**
 Story 2.
@@ -272,7 +272,7 @@ apart via `jstack`, look for BLOCKED threads and the lock owners.
 files still held open.
 
 **67. A service will not start. Walk me through it.**
-[Lesson 12](linux.html), section 10, in that order.
+[Lesson 17](linux.html), section 10, in that order.
 
 **68. What does load average mean?**
 Runnable plus uninterruptible-sleep processes, averaged. Compare to core count.
@@ -296,7 +296,7 @@ Exit on error, error on unset variable, fail a pipeline on any stage.
 `py-spy` for Python. Check log level and any hot loop with a missing sleep.
 
 **74. It works in the lab and fails in integration.**
-[Lesson 12](linux.html), section 10. This is the high-value one; rehearse it.
+[Lesson 17](linux.html), section 10. This is the high-value one; rehearse it.
 
 ---
 
@@ -311,7 +311,7 @@ assumptions.
 **77. How do you test legacy code with no tests?** Characterization tests, find
 a seam, inject, then refactor.
 
-**78. Mock vs stub vs fake?** [Lesson 14](testing-ci.html), section 4. Say you
+**78. Mock vs stub vs fake?** [Lesson 19](testing-ci.html), section 4. Say you
 prefer fakes and why.
 
 **79. How do you test time-dependent code?** Inject the clock. Use monotonic
@@ -356,7 +356,7 @@ upgrade and rollback. Use `helm template` to review, `--atomic` to auto-rollback
 ## Round 8: Design and architecture (10 questions)
 
 **91. Design a sensor ingest and track fusion service.**
-[Lesson 11](ood.html), section 6. Clarify first, then components, then
+[Lesson 16](ood.html), section 6. Clarify first, then components, then
 justify each boundary, then tests, then what you deliberately did not build.
 
 **92. How would you add a new sensor format?** New adapter class, register it in
@@ -384,7 +384,7 @@ last-message-age, queue depth, drop count, latency percentiles, track count,
 error rate. Alert on symptoms, not causes.
 
 **99. What is a Software Factory and why migrate into one?**
-[Lesson 16](architecture.html), section 5.
+[Lesson 21](architecture.html), section 5.
 
 **100. How would you migrate a legacy build into a pipeline?** Reproducible on a
 clean machine first, then green with tests skipped, then tests, then scanning
@@ -396,7 +396,7 @@ time.
 ## Round 9: Security and sustainment (10 questions)
 
 **101. A critical CVE lands in a library you use. What do you do?**
-[Lesson 17](cyber.html), section 2. This is the most likely security question
+[Lesson 22](cyber.html), section 2. This is the most likely security question
 for this posting.
 
 **102. Direct or transitive dependency, and does it matter?** Yes:
@@ -422,7 +422,7 @@ understand what it protects, adapt the application. Do not disable the control.
 Test against a hardened image in CI so you find it before the lab does.
 
 **109. Security wants an upgrade that breaks an interface this sprint.**
-[Lesson 17](cyber.html), section 6: get the real constraint, size it
+[Lesson 22](cyber.html), section 6: get the real constraint, size it
 honestly, offer three options with costs, escalate early with a recommendation.
 
 **110. Why is adding a dependency not free here?** Monitoring, scanning,
@@ -444,7 +444,7 @@ artifact.
 options, not just a refusal.
 
 **115. How do you work with people you never meet in person?**
-[Lesson 13](git-agile.html), section 9: write don't ping, protect the overlap,
+[Lesson 18](git-agile.html), section 9: write don't ping, protect the overlap,
 never leave someone blocked overnight, update the ticket rather than the person.
 
 **116. How do you handle a teammate whose code you think is poor?** In review,
@@ -462,7 +462,7 @@ question. "How the lab access works from the UAE side" is a good one. "Nothing"
 is a wasted answer.
 
 **120. Do you have questions for us?** Three or four from
-[lesson 19](behavioral.html), section 8. Never zero.
+[lesson 24](behavioral.html), section 8. Never zero.
 
 ---
 
@@ -550,7 +550,7 @@ fielded system and prove the mission behavior is unchanged.
 ## Round 12: Frontend and APIs (14 questions)
 
 Angular is a **basic qualification** on your requisition, so expect several of
-these. See [lesson 7](frontend.html) and [lesson 8](apis.html).
+these. See [lesson 12](frontend.html) and [lesson 13](apis.html).
 
 **133. What are HTML, CSS and JavaScript each for?**
 Structure, presentation, behaviour. The browser parses HTML into the DOM, CSS

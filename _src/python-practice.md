@@ -1,6 +1,6 @@
-# 6. Python in practice
+# 11. Python in practice
 
-[Lesson 5](python.html) covered the language. This lesson covers what you
+[Lesson 10](python.html) covered the language. This lesson covers what you
 actually use it with: the standard library, the patterns that show up in real
 code, how to test, and how to debug. It still assumes no prior knowledge, and
 it still explains why each thing exists.
@@ -22,7 +22,7 @@ every dependency has to be scanned, licensed and maintained for years.
 from collections import Counter, defaultdict, deque
 ```
 
-**`Counter`** counts things. You saw the manual version in lesson 5:
+**`Counter`** counts things. You saw the manual version in lesson 10:
 
 ```python
 counts = {}
@@ -71,7 +71,7 @@ recent.popleft()
 The `maxlen` behavior is genuinely useful: it gives you a bounded buffer with
 no code. An unbounded queue between a fast producer and a slow consumer is a
 deferred out-of-memory crash, so bounding it is a design decision, not an
-optimization. See [lesson 11](ood.html).
+optimization. See [lesson 16](ood.html).
 
 ### `itertools`: tools for iteration
 
@@ -176,7 +176,7 @@ os.environ.get("LOG_LEVEL", "INFO")     # read config from the environment
 
 Configuration that differs between environments belongs in environment
 variables, not in the code and not in the container image. See
-[lesson 17](cyber.html).
+[lesson 22](cyber.html).
 
 ## 2. Generators: processing data too big to hold
 
@@ -448,7 +448,7 @@ log.debug(f"state: {expensive_summary()}")      # ALWAYS called
 ```
 
 **Never log secrets, credentials or full payloads.** Logs get copied, shipped
-and read by people who are not you. See [lesson 17](cyber.html).
+and read by people who are not you. See [lesson 22](cyber.html).
 
 ## 7. Testing with pytest
 
@@ -596,7 +596,7 @@ assert result == pytest.approx(1.0)
 assert distance == pytest.approx(120, abs=10)
 ```
 
-Never compare floats with `==`, for the reason in [lesson 5](python.html).
+Never compare floats with `==`, for the reason in [lesson 10](python.html).
 
 ### Test doubles: replacing things you cannot call
 
@@ -710,7 +710,7 @@ deadline, then find the cause.
 
 ### Read the traceback
 
-Bottom-up, as in [lesson 5](python.html). The last line is the error; the lines
+Bottom-up, as in [lesson 10](python.html). The last line is the error; the lines
 above are how you got there.
 
 ### Print, then stop printing
@@ -794,7 +794,7 @@ pip-audit              # known vulnerabilities in your dependencies
 have caught, in a language where those errors otherwise wait until runtime.
 That is a strong argument on a system where "runtime" may mean the lab or the
 field. `pip-audit` connects directly to the COTS and FOSS upgrade work the
-posting describes; see [lesson 17](cyber.html).
+posting describes; see [lesson 22](cyber.html).
 
 ## 10. Practice problems
 
@@ -857,7 +857,7 @@ task, proving a configuration migration changed exactly what was intended.
     equal must hash equal, or they get lost in sets and dicts.
 11. **How do you test code with no tests?** Characterization tests that pin
     current behavior, then find a seam, inject the dependency, then refactor.
-    See [lesson 14](testing-ci.html).
+    See [lesson 19](testing-ci.html).
 12. **How do you test time-dependent code?** Inject the clock. Never
     `time.sleep` in a test.
 13. **How much coverage is enough?** It finds gaps, it does not measure

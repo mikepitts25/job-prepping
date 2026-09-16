@@ -19,7 +19,7 @@ corrupt input, aggregates per sensor, ranks them, and ships as a proper
 command-line tool with a test suite. That is not a toy. It is a smaller version
 of what the job actually is.
 
-[Lesson 5](python.html) and [lesson 6](python-practice.html) are the thorough
+[Lesson 10](python.html) and [lesson 11](python-practice.html) are the thorough
 treatment. This lesson is the sprint. Do the sprint first if time is short; do
 it first anyway if you learn better by building than by reading.
 
@@ -1192,13 +1192,13 @@ respected. A bluffed one unravels on the second follow-up.
 
 In this order, because this is the order of return:
 
-1. **[Lesson 5](python.html), sections 3 and 12.** Names and objects, and
+1. **[Lesson 10](python.html), sections 3 and 12.** Names and objects, and
    classes. The two things the sprint skipped the theory of.
 2. **The [practice repo](../practice/README.html).** Solve the problems in
    `exercises.py` and check yourself with `PREP_TARGET=exercises pytest -q`.
-3. **[Lesson 6](python-practice.html), section 7.** Testing in depth: fixtures,
+3. **[Lesson 11](python-practice.html), section 7.** Testing in depth: fixtures,
    fakes versus mocks, injecting the clock.
-4. **[Lesson 6](python-practice.html), section 2.** Generators. The idea that
+4. **[Lesson 11](python-practice.html), section 2.** Generators. The idea that
    lets you process a file bigger than memory.
 5. **Rewrite `sensorstat` from an empty file**, without looking. That is worth
    more than reading anything.

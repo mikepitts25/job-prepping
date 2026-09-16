@@ -1,4 +1,4 @@
-# 5. Python foundations
+# 10. Python foundations
 
 This lesson assumes you know nothing about Python. It builds the language from
 the ground up and explains *why* each piece exists, not just what to type. If
@@ -6,7 +6,7 @@ you have written code before in another language, read it anyway: several of
 Python's core ideas differ from C, Java and C# in ways that cause real bugs
 when you assume they are the same.
 
-[Lesson 6](python-practice.html) covers the standard library, testing and the
+[Lesson 11](python-practice.html) covers the standard library, testing and the
 tooling. Do this one first.
 
 ## 1. What Python actually is
@@ -327,7 +327,7 @@ True
 Read that as "the difference between the two is smaller than a billionth, so
 call them equal." `1e-9` is scientific notation for 0.000000001.
 
-When you get to writing tests in [lesson 6](python-practice.html), the testing
+When you get to writing tests in [lesson 11](python-practice.html), the testing
 library provides a tidier way to say the same thing. You do not need it yet, but
 so that it is not a surprise later:
 
@@ -656,7 +656,7 @@ for detection in detections:
 
 `setdefault(key, default)` returns the existing value if the key is present,
 otherwise inserts the default and returns that. It saves an `if` on every
-iteration. [Lesson 6](python-practice.html) shows the cleaner
+iteration. [Lesson 11](python-practice.html) shows the cleaner
 `collections.defaultdict` version, but understand this form first because it
 shows what is actually happening.
 
@@ -809,7 +809,7 @@ with open("big.log") as f:
 ```
 
 For a 40 GB log on a machine with 8 GB of RAM, that distinction is the whole
-ballgame. [Lesson 6](python-practice.html) develops this into generators.
+ballgame. [Lesson 11](python-practice.html) develops this into generators.
 
 ### Comprehensions
 
@@ -1349,7 +1349,7 @@ new class, not editing existing logic.
 **Use inheritance sparingly.** It is the tightest coupling available, because a
 subclass depends on the parent's implementation. Prefer **composition**, where
 an object holds another object and delegates to it. The rule of thumb:
-inheritance for "is a," composition for "has a." [Lesson 11](ood.html) develops
+inheritance for "is a," composition for "has a." [Lesson 16](ood.html) develops
 this.
 
 ## 13. Virtual environments
@@ -1409,6 +1409,6 @@ Type all of this. Do not read it. Then in a REPL:
 
 Number six is the one that teaches the most per minute.
 
-Then go to [lesson 6](python-practice.html) for the standard library, testing
+Then go to [lesson 11](python-practice.html) for the standard library, testing
 and the tooling, and to the [practice repo](../practice/README.html) for
 problems to solve.

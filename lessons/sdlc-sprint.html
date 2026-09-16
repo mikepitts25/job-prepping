@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>9. The four-hour SDLC sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li class="active"><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="9-the-four-hour-sdlc-sprint">9. The four-hour SDLC sprint</h1>
+<p>"Experience across the <strong>full Software Development Life Cycle</strong>" is a basic
+qualification, and Agile methodologies and GitLab CI/CD are desired skills.
+That sounds like a topic you read about. It is not. It is a set of mechanical
+skills you either have in your fingers or do not, and four hours is enough to
+put them there.</p>
+<p>You will spend this sprint in a <strong>real repository</strong> doing real operations:
+conflicting merges, recovering lost work, finding a bug across twelve commits
+automatically, and writing a pipeline. Every command below was executed while
+this lesson was written, and the outputs are the actual ones.</p>
+<p><a href="git-agile.html">Lesson 18</a> and <a href="testing-ci.html">lesson 19</a> are the
+references. This is the sprint.</p>
+<h2 id="the-rules">The rules</h2>
+<ol>
+<li><strong>Type everything.</strong> Git is muscle memory. Reading about <code>git reset</code> teaches
+   you nothing.</li>
+<li><strong>Use a scratch repository</strong>, not anything you care about. You will
+   deliberately destroy work.</li>
+<li><strong>Run <code>git status</code> constantly.</strong> It tells you where you are and what to do
+   next. Beginners skip it and get lost.</li>
+<li><strong>Run <code>git log --oneline --graph --all</code> after every branch operation.</strong> Seeing
+   the shape is how the model becomes intuitive.</li>
+</ol>
+<h2 id="what-i-am-cutting">What I am cutting</h2>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Submodules, worktrees, LFS</td>
+<td>Real, rare, and not day-one.</td>
+</tr>
+<tr>
+<td>Jenkins in depth</td>
+<td>GitLab is named on your req; <a href="testing-ci.html">lesson 19</a> has Jenkins vocabulary.</td>
+</tr>
+<tr>
+<td>Kubernetes deployment mechanics</td>
+<td><a href="docker-sprint.html">Lesson 8</a> and <a href="containers.html">lesson 20</a>.</td>
+</tr>
+<tr>
+<td>Requirements management tools (DOORS)</td>
+<td>You need the vocabulary, which is in <a href="program-brief.html">lesson 1</a>.</td>
+</tr>
+<tr>
+<td>Formal safety standards</td>
+<td>Named in <a href="testing-ci.html">lesson 19</a>; not a four-hour topic.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-two-minutes">Setup: two minutes</h2>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>--version
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">"Your Name"</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">"you@example.com"</span>
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>merge.conflictstyle<span class="w"> </span>zdiff3
+git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>init.defaultBranch<span class="w"> </span>main
+</code></pre></div>
+
+<p>That third line matters and almost nobody sets it. It is explained in hour two.</p>
+<p>Start the clock.</p>
+<hr />
+<h2 id="hour-1-the-model-and-daily-git">Hour 1: the model, and daily Git</h2>
+<h3 id="000-to-020-the-mental-model">0:00 to 0:20 — The mental model</h3>
+<p>Most Git confusion comes from not knowing what the pieces are. There are four
+places a change can be:</p>
+<div class="codehilite"><pre><span></span><code>  working tree  -&gt;  staging area  -&gt;  local repository  -&gt;  remote
+   (your edits)      (git add)         (git commit)        (git push)
+</code></pre></div>
+
+<ul>
+<li><strong>Working tree</strong>: the files as they are on disk right now.</li>
+<li><strong>Staging area</strong> (or index): what will go into the next commit. This is the
+  part other version control systems do not have, and it exists so you can
+  commit <em>some</em> of your changes.</li>
+<li><strong>Local repository</strong>: the committed history, on your machine.</li>
+<li><strong>Remote</strong>: the shared copy, on GitLab or GitHub.</li>
+</ul>
+<p>A <strong>commit</strong> is a snapshot of the whole tree plus a pointer to its parent. A
+<strong>branch is just a movable label pointing at a commit.</strong> That sentence is the
+key to everything: creating a branch is instant and free because it writes 40
+bytes, and merging is about reconciling two chains of commits.</p>
+<p><code>HEAD</code> is a pointer to where you are now.</p>
+<h3 id="020-to-050-the-daily-loop">0:20 to 0:50 — The daily loop</h3>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>gitdrill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>gitdrill<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>init<span class="w"> </span>-b<span class="w"> </span>main
+<span class="nb">echo</span><span class="w"> </span><span class="s2">"threshold = 0.5"</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>status<span class="w">                      </span><span class="c1"># untracked</span>
+git<span class="w"> </span>add<span class="w"> </span>config.txt
+git<span class="w"> </span>status<span class="w">                      </span><span class="c1"># staged</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Initial config"</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline
+</code></pre></div>
+
+<p>Now the commands you use every day:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>status<span class="w">                      </span><span class="c1"># constantly</span>
+git<span class="w"> </span>add<span class="w"> </span>-p<span class="w">                      </span><span class="c1"># stage hunk by hunk. Do this more.</span>
+git<span class="w"> </span>diff<span class="w">                        </span><span class="c1"># unstaged changes</span>
+git<span class="w"> </span>diff<span class="w"> </span>--staged<span class="w">               </span><span class="c1"># what you are about to commit</span>
+git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"message"</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--graph<span class="w"> </span>--decorate<span class="w"> </span>--all
+git<span class="w"> </span>show<span class="w"> </span>HEAD~2<span class="w">                 </span><span class="c1"># a specific commit</span>
+git<span class="w"> </span>blame<span class="w"> </span>-L<span class="w"> </span><span class="m">40</span>,80<span class="w"> </span>file<span class="w">         </span><span class="c1"># who wrote these lines and when</span>
+</code></pre></div>
+
+<p><strong><code>git add -p</code> is the one to build a habit around.</strong> It walks you through each
+change and asks whether to stage it. It catches the debug statement you forgot,
+and it produces commits that contain one idea instead of an afternoon.</p>
+<p><strong>Commit messages.</strong> On a programme with formal change control, reviewers care:</p>
+<div class="codehilite"><pre><span></span><code>EADGE-1234: Bound the ingest queue and drop oldest on overflow
+
+The ingest queue was unbounded. Under a sensor burst of &gt;20k msg/s the
+process grew until the OOM killer terminated it, losing the track picture.
+
+Bound the queue at 50,000 detections and drop the oldest on overflow, since
+a stale position report has no operational value. Emit a dropped counter so
+the condition is visible in monitoring.
+
+Tested: new unit test reproduces the burst and asserts bounded memory plus a
+non-zero drop count.
+</code></pre></div>
+
+<p>Subject under about 72 characters, imperative mood, ticket id. The body
+explains <strong>why</strong>, because the diff already says what.</p>
+<h3 id="050-to-100-undo-which-is-what-actually-matters">0:50 to 1:00 — Undo, which is what actually matters</h3>
+<p>Anyone can commit. Few can recover. Type all of these.</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>restore<span class="w"> </span>file<span class="w">                </span><span class="c1"># discard unstaged changes to a file</span>
+git<span class="w"> </span>restore<span class="w"> </span>--staged<span class="w"> </span>file<span class="w">       </span><span class="c1"># unstage, keep the edit</span>
+git<span class="w"> </span>commit<span class="w"> </span>--amend<span class="w">              </span><span class="c1"># fix the last commit (ONLY if unpushed)</span>
+git<span class="w"> </span>reset<span class="w"> </span>--soft<span class="w"> </span>HEAD~1<span class="w">         </span><span class="c1"># undo the commit, keep changes staged</span>
+git<span class="w"> </span>reset<span class="w"> </span>--mixed<span class="w"> </span>HEAD~1<span class="w">        </span><span class="c1"># undo the commit, keep changes unstaged</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD~1<span class="w">         </span><span class="c1"># undo the commit AND the changes. Destructive.</span>
+git<span class="w"> </span>revert<span class="w"> </span>&lt;sha&gt;<span class="w">                </span><span class="c1"># a NEW commit undoing an old one</span>
+git<span class="w"> </span>stash<span class="w"> </span>push<span class="w"> </span>-m<span class="w"> </span><span class="s2">"wip"</span><span class="p">;</span><span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span>list<span class="p">;</span><span class="w"> </span>git<span class="w"> </span>stash<span class="w"> </span>pop
+git<span class="w"> </span>reflog<span class="w">                      </span><span class="c1"># every position HEAD has held</span>
+</code></pre></div>
+
+<p><strong>Two rules to state in an interview:</strong></p>
+<p><strong><code>revert</code> on shared history, <code>reset</code> only on your own unpushed work.</strong>
+Rewriting published history forces everyone else to repair their checkout,
+which on a dispersed team is a genuine disruption.</p>
+<p><strong><code>git reflog</code> recovers almost anything</strong>, including after a bad
+<code>reset --hard</code>, for as long as the reflog retention holds. It is the safety net
+that makes the rest survivable.</p>
+<p><strong>Do now, five minutes.</strong> Deliberately lose work and get it back:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s2">"important"</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>config.txt<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qam<span class="w"> </span><span class="s2">"Important change"</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>HEAD~1<span class="w">         </span><span class="c1"># it is gone</span>
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w">               </span><span class="c1"># confirm: gone</span>
+git<span class="w"> </span>reflog<span class="w">                      </span><span class="c1"># find the sha of "Important change"</span>
+git<span class="w"> </span>reset<span class="w"> </span>--hard<span class="w"> </span>&lt;that-sha&gt;<span class="w">     </span><span class="c1"># it is back</span>
+</code></pre></div>
+
+<p>Doing that once removes the fear permanently. <strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-2-branching-conflicts-and-finding-bugs">Hour 2: branching, conflicts, and finding bugs</h2>
+<h3 id="100-to-125-branching-and-merging">1:00 to 1:25 — Branching and merging</h3>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>feature/raise-threshold<span class="w">     </span><span class="c1"># create and switch</span>
+<span class="c1"># ... edit, commit ...</span>
+git<span class="w"> </span>switch<span class="w"> </span>main
+git<span class="w"> </span>merge<span class="w"> </span>feature/raise-threshold
+git<span class="w"> </span>branch<span class="w"> </span>-d<span class="w"> </span>feature/raise-threshold
+</code></pre></div>
+
+<p><strong>Merge versus rebase</strong>, which gets asked constantly:</p>
+<ul>
+<li><strong>Merge</strong> creates a commit with two parents. History shows what actually
+  happened.</li>
+<li><strong>Rebase</strong> replays your commits onto a new base. History is linear, but your
+  commits get new SHAs, which means it is rewriting.</li>
+</ul>
+<p>The defensible policy: <strong>rebase your own unpublished branch</strong> to tidy it before
+review; <strong>merge when integrating anything shared</strong>. Never rebase a branch other
+people have based work on.</p>
+<h3 id="125-to-155-a-conflict-for-real">1:25 to 1:55 — A conflict, for real</h3>
+<p>Do this exactly. It is the highest-value drill in the sprint.</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>/tmp/conflict<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>/tmp/conflict<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>init<span class="w"> </span>-q<span class="w"> </span>-b<span class="w"> </span>main
+git<span class="w"> </span>config<span class="w"> </span>merge.conflictstyle<span class="w"> </span>zdiff3
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.5\nwindow = 30\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>add<span class="w"> </span>.<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-qm<span class="w"> </span><span class="s2">"Initial config"</span>
+
+git<span class="w"> </span>switch<span class="w"> </span>-qc<span class="w"> </span>feature/raise-threshold
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.8\nwindow = 30\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>commit<span class="w"> </span>-qam<span class="w"> </span><span class="s2">"Raise correlation threshold to 0.8"</span>
+
+git<span class="w"> </span>switch<span class="w"> </span>-q<span class="w"> </span>main
+<span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.6\nwindow = 60\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>commit<span class="w"> </span>-qam<span class="w"> </span><span class="s2">"Tune threshold and widen window"</span>
+
+git<span class="w"> </span>merge<span class="w"> </span>feature/raise-threshold
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Auto-merging config.txt
+CONFLICT (content): Merge conflict in config.txt
+Automatic merge failed; fix conflicts and then commit the result.
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>cat<span class="w"> </span>config.txt
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+threshold = 0.6
+window = 60
+||||||| b219389
+threshold = 0.5
+window = 30
+=======
+threshold = 0.8
+window = 30
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature/raise-threshold
+</code></pre></div>
+
+<p><strong>This is why <code>merge.conflictstyle zdiff3</code> matters.</strong> The middle section is the
+<strong>common ancestor</strong>: what the file looked like before either side touched it.
+With the default two-way markers you see only the two final states and have to
+guess what each side changed. Here you can read it directly: main changed
+threshold 0.5 to 0.6 and window 30 to 60; the branch changed threshold 0.5 to
+0.8 and left window alone.</p>
+<p>So the correct resolution is <code>threshold = 0.8</code> and <code>window = 60</code>: take the
+branch's threshold and main's window. <strong>Neither "ours" nor "theirs" wholesale
+would be right</strong>, and that is the lesson.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">printf</span><span class="w"> </span><span class="s1">'threshold = 0.8\nwindow = 60\n'</span><span class="w"> </span>&gt;<span class="w"> </span>config.txt
+git<span class="w"> </span>add<span class="w"> </span>config.txt
+git<span class="w"> </span>merge<span class="w"> </span>--continue
+git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>--graph
+</code></pre></div>
+
+<p>The rules for real conflicts, especially a <strong>baseline merge</strong> where a long
+development line meets a configuration-controlled release:</p>
+<ul>
+<li><strong>Never resolve by taking one side wholesale</strong> just to make the tool stop
+  complaining. That is how a fix gets silently reverted and nobody notices for
+  a year.</li>
+<li><strong>Take them in batches by subsystem</strong>, not file by file top to bottom, so you
+  can hold the context.</li>
+<li><strong>When a conflict is not obviously yours, find both authors.</strong></li>
+<li><strong>Run the full regression suite afterwards</strong>, not just tests near your
+  changes. The risk in a baseline merge is the interaction you did not think
+  about.</li>
+<li><strong>Record non-obvious resolutions in the merge commit message.</strong></li>
+</ul>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>merge<span class="w"> </span>--abort<span class="w">          </span><span class="c1"># back out entirely and start again</span>
+git<span class="w"> </span>checkout<span class="w"> </span>--ours<span class="w"> </span>file<span class="w">   </span><span class="c1"># take the target branch's version</span>
+git<span class="w"> </span>checkout<span class="w"> </span>--theirs<span class="w"> </span>file<span class="w"> </span><span class="c1"># take the incoming version</span>
+</code></pre></div>
+
+<h3 id="155-to-200-finding-the-commit-that-broke-it">1:55 to 2:00 — Finding the commit that broke it</h3>
+<p>This is the party trick that is also genuinely useful. You have twelve commits
+and something broke somewhere in the middle.</p>
+<p>Write a script that exits 0 when things are good and non-zero when broken:</p>
+<div class="codehilite"><pre><span></span><code>cat<span class="w"> </span>&gt;<span class="w"> </span>test.sh<span class="w"> </span><span class="s">&lt;&lt;'EOF'</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">python3 -c "</span>
+<span class="s">from calc import average</span>
+<span class="s">assert average([2, 4]) == 3.0, 'wrong average'</span>
+<span class="s">"</span>
+<span class="s">EOF</span>
+chmod<span class="w"> </span>+x<span class="w"> </span>test.sh
+</code></pre></div>
+
+<p>Then:</p>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>bisect<span class="w"> </span>start<span class="w"> </span>HEAD<span class="w"> </span>HEAD~11<span class="w">     </span><span class="c1"># HEAD is bad, eleven back was good</span>
+git<span class="w"> </span>bisect<span class="w"> </span>run<span class="w"> </span>./test.sh
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Bisecting: 2 revisions left to test after this (roughly 2 steps)
+Bisecting: 0 revisions left to test after this (roughly 1 step)
+Bisecting: 0 revisions left to test after this (roughly 0 steps)
+9bb1db833aa7d7baf7631b6f7b29ac20f6296cf3 is the first bad commit
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>bisect<span class="w"> </span>reset
+</code></pre></div>
+
+<p><strong>Three steps to search twelve commits</strong>, because it is a binary search. Over
+four hundred commits it is nine. This is the answer to "how would you find
+which change introduced this regression," and being able to say <code>git bisect
+run</code> with a scripted reproducer is a strong senior signal.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-the-rest-of-the-lifecycle">Hour 3: the rest of the lifecycle</h2>
+<h3 id="200-to-220-what-full-sdlc-actually-means">2:00 to 2:20 — What "full SDLC" actually means</h3>
+<p>The phrase on your req means you have lived the whole loop, not just the coding
+part. Be able to name the phases and what you do in each:</p>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>What happens</th>
+<th>Your part</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Requirements</strong></td>
+<td>Systems engineering owns what the system shall do</td>
+<td>Ask what a requirement is protecting against; make it verifiable</td>
+</tr>
+<tr>
+<td><strong>Design</strong></td>
+<td>Architecture and interfaces agreed</td>
+<td>Raise ambiguity early; it is free now and expensive later</td>
+</tr>
+<tr>
+<td><strong>Implementation</strong></td>
+<td>Code</td>
+<td>Small commits, peer review</td>
+</tr>
+<tr>
+<td><strong>Verification</strong></td>
+<td>Does it meet the requirement?</td>
+<td>Unit, integration, lab</td>
+</tr>
+<tr>
+<td><strong>Validation</strong></td>
+<td>Does it meet the <em>need</em>?</td>
+<td>Customer demonstration</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Into the field</td>
+<td>Release notes, rollback plan</td>
+</tr>
+<tr>
+<td><strong>Sustainment</strong></td>
+<td>Defects, obsolescence, security</td>
+<td>Most of this job</td>
+</tr>
+</tbody>
+</table>
+<p>The two sentences worth having ready:</p>
+<p><strong>Traceability</strong> is the thread from a requirement, to the code that implements
+it, to the test that verifies it. On an accredited system that thread is
+auditable, and a change that breaks it will be rejected.</p>
+<p><strong>Cost of change rises steeply through the phases.</strong> A requirement ambiguity
+resolved in analysis costs a conversation. The same ambiguity discovered in
+integration costs a lab campaign. That is the argument for raising things
+early, and it is why "I flagged it in week one" is the answer to most process
+questions.</p>
+<p><strong>Agile in this setting.</strong> Scrum with two-week sprints, a product owner who
+owns priority, a definition of done stricter than commercial (code complete,
+unit tested, peer reviewed, static analysis clean, merged, documentation and
+CDRL artifacts updated, verified in the integration environment). Story points
+are relative sizing and velocity is a planning input for one team, not a
+productivity metric to compare teams. Many teams run a Kanban lane alongside
+for incoming defects, because fixed sprints suit feature work and flow suits
+sustainment.</p>
+<h3 id="220-to-250-code-review">2:20 to 2:50 — Code review</h3>
+<p>Reviewing well is a senior skill and they will ask what you look for.</p>
+<p><strong>As an author:</strong></p>
+<ul>
+<li>Keep it small. Under about four hundred lines gets read; two thousand gets
+  rubber-stamped.</li>
+<li>The description says <strong>why</strong>, and what you tested.</li>
+<li>Separate refactoring from behaviour change into different commits, so a
+  reviewer can tell them apart and a revert is surgical.</li>
+<li>Answer every comment, even if only to disagree with a reason.</li>
+</ul>
+<p><strong>As a reviewer</strong>, the checklist:</p>
+<ul>
+<li>Does it do what the ticket says, and only that?</li>
+<li>Are the error paths handled, or only the happy path?</li>
+<li>What happens with empty, null, malformed and enormous input?</li>
+<li>Are there tests, and <strong>would they actually fail if the code were wrong</strong>?</li>
+<li>Is anything logged that should not be: credentials, personal data, full
+  payloads?</li>
+<li>Is a dependency added, and was that vetted for licence and CVEs?</li>
+<li>Is it reversible if the lab finds a problem?</li>
+<li>Would someone unfamiliar understand it in six months?</li>
+</ul>
+<p><strong>Distinguish blocking issues from preferences explicitly.</strong> A reviewer who
+marks style opinions as blocking trains people to dread review, and then you
+stop getting early reviews, which is when review is cheapest.</p>
+<p><strong>After two or three rounds of comments, get on a call.</strong> With a time-zone gap
+each round costs a day.</p>
+<h3 id="250-to-300-branching-strategy">2:50 to 3:00 — Branching strategy</h3>
+<p>Know these three and which fits here:</p>
+<ul>
+<li><strong>Trunk-based</strong>: everyone on main behind short-lived branches, features
+  hidden by flags. Fastest feedback, demands strong automated testing.</li>
+<li><strong>GitFlow</strong>: <code>develop</code>, <code>release/*</code>, <code>hotfix/*</code>, <code>main</code>. Heavier, maps onto
+  formal release baselines, which is why defence programmes often use something
+  like it.</li>
+<li><strong>Release branch per baseline</strong>: a branch per fielded version, fixes
+  cherry-picked. Common when several deployed baselines are maintained at once,
+  which is likely here.</li>
+</ul>
+<p>The mature answer: <em>"the right strategy matches your release cadence and your
+verification cost. If every release needs a lab qualification campaign, then
+continuous deployment is fiction and you want release branches. What still pays
+off from trunk-based thinking is keeping branches short and merging often, so
+integration pain stays small."</em></p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-4-the-pipeline">Hour 4: the pipeline</h2>
+<h3 id="300-to-320-what-ci-actually-buys">3:00 to 3:20 — What CI actually buys</h3>
+<p><strong>Continuous integration</strong> means every change is automatically built and tested
+on a shared machine, not just on the author's laptop.</p>
+<p>The argument to make, and it is the same economic one as
+<a href="python-sprint.html">lesson 4</a>: on a programme like this, <strong>the integration lab
+is the scarcest resource there is.</strong> Every defect the pipeline catches is a lab
+slot you did not consume and a week you did not lose. That is what the posting
+means by automated test capability improving deployment efficiency. Framing it
+as economics rather than hygiene is the senior version.</p>
+<p><strong>Continuous delivery</strong> means every change that passes is <em>deployable</em>.
+<strong>Continuous deployment</strong> means it is automatically deployed. On an accredited
+system you do delivery, not deployment: the pipeline stops at a human gate.</p>
+<h3 id="320-to-350-write-a-pipeline">3:20 to 3:50 — Write a pipeline</h3>
+<p>Create <code>.gitlab-ci.yml</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">stages</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">lint</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">test</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">build</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">scan</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">deploy</span><span class="p p-Indicator">]</span>
+
+<span class="nt">default</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.11-slim</span>
+<span class="w">  </span><span class="nt">cache</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">key</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">files</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">requirements.txt</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">.cache/pip</span><span class="p p-Indicator">]</span>
+
+<span class="nt">variables</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">PIP_CACHE_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">"$CI_PROJECT_DIR/.cache/pip"</span>
+<span class="w">  </span><span class="nt">IMAGE</span><span class="p">:</span><span class="w"> </span><span class="s">"$CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA"</span>
+
+<span class="nt">lint</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">lint</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install ruff</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ruff check .</span>
+
+<span class="nt">unit-tests</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt -r requirements-dev.txt</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest -q --junitxml=report.xml --cov=. --cov-report=xml</span>
+<span class="w">  </span><span class="nt">coverage</span><span class="p">:</span><span class="w"> </span><span class="s">'/^TOTAL.*\s+(\d+%)$/'</span>
+<span class="w">  </span><span class="nt">artifacts</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<span class="w">    </span><span class="nt">reports</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">junit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">report.xml</span>
+
+<span class="nt">build-image</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build</span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker:27</span>
+<span class="w">  </span><span class="nt">services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">docker</span><span class="p p-Indicator">:</span><span class="nv">27-dind</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t "$IMAGE" .</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push "$IMAGE"</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH</span>
+
+<span class="nt">dependency-scan</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scan</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install pip-audit</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip-audit --strict -r requirements.txt</span>
+
+<span class="nt">deploy-staging</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+<span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./deploy.sh staging "$IMAGE"</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH</span>
+
+<span class="nt">deploy-production</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy</span>
+<span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+<span class="w">  </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manual</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./deploy.sh production "$IMAGE"</span>
+<span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_TAG</span>
+</code></pre></div>
+
+<p>Now the principles, each of which you should be able to state:</p>
+<p><strong>Fast feedback first.</strong> Lint before tests, tests before the image build. A
+developer should know within three minutes.</p>
+<p><strong>Build once, promote the same artifact.</strong> The image is built once and tagged
+by commit SHA, and that exact image is what goes to staging and then
+production. <strong>Never rebuild between test and deploy</strong>, or you have shipped
+something you did not test. This is the single most important CI principle;
+say it emphatically.</p>
+<p><strong>Tag by commit SHA, never <code>latest</code>.</strong> Traceability from a running container
+back to a commit.</p>
+<p><strong><code>rules</code> control cost.</strong> The image build and deploys only happen on the
+default branch; scans do not run on every push to every branch.</p>
+<p><strong>A manual gate before production.</strong> On an accredited system the pipeline stops
+at a human decision.</p>
+<p><strong><code>artifacts: when: always</code></strong> so the test report is published even when tests
+fail. A failed job whose report was not uploaded is a job you have to re-run to
+understand.</p>
+<p><strong>Cache keyed on <code>requirements.txt</code>.</strong> Same layer-ordering logic as
+<a href="docker-sprint.html">lesson 8</a>: dependencies change rarely, source changes
+constantly.</p>
+<h3 id="350-to-357-quality-gates-on-legacy-code">3:50 to 3:57 — Quality gates on legacy code</h3>
+<p>The practical problem nobody warns you about: you turn on a linter or a scanner
+for the first time on a ten-year-old codebase and get four thousand findings.</p>
+<p><strong>Do not try to fix them all, and do not turn the gate off.</strong> Baseline the
+existing findings, block anything <em>new</em>, and burn the backlog down
+deliberately. Otherwise the gate gets disabled within a week and you have lost
+it permanently.</p>
+<p>The same applies to coverage: set a floor at wherever you are and require that
+it not regress, rather than mandating eighty percent on day one.</p>
+<p>And the rule from <a href="testing-ci.html">lesson 19</a> that matters most: <strong>a flaky
+test is an emergency, not an annoyance.</strong> One flaky test teaches the whole team
+to re-run the pipeline instead of reading the failure, and from that moment the
+suite protects nothing. Quarantine with a ticket, an owner and a deadline, then
+fix the root cause. A retry is not a fix.</p>
+<h3 id="357-to-400-self-test">3:57 to 4:00 — Self-test</h3>
+<p>From memory:</p>
+<ol>
+<li>The four places a change can live, and the command moving it between each.</li>
+<li>When to use <code>revert</code> and when <code>reset</code>, and why.</li>
+<li>What <code>git reflog</code> is for.</li>
+<li>Why <code>merge.conflictstyle zdiff3</code> is better than the default.</li>
+<li>How to find which of four hundred commits broke something.</li>
+<li>Why you must not rebuild the artifact between test and deploy.</li>
+<li>What to do when a new linter reports four thousand findings.</li>
+</ol>
+<h2 id="what-you-can-honestly-claim">What you can honestly claim</h2>
+<p><strong>Say:</strong> you work comfortably in Git including conflict resolution, history
+recovery and bisect; you review code against a real checklist; you understand
+the full lifecycle from requirement through sustainment and why traceability
+matters on an accredited system; and you can write and explain a CI/CD pipeline
+including artifact promotion and quality gates.</p>
+<p><strong>Be honest</strong> about which CI system you have used. The concepts transfer
+completely between GitLab, Jenkins and GitHub Actions, and saying "I have built
+pipelines in X; the stages and the build-once principle are the same" is a
+fine answer.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<ol>
+<li><strong><a href="git-agile.html">Lesson 18</a></strong> for GitLab specifics and Agile mechanics.</li>
+<li><strong><a href="testing-ci.html">Lesson 19</a></strong> for the testing pyramid and Jenkins.</li>
+<li><strong>Put a real pipeline on a real repository.</strong> This site has one; read
+   <code>.github/workflows/pages.yml</code> in the prep repo, which gates publication on a
+   staleness check and a link check.</li>
+<li><strong>Do the conflict drill three more times</strong>, with <code>--abort</code>, with <code>--ours</code>,
+   and with a rebase, so all four paths are muscle memory.</li>
+<li><strong>Bisect a real bug</strong> in a repository you know.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/docker-sprint.html">&larr; 8. Sprint: Docker in Four Hours</a><a class="next" href="../lessons/python.html">10. Python Foundations &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# 11. Object-oriented design and SOLID
+# 16. Object-oriented design and SOLID
 
 The posting names "object-oriented design principles" explicitly. On a
 sustainment program this is not academic. Legacy code that resists change is the

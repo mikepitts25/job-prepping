@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. The four-hour frontend sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li class="active"><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="6-the-four-hour-frontend-sprint">6. The four-hour frontend sprint</h1>
+<p>Angular, JavaScript, CSS and HTML are a <strong>basic qualification</strong> on your
+requisition. If you have four hours and no web background, this is how to spend
+them.</p>
+<p>Same contract as <a href="python-sprint.html">the Python sprint</a>: you cannot become a
+frontend engineer in four hours, but you can become one who has been doing it
+for four hours, and that is enough to write a working page, discuss Angular
+credibly, and not bluff.</p>
+<p>We build <strong>one thing</strong>: an air picture page. A table of tracks, filterable,
+that loads from an API, marks stale tracks, and has a test suite. By hour four
+it exists twice, once in plain TypeScript and once as an Angular component, so
+you can see exactly what the framework does for you.</p>
+<p><a href="frontend.html">Lesson 12</a> is the thorough reference. This is the sprint.</p>
+<h2 id="the-rules">The rules</h2>
+<p>Same as before, and they are what make four hours work.</p>
+<ol>
+<li><strong>Type everything. Never paste.</strong></li>
+<li><strong>Look at it.</strong> Keep the page open in a browser. Refresh after every change.
+   The feedback loop is the whole advantage of frontend work; use it.</li>
+<li><strong>Keep the browser devtools open.</strong> F12. The Console tab shows errors, the
+   Elements tab shows the live DOM. You will need both.</li>
+<li><strong>Break things on purpose</strong> where I say so.</li>
+<li><strong>Respect the clock.</strong> Move on even if a block is unfinished.</li>
+</ol>
+<h2 id="what-i-am-cutting-and-why">What I am cutting, and why</h2>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>React, Vue, Svelte</td>
+<td>Your req says Angular.</td>
+</tr>
+<tr>
+<td>Build tooling internals (webpack, Vite config)</td>
+<td>The Angular CLI does it.</td>
+</tr>
+<tr>
+<td>Sass, Tailwind, CSS-in-JS</td>
+<td>Plain CSS is enough today and transfers.</td>
+</tr>
+<tr>
+<td>RxJS beyond four operators</td>
+<td>You will read far more than you write.</td>
+</tr>
+<tr>
+<td>NgModules</td>
+<td>Standalone components are the modern default. You will meet modules in legacy code; hour 4 shows you what they look like.</td>
+</tr>
+<tr>
+<td>State libraries (NgRx)</td>
+<td>Signals cover everything you need at this level.</td>
+</tr>
+<tr>
+<td>Animations, i18n, SSR</td>
+<td>Not on the req, not in four hours.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-ten-minutes-before-the-clock">Setup: ten minutes, before the clock</h2>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>fesprint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>fesprint
+npm<span class="w"> </span>init<span class="w"> </span>-y
+npm<span class="w"> </span>install<span class="w"> </span>--save-dev<span class="w"> </span>typescript@5.6.3<span class="w"> </span>vitest@2.1.8<span class="w"> </span>jsdom@25.0.1
+npx<span class="w"> </span>tsc<span class="w"> </span>--version<span class="w">         </span><span class="c1"># expect 5.6.3</span>
+</code></pre></div>
+
+<p>Add <code>"type": "module"</code> to <code>package.json</code>. Then two config files:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// tsconfig.json</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="nt">"compilerOptions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">"target"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ES2022"</span><span class="p">,</span><span class="w"> </span><span class="nt">"module"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ES2022"</span><span class="p">,</span><span class="w"> </span><span class="nt">"moduleResolution"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bundler"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"lib"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"ES2022"</span><span class="p">,</span><span class="w"> </span><span class="s2">"DOM"</span><span class="p">],</span><span class="w"> </span><span class="nt">"strict"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">"noUnusedLocals"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"skipLibCheck"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="nt">"noEmit"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">"include"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"*.ts"</span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1">// vitest.config.ts</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">defineConfig</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vitest/config'</span><span class="p">;</span>
+<span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="nx">defineConfig</span><span class="p">({</span><span class="w"> </span><span class="nx">test</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">environment</span><span class="o">:</span><span class="w"> </span><span class="s1">'jsdom'</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+
+<p><code>jsdom</code> is a fake browser that runs in Node, so tests can create elements and
+click things without opening a real browser. That is what makes hour three
+possible.</p>
+<p>Start the clock.</p>
+<hr />
+<h2 id="hour-1-a-page-you-can-look-at">Hour 1: a page you can look at</h2>
+<h3 id="000-to-010-the-three-languages">0:00 to 0:10 — The three languages</h3>
+<p>A browser does three things: fetch documents, render them, run JavaScript.</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTML</strong></td>
+<td>Structure and content. The nouns.</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>Presentation. The adjectives.</td>
+</tr>
+<tr>
+<td><strong>JavaScript</strong></td>
+<td>Behaviour. The verbs.</td>
+</tr>
+</tbody>
+</table>
+<p>The browser parses your HTML into a tree of objects called the <strong>DOM</strong>.
+JavaScript changes that tree; the browser re-renders. Hold that sentence: it is
+what Angular exists to automate.</p>
+<h3 id="010-to-035-html">0:10 to 0:35 — HTML</h3>
+<p>Create <code>index.html</code> and type this. All of it.</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"en"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">"viewport"</span> <span class="na">content</span><span class="o">=</span><span class="s">"width=device-width, initial-scale=1"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Air Picture<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">"stylesheet"</span> <span class="na">href</span><span class="o">=</span><span class="s">"styles.css"</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Air Picture<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"toolbar"</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">"affiliation"</span><span class="p">&gt;</span>Affiliation<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">select</span> <span class="na">id</span><span class="o">=</span><span class="s">"affiliation"</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"all"</span><span class="p">&gt;</span>All<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"hostile"</span><span class="p">&gt;</span>Hostile<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"unknown"</span><span class="p">&gt;</span>Unknown<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"friend"</span><span class="p">&gt;</span>Friend<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+
+      <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">"min-confidence"</span><span class="p">&gt;</span>Min confidence<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">"min-confidence"</span> <span class="na">type</span><span class="o">=</span><span class="s">"number"</span> <span class="na">min</span><span class="o">=</span><span class="s">"0"</span> <span class="na">max</span><span class="o">=</span><span class="s">"1"</span> <span class="na">step</span><span class="o">=</span><span class="s">"0.1"</span> <span class="na">value</span><span class="o">=</span><span class="s">"0"</span><span class="p">&gt;</span>
+
+      <span class="p">&lt;</span><span class="nt">span</span> <span class="na">id</span><span class="o">=</span><span class="s">"status"</span> <span class="na">role</span><span class="o">=</span><span class="s">"status"</span> <span class="na">class</span><span class="o">=</span><span class="s">"status"</span><span class="p">&gt;&lt;/</span><span class="nt">span</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">caption</span><span class="p">&gt;</span>Current tracks, worst confidence first<span class="p">&lt;/</span><span class="nt">caption</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">thead</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Track<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Affiliation<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Altitude<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+          <span class="p">&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Confidence<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+      <span class="p">&lt;/</span><span class="nt">thead</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">tbody</span> <span class="na">id</span><span class="o">=</span><span class="s">"rows"</span><span class="p">&gt;&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">"module"</span> <span class="na">src</span><span class="o">=</span><span class="s">"app.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Open it in a browser. It is ugly and empty below the header. That is correct.</p>
+<p>What just went past you, and why each bit is there:</p>
+<p><strong>Tags nest into a tree.</strong> <code>&lt;html&gt;</code> contains <code>&lt;head&gt;</code> and <code>&lt;body&gt;</code>. <code>head</code> is
+metadata nobody sees; <code>body</code> is the page.</p>
+<p><strong><code>id</code> names one element</strong> so CSS and JavaScript can find it. <code>class</code> groups
+many.</p>
+<p><strong>Every <code>label</code> has a <code>for</code> matching an input's <code>id</code>.</strong> That pairing makes
+clicking the label focus the field and makes a screen reader announce what the
+field is for. It is the single most skipped detail in web forms, and on a US
+government programme accessibility is a legal requirement under Section 508.</p>
+<p><strong><code>th scope="col"</code> and <code>&lt;caption&gt;</code></strong> are what let a screen reader announce
+"Altitude, 32,000 feet" instead of reading a wall of numbers.</p>
+<p><strong><code>role="status"</code></strong> on the status span means assistive technology announces
+changes to it without stealing focus.</p>
+<p><strong><code>&lt;tbody id="rows"&gt;</code> is empty</strong> because JavaScript will fill it.</p>
+<p><strong>Do now, three minutes.</strong> In devtools, Elements tab, find <code>tbody#rows</code>. Then
+in the Console type <code>document.getElementById('rows')</code>. That is the connection
+between the markup and the code, and seeing it once makes the rest obvious.</p>
+<h3 id="035-to-100-css">0:35 to 1:00 — CSS</h3>
+<p>Create <code>styles.css</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">*,</span><span class="w"> </span><span class="o">*</span><span class="p">::</span><span class="nd">before</span><span class="o">,</span><span class="w"> </span><span class="o">*</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">box-sizing</span><span class="p">:</span><span class="w"> </span><span class="kc">border-box</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--ink</span><span class="p">:</span><span class="w"> </span><span class="mh">#1d1b18</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--line</span><span class="p">:</span><span class="w"> </span><span class="mh">#e3ded5</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--hostile</span><span class="p">:</span><span class="w"> </span><span class="mh">#b3261e</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--muted</span><span class="p">:</span><span class="w"> </span><span class="mh">#5f5a52</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">font</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="kt">px</span><span class="o">/</span><span class="mf">1.5</span><span class="w"> </span><span class="n">system-ui</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--ink</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">22</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="p">.</span><span class="nc">toolbar</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
+<span class="w">  </span><span class="k">gap</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">align-items</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span>
+<span class="w">  </span><span class="k">flex-wrap</span><span class="p">:</span><span class="w"> </span><span class="kc">wrap</span><span class="p">;</span>
+<span class="w">  </span><span class="k">margin-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">status</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">margin-left</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--muted</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nt">table</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-collapse</span><span class="p">:</span><span class="w"> </span><span class="kc">collapse</span><span class="p">;</span><span class="w"> </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">caption</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--muted</span><span class="p">);</span><span class="w"> </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">th</span><span class="o">,</span><span class="w"> </span><span class="nt">td</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">border-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--line</span><span class="p">);</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="kt">px</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span><span class="w"> </span><span class="k">text-align</span><span class="p">:</span><span class="w"> </span><span class="kc">left</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">th</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#f4f1ec</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">tbody</span><span class="w"> </span><span class="nt">tr</span><span class="p">:</span><span class="nd">nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#faf9f7</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="nt">tr</span><span class="p">.</span><span class="nc">hostile</span><span class="w"> </span><span class="nt">td</span><span class="p">:</span><span class="nd">first-child</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--hostile</span><span class="p">);</span><span class="w"> </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="mi">600</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="nt">tr</span><span class="p">.</span><span class="nc">stale</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">opacity</span><span class="p">:</span><span class="w"> </span><span class="mf">0.55</span><span class="p">;</span><span class="w"> </span><span class="k">font-style</span><span class="p">:</span><span class="w"> </span><span class="kc">italic</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+
+<span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span><span class="w"> </span><span class="nt">700px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">toolbar</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">flex-direction</span><span class="p">:</span><span class="w"> </span><span class="kc">column</span><span class="p">;</span><span class="w"> </span><span class="k">align-items</span><span class="p">:</span><span class="w"> </span><span class="kc">stretch</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">status</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">margin-left</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Refresh. It now looks like software.</p>
+<p>The ideas, each of which earns its line:</p>
+<p><strong><code>box-sizing: border-box</code> on everything.</strong> By default <code>width</code> measures only
+the content, so adding padding makes the box wider than you asked for. This one
+line makes <code>width</code> mean the whole box, which is what everyone intends. Set it
+once in every project and stop fighting it.</p>
+<p><strong>Selectors.</strong> <code>h1</code> targets elements, <code>.toolbar</code> targets a class, <code>#rows</code>
+targets an id, <code>tr.hostile td:first-child</code> targets the first cell of rows with
+that class. Prefer classes: ids are too specific, element selectors too broad.</p>
+<p><strong>Custom properties.</strong> <code>--hostile</code> defined once on <code>:root</code>, used with
+<code>var(--hostile)</code>. Variables in CSS. Change a theme in one place.</p>
+<p><strong>Flexbox</strong> lays things out in one direction. <code>gap</code> spaces children, and
+<code>margin-left: auto</code> on the status pushes it to the far end, which is the
+idiomatic way to right-align one flex item.</p>
+<p><strong>A media query</strong> applies rules conditionally. Under 700 pixels the toolbar
+stacks.</p>
+<p><strong>Do now, five minutes.</strong> Break things and watch:</p>
+<ol>
+<li>Delete <code>box-sizing</code> and add <code>width: 100%</code> to <code>.toolbar</code> inputs. Watch the
+   overflow. Put it back.</li>
+<li>Change <code>display: flex</code> to <code>display: block</code> on <code>.toolbar</code>. Watch it stack.</li>
+<li>In devtools, Elements tab, select a <code>&lt;tr&gt;</code> and add <code>class="hostile"</code> by hand.
+   Watch the first cell turn red. That is CSS and HTML meeting.</li>
+</ol>
+<p><strong>Checkpoint, 1:00.</strong> Close the files. From memory, write the CSS rule that
+makes every element use border-box sizing, and a flexbox toolbar with a 12 pixel
+gap. <strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-2-make-it-live">Hour 2: make it live</h2>
+<h3 id="100-to-120-javascript-translated-from-python">1:00 to 1:20 — JavaScript, translated from Python</h3>
+<p>You know Python. Here is the map.</p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x = 5</code></td>
+<td><code>const x = 5;</code></td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td><code>null</code> and <code>undefined</code></td>
+</tr>
+<tr>
+<td><code>def f(a, b=1):</code></td>
+<td><code>function f(a, b = 1) {}</code></td>
+</tr>
+<tr>
+<td><code>lambda x: x * 2</code></td>
+<td><code>(x) =&gt; x * 2</code></td>
+</tr>
+<tr>
+<td><code>[f(x) for x in xs]</code></td>
+<td><code>xs.map(f)</code></td>
+</tr>
+<tr>
+<td><code>[x for x in xs if p(x)]</code></td>
+<td><code>xs.filter(p)</code></td>
+</tr>
+<tr>
+<td><code>sum(xs)</code></td>
+<td><code>xs.reduce((a, b) =&gt; a + b, 0)</code></td>
+</tr>
+<tr>
+<td><code>sorted(xs, key=f)</code></td>
+<td><code>[...xs].sort((a, b) =&gt; f(a) - f(b))</code></td>
+</tr>
+<tr>
+<td>f-string</td>
+<td><code>`backtick ${template}`</code></td>
+</tr>
+<tr>
+<td>indentation</td>
+<td><code>{ }</code> braces</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-001'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="mf">0.9</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'friend'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="mf">0.3</span><span class="w"> </span><span class="p">},</span>
+<span class="p">];</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">trackId</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">hostiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">sorted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">tracks</span><span class="p">].</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">confidence</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Four things to burn in now:</p>
+<p><strong><code>const</code> by default</strong>, <code>let</code> only when you must reassign, never <code>var</code>.</p>
+<p><strong><code>===</code>, never <code>==</code>.</strong> The double equals converts types with rules nobody
+remembers. <code>1 == '1'</code> is true; <code>1 === '1'</code> is false. Use the strict one always.</p>
+<p><strong><code>sort</code> mutates the array in place.</strong> <code>[...tracks]</code> copies first. That spread
+syntax also does "copy with a change": <code>{ ...track, confidence: 0.5 }</code>.</p>
+<p><strong>A comparator returns a number</strong>, not a boolean. Negative means "a first."
+<code>(a, b) =&gt; a.confidence - b.confidence</code> sorts ascending. This trips up everyone
+coming from Python's <code>key=</code>.</p>
+<h3 id="120-to-150-filtering-sorting-rendering">1:20 to 1:50 — Filtering, sorting, rendering</h3>
+<p>Now the real work. Create <code>app.ts</code> (we will add types in hour three; for now
+the logic).</p>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="nx">filters</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">tracks</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">filters</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'all'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">filters</span><span class="p">.</span><span class="nx">affiliation</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nx">filters</span><span class="p">.</span><span class="nx">minConfidence</span><span class="p">)</span>
+<span class="w">    </span><span class="p">.</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">trackId</span><span class="p">.</span><span class="nx">localeCompare</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">trackId</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">formatAltitude</span><span class="p">(</span><span class="nx">feet</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nb">Math</span><span class="p">.</span><span class="nx">round</span><span class="p">(</span><span class="nx">feet</span><span class="p">).</span><span class="nx">toLocaleString</span><span class="p">(</span><span class="s1">'en-US'</span><span class="p">)</span><span class="si">}</span><span class="sb"> ft`</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">isStale</span><span class="p">(</span><span class="nx">track</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">,</span><span class="w"> </span><span class="nx">maxAgeSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">30</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="nx">now</span><span class="p">.</span><span class="nx">getTime</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="nx">track</span><span class="p">.</span><span class="nx">lastSeen</span><span class="p">).</span><span class="nx">getTime</span><span class="p">())</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">maxAgeSeconds</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The <code>|| a.trackId.localeCompare(b.trackId)</code> is the tie-break, and it is not
+decoration. Without it the order of equally-confident rows is unspecified, the
+table reshuffles on every refresh, and an operator loses their place. <strong>A
+deterministic sort is a usability requirement here, and it is also what makes it
+testable.</strong> Say that in an interview.</p>
+<p><code>isStale</code> takes <code>now</code> as a parameter instead of calling <code>new Date()</code> inside.
+That is what lets a test move time without waiting, exactly like injecting a
+clock in Python.</p>
+<p>Now rendering:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">tbody</span><span class="p">.</span><span class="nx">replaceChildren</span><span class="p">();</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">track</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">row</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tbody</span><span class="p">.</span><span class="nx">ownerDocument</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">row</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="nx">track</span><span class="p">.</span><span class="nx">affiliation</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">isStale</span><span class="p">(</span><span class="nx">track</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">row</span><span class="p">.</span><span class="nx">classList</span><span class="p">.</span><span class="nx">add</span><span class="p">(</span><span class="s1">'stale'</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="nx">track</span><span class="p">.</span><span class="nx">trackId</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">track</span><span class="p">.</span><span class="nx">affiliation</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">formatAltitude</span><span class="p">(</span><span class="nx">track</span><span class="p">.</span><span class="nx">altitudeFt</span><span class="p">),</span>
+<span class="w">      </span><span class="nx">track</span><span class="p">.</span><span class="nx">confidence</span><span class="p">.</span><span class="nx">toFixed</span><span class="p">(</span><span class="mf">2</span><span class="p">),</span>
+<span class="w">    </span><span class="p">])</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">cell</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tbody</span><span class="p">.</span><span class="nx">ownerDocument</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s1">'td'</span><span class="p">);</span>
+<span class="w">      </span><span class="nx">cell</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">text</span><span class="p">;</span>
+<span class="w">      </span><span class="nx">row</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">cell</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="nx">tbody</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">row</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Three deliberate decisions here, each worth stating:</p>
+<p><strong>It takes <code>tbody</code> as an argument</strong> rather than looking it up itself. That is
+dependency injection in miniature, and it is what lets a test hand it a
+detached element.</p>
+<p><strong><code>textContent</code>, never <code>innerHTML</code>.</strong> Building markup from data strings is how
+cross-site scripting happens: a track id of <code>&lt;img src=x onerror=alert(1)&gt;</code>
+would execute. <code>textContent</code> treats it as text. There is a test for exactly
+this in hour three.</p>
+<p><strong><code>replaceChildren()</code> first</strong>, so re-rendering replaces rather than appends.
+Forgetting this gives you a table that grows forever, which is a very common
+beginner bug.</p>
+<h3 id="150-to-200-wiring-the-controls">1:50 to 2:00 — Wiring the controls</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">wireControls</span><span class="p">(</span><span class="nx">el</span><span class="p">,</span><span class="w"> </span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">redraw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">filters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="kt">el.affiliation.value</span><span class="p">,</span>
+<span class="w">      </span><span class="nx">minConfidence</span><span class="o">:</span><span class="w"> </span><span class="kt">Number</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">minConfidence</span><span class="p">.</span><span class="nx">value</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">0</span><span class="p">,</span>
+<span class="w">    </span><span class="p">};</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">shown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="nx">filters</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">el</span><span class="p">.</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="nx">shown</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">el</span><span class="p">.</span><span class="nx">status</span><span class="p">.</span><span class="nx">textContent</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`</span><span class="si">${</span><span class="nx">shown</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb"> of </span><span class="si">${</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">length</span><span class="si">}</span><span class="sb"> tracks`</span><span class="p">;</span>
+<span class="w">  </span><span class="p">};</span>
+
+<span class="w">  </span><span class="nx">el</span><span class="p">.</span><span class="nx">affiliation</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'change'</span><span class="p">,</span><span class="w"> </span><span class="nx">redraw</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">el</span><span class="p">.</span><span class="nx">minConfidence</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="s1">'input'</span><span class="p">,</span><span class="w"> </span><span class="nx">redraw</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">redraw</span><span class="p">();</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">redraw</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>This function is the whole lesson of hour two.</strong> Every control change calls
+one <code>redraw</code>, which reads the current state and rebuilds the view. Nothing
+patches individual cells.</p>
+<p>That discipline is what a framework automates: <strong>describe the view as a
+function of the state.</strong> Angular in hour four does exactly this, and now you
+will know what it is saving you from.</p>
+<p>Note <code>Number(el.minConfidence.value) || 0</code>: an empty input gives <code>""</code>, and
+<code>Number("")</code> is <code>0</code>, but <code>Number("abc")</code> is <code>NaN</code>, and every comparison against
+<code>NaN</code> is false, which would silently hide every row. The <code>|| 0</code> catches it.</p>
+<p><strong>Do now, five minutes.</strong> Break it: remove <code>replaceChildren()</code> and change the
+filter a few times. Watch rows accumulate. Put it back. Then remove <code>redraw()</code>
+at the end and reload: the table starts empty until you touch a control. Put it
+back.</p>
+<p><strong>Take five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-types-and-tests">Hour 3: types and tests</h2>
+<h3 id="200-to-225-typescript">2:00 to 2:25 — TypeScript</h3>
+<p>TypeScript is JavaScript plus a type system. You write types, a compiler checks
+them and erases them, and plain JavaScript comes out. <strong>Nothing is checked at
+runtime.</strong></p>
+<p>Why bother: JavaScript will happily let <code>track.altitide</code> (misspelled) be
+<code>undefined</code>, and you find out when an operator sees a blank cell. TypeScript
+catches it before the code runs.</p>
+<p>Add the types to the top of <code>app.ts</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Affiliation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'friend'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'hostile'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'neutral'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'unknown'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="kt">Affiliation</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">altitudeFt</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">lastSeen</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Filters</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="kt">Affiliation</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'all'</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">minConfidence</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>Affiliation</code> is a <strong>union of literal types</strong>: those four strings are the only
+legal values, and <code>'banana'</code> is a compile error. That is how you model an
+enumerated field from an interface control document, and it is a type system
+doing real work.</p>
+<p><code>readonly</code> means the field cannot be reassigned after construction. Immutable
+data is safer to pass around, same argument as frozen dataclasses in Python.</p>
+<p>Now annotate the functions:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tracks</span><span class="o">:</span><span class="w"> </span><span class="kt">readonly</span><span class="w"> </span><span class="nx">Track</span><span class="p">[],</span><span class="w"> </span><span class="nx">filters</span><span class="o">:</span><span class="w"> </span><span class="kt">Filters</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">Track</span><span class="p">[]</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">formatAltitude</span><span class="p">(</span><span class="nx">feet</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">isStale</span><span class="p">(</span><span class="nx">track</span><span class="o">:</span><span class="w"> </span><span class="kt">Track</span><span class="p">,</span><span class="w"> </span><span class="nx">now</span><span class="o">:</span><span class="w"> </span><span class="kt">Date</span><span class="p">,</span><span class="w"> </span><span class="nx">maxAgeSeconds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">30</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="o">:</span><span class="w"> </span><span class="kt">HTMLElement</span><span class="p">,</span><span class="w"> </span><span class="nx">tracks</span><span class="o">:</span><span class="w"> </span><span class="kt">readonly</span><span class="w"> </span><span class="nx">Track</span><span class="p">[],</span><span class="w"> </span><span class="nx">now</span><span class="o">:</span><span class="w"> </span><span class="kt">Date</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Run <code>npx tsc --noEmit</code>. Fix what it complains about.</p>
+<h3 id="225-to-240-validating-untrusted-data">2:25 to 2:40 — Validating untrusted data</h3>
+<p>This is the most important fifteen minutes of the hour.</p>
+<p>Data from an API is <strong>not</strong> a <code>Track</code> just because you said so. Casting with
+<code>as Track</code> is a lie the compiler believes. Validate instead:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">AFFILIATIONS</span><span class="o">:</span><span class="w"> </span><span class="kt">readonly</span><span class="w"> </span><span class="kt">string</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'friend'</span><span class="p">,</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="s1">'neutral'</span><span class="p">,</span><span class="w"> </span><span class="s1">'unknown'</span><span class="p">];</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">parseTrack</span><span class="p">(</span><span class="nx">raw</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'object'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'not an object'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">Record</span><span class="o">&lt;</span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">unknown</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">trackId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="p">[</span><span class="s1">'trackId'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">trackId</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'string'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">trackId</span><span class="p">.</span><span class="nx">trim</span><span class="p">()</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">''</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'trackId must be a non-empty string'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">affiliation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="p">[</span><span class="s1">'affiliation'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">affiliation</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'string'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nx">AFFILIATIONS</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="nx">affiliation</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="sb">`affiliation must be one of </span><span class="si">${</span><span class="nx">AFFILIATIONS</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">', '</span><span class="p">)</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">altitudeFt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="p">[</span><span class="s1">'altitudeFt'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">altitudeFt</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'number'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="o">!</span><span class="nb">Number</span><span class="p">.</span><span class="nb">isFinite</span><span class="p">(</span><span class="nx">altitudeFt</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'altitudeFt must be a finite number'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">confidence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="p">[</span><span class="s1">'confidence'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">confidence</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'number'</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">confidence</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nx">confidence</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'confidence must be between 0 and 1'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">lastSeen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">r</span><span class="p">[</span><span class="s1">'lastSeen'</span><span class="p">];</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="ow">typeof</span><span class="w"> </span><span class="nx">lastSeen</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="s1">'string'</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'lastSeen must be a string'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="kt">trackId.trim</span><span class="p">(),</span>
+<span class="w">    </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="kt">affiliation</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">Affiliation</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">altitudeFt</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="p">,</span><span class="w"> </span><span class="nx">lastSeen</span><span class="p">,</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong><code>unknown</code> versus <code>any</code> is the distinction to remember.</strong> <code>any</code> switches type
+checking off and lets bad data through silently. <code>unknown</code> forces you to prove
+what a value is before using it. External data should always arrive as
+<code>unknown</code>. That answer alone marks you out in an interview.</p>
+<p>And the fetch:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">loadTracks</span><span class="p">(</span><span class="nx">fetchFn</span><span class="o">:</span><span class="w"> </span><span class="kt">typeof</span><span class="w"> </span><span class="nx">fetch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fetch</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetchFn</span><span class="p">(</span><span class="s1">'/api/v1/tracks'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="sb">`HTTP </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">payload</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">payload</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">'expected an array'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">tracks</span><span class="o">:</span><span class="w"> </span><span class="kt">Track</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kd">const</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">payload</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">parseTrack</span><span class="p">(</span><span class="nx">raw</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="c1">// One bad record must not blank the operator's screen.</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">tracks</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>The trap worth knowing:</strong> <code>fetch</code> only rejects on a <em>network</em> failure. A 404
+or a 500 is a perfectly successful HTTP exchange as far as <code>fetch</code> is
+concerned, so you must check <code>response.ok</code> yourself. People miss this
+constantly, and it is a good interview answer.</p>
+<p><code>fetchFn</code> is a parameter defaulting to the real <code>fetch</code>, so a test can pass a
+fake. Same injection trick as the clock.</p>
+<h3 id="240-to-300-tests">2:40 to 3:00 — Tests</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">beforeEach</span><span class="p">,</span><span class="w"> </span><span class="nx">describe</span><span class="p">,</span><span class="w"> </span><span class="nx">expect</span><span class="p">,</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vitest'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Track</span><span class="p">,</span><span class="w"> </span><span class="nx">isStale</span><span class="p">,</span><span class="w"> </span><span class="nx">parseTrack</span><span class="p">,</span><span class="w"> </span><span class="nx">renderRows</span><span class="p">,</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">,</span><span class="w"> </span><span class="nx">wireControls</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./app'</span><span class="p">;</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">track</span><span class="p">(</span><span class="nx">overrides</span><span class="o">:</span><span class="w"> </span><span class="kt">Partial</span><span class="o">&lt;</span><span class="nx">Track</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span><span class="o">:</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-001'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'unknown'</span><span class="p">,</span><span class="w"> </span><span class="nx">altitudeFt</span><span class="o">:</span><span class="w"> </span><span class="kt">10_000</span><span class="p">,</span>
+<span class="w">    </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.9</span><span class="p">,</span><span class="w"> </span><span class="nx">lastSeen</span><span class="o">:</span><span class="w"> </span><span class="s1">'2026-09-16T12:00:00Z'</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">overrides</span><span class="p">,</span>
+<span class="w">  </span><span class="p">};</span>
+<span class="p">}</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'visibleTracks'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-1'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.9</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">    </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-2'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'friend'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.3</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">    </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-3'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.5</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">  </span><span class="p">];</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'sorts worst confidence first'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">shown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'all'</span><span class="p">,</span><span class="w"> </span><span class="nx">minConfidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">shown</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">confidence</span><span class="p">)).</span><span class="nx">toEqual</span><span class="p">([</span><span class="mf">0.3</span><span class="p">,</span><span class="w"> </span><span class="mf">0.5</span><span class="p">,</span><span class="w"> </span><span class="mf">0.9</span><span class="p">]);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'breaks ties by track id so rows do not jump between refreshes'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">tied</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-B'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.5</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-A'</span><span class="p">,</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.5</span><span class="w"> </span><span class="p">})];</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">shown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tied</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'all'</span><span class="p">,</span><span class="w"> </span><span class="nx">minConfidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0</span><span class="w"> </span><span class="p">});</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">shown</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">trackId</span><span class="p">)).</span><span class="nx">toEqual</span><span class="p">([</span><span class="s1">'T-A'</span><span class="p">,</span><span class="w"> </span><span class="s1">'T-B'</span><span class="p">]);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'can show nothing'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">visibleTracks</span><span class="p">(</span><span class="nx">tracks</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'all'</span><span class="p">,</span><span class="w"> </span><span class="nx">minConfidence</span><span class="o">:</span><span class="w"> </span><span class="kt">0.99</span><span class="w"> </span><span class="p">})).</span><span class="nx">toEqual</span><span class="p">([]);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'renderRows'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">tbody</span><span class="o">:</span><span class="w"> </span><span class="kt">HTMLElement</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nb">Date</span><span class="p">(</span><span class="s1">'2026-09-16T12:00:10Z'</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">beforeEach</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;table&gt;&lt;tbody id="rows"&gt;&lt;/tbody&gt;&lt;/table&gt;'</span><span class="p">;</span>
+<span class="w">    </span><span class="nx">tbody</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">'rows'</span><span class="p">)</span><span class="o">!</span><span class="p">;</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'renders one row per track with four cells'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">track</span><span class="p">(),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="w"> </span><span class="p">})],</span><span class="w"> </span><span class="nx">now</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">tbody</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">)).</span><span class="nx">toHaveLength</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">tbody</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'tr:first-child td'</span><span class="p">)).</span><span class="nx">toHaveLength</span><span class="p">(</span><span class="mf">4</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'clears previous rows instead of appending to them'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">track</span><span class="p">(),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="w"> </span><span class="p">})],</span><span class="w"> </span><span class="nx">now</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">track</span><span class="p">()],</span><span class="w"> </span><span class="nx">now</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">tbody</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'tr'</span><span class="p">)).</span><span class="nx">toHaveLength</span><span class="p">(</span><span class="mf">1</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'does not interpret data as markup'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">renderRows</span><span class="p">(</span><span class="nx">tbody</span><span class="p">,</span><span class="w"> </span><span class="p">[</span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'&lt;img src=x onerror=alert(1)&gt;'</span><span class="w"> </span><span class="p">})],</span><span class="w"> </span><span class="nx">now</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">tbody</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'img'</span><span class="p">)).</span><span class="nx">toBeNull</span><span class="p">();</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">tbody</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'td'</span><span class="p">)</span><span class="o">!</span><span class="p">.</span><span class="nx">textContent</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="s1">'&lt;img src=x onerror=alert(1)&gt;'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'loadTracks'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'throws on a non-OK status, which fetch itself would not'</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">notFound</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Response</span><span class="p">(</span><span class="s1">'nope'</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">status</span><span class="o">:</span><span class="w"> </span><span class="kt">404</span><span class="w"> </span><span class="p">}))</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">unknown</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="ow">typeof</span><span class="w"> </span><span class="nx">fetch</span><span class="p">;</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">loadTracks</span><span class="p">(</span><span class="nx">notFound</span><span class="p">)).</span><span class="nx">rejects</span><span class="p">.</span><span class="nx">toThrow</span><span class="p">(</span><span class="s1">'HTTP 404'</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>npx<span class="w"> </span>vitest<span class="w"> </span>run
+</code></pre></div>
+
+<p>Notice what jsdom bought you: <strong><code>renderRows</code> is tested against a real DOM, in
+milliseconds, with no browser.</strong> That is why the function takes the element as
+an argument.</p>
+<p>The XSS test is the one to point at in an interview. It proves a security
+property, not just behaviour.</p>
+<p><strong>Do now, ten minutes.</strong> Write tests for <code>parseTrack</code> rejecting a bad
+affiliation, a string altitude, and a confidence above one. Then break
+<code>renderRows</code> by switching <code>textContent</code> to <code>innerHTML</code> and watch the XSS test go
+red. Put it back.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-4-angular">Hour 4: Angular</h2>
+<h3 id="300-to-315-what-angular-is-and-why">3:00 to 3:15 — What Angular is and why</h3>
+<p>Angular is a <strong>component-based framework</strong> by Google, written in TypeScript.
+"Framework" rather than "library" means it is opinionated and brings everything:
+components, routing, dependency injection, HTTP, forms, testing.</p>
+<p>That opinionatedness is why large organisations and defence programmes choose
+it. Every project looks the same and a new engineer can navigate it. <strong>That is
+the answer to "why Angular?"</strong></p>
+<p>You have just hand-written <code>wireControls</code>. Angular replaces it: you declare
+what the view should be for a given state, and the framework updates the DOM.</p>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@angular/cli
+ng<span class="w"> </span>new<span class="w"> </span>track-picture<span class="w"> </span>--standalone<span class="w"> </span>--style<span class="o">=</span>css
+<span class="nb">cd</span><span class="w"> </span>track-picture
+ng<span class="w"> </span>serve<span class="w">            </span><span class="c1"># http://localhost:4200, live reload</span>
+</code></pre></div>
+
+<h3 id="315-to-345-the-component">3:15 to 3:45 — The component</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">DecimalPipe</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/common'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Component</span><span class="p">,</span><span class="w"> </span><span class="nx">computed</span><span class="p">,</span><span class="w"> </span><span class="nx">inject</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/core'</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Affiliation</span><span class="p">,</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.model'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">TrackService</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.service'</span><span class="p">;</span>
+
+<span class="kd">@Component</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">'app-track-list'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">standalone</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">imports</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">DecimalPipe</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">template</span><span class="o">:</span><span class="w"> </span><span class="sb">`</span>
+<span class="sb">    &lt;label&gt;</span>
+<span class="sb">      Show:</span>
+<span class="sb">      &lt;select (change)="setFilter($event)"&gt;</span>
+<span class="sb">        &lt;option value="all"&gt;All&lt;/option&gt;</span>
+<span class="sb">        &lt;option value="hostile"&gt;Hostile&lt;/option&gt;</span>
+<span class="sb">      &lt;/select&gt;</span>
+<span class="sb">    &lt;/label&gt;</span>
+
+<span class="sb">    &lt;p&gt;{{ visible().length }} of {{ tracks().length }} tracks&lt;/p&gt;</span>
+
+<span class="sb">    @if (visible().length === 0) {</span>
+<span class="sb">      &lt;p class="empty"&gt;No tracks match.&lt;/p&gt;</span>
+<span class="sb">    } @else {</span>
+<span class="sb">      &lt;table&gt;</span>
+<span class="sb">        &lt;tbody&gt;</span>
+<span class="sb">          @for (track of visible(); track track.trackId) {</span>
+<span class="sb">            &lt;tr [class.hostile]="track.affiliation === 'hostile'"&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.trackId }}&lt;/td&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.affiliation }}&lt;/td&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.altitudeFt | number: '1.0-0' }} ft&lt;/td&gt;</span>
+<span class="sb">            &lt;/tr&gt;</span>
+<span class="sb">          }</span>
+<span class="sb">        &lt;/tbody&gt;</span>
+<span class="sb">      &lt;/table&gt;</span>
+<span class="sb">    }</span>
+<span class="sb">  `</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">styles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="sb">`</span>
+<span class="sb">    .hostile { color: #b3261e; font-weight: 600; }</span>
+<span class="sb">    .empty { color: #666; font-style: italic; }</span>
+<span class="sb">  `</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TrackListComponent</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">inject</span><span class="p">(</span><span class="nx">TrackService</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">signal</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">([]);</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">signal</span><span class="o">&lt;</span><span class="s1">'all'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Affiliation</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">'all'</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">visible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">computed</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'all'</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">().</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">f</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">load</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">service</span><span class="p">.</span><span class="nx">getTracks</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">tracks</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">setFilter</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">Event</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">HTMLSelectElement</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="s1">'all'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Affiliation</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Compare that with hour two.</strong> There is no <code>createElement</code>, no
+<code>appendChild</code>, no <code>replaceChildren</code>, no <code>addEventListener</code>, no <code>redraw</code>. You
+declared the table and Angular does the DOM work. That is the trade: you learn
+a framework's vocabulary and it removes an entire category of bug.</p>
+<p>The pieces:</p>
+<p><strong><code>@Component</code></strong> is a decorator, metadata on the class. Same idea as a Python
+decorator.</p>
+<p><strong>The four bindings</strong>, and this table is the core of Angular:</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Direction</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{ value }}</code></td>
+<td>class to view</td>
+<td>Print a value</td>
+</tr>
+<tr>
+<td><code>[property]="expr"</code></td>
+<td>class to view</td>
+<td>Bind a property</td>
+</tr>
+<tr>
+<td><code>(event)="handler()"</code></td>
+<td>view to class</td>
+<td>Listen</td>
+</tr>
+<tr>
+<td><code>[(ngModel)]="field"</code></td>
+<td>both</td>
+<td>Two-way on a form control</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>@if</code> / <code>@for</code></strong> is the modern control flow, Angular 17 and later. Legacy code
+uses <code>*ngIf</code> and <code>*ngFor</code>; you must be able to read both because a tech refresh
+means meeting both.</p>
+<p><strong><code>track track.trackId</code></strong> tells Angular how to identify a row across updates so
+it reuses the DOM element rather than rebuilding it. On a table refreshing at
+1 Hz with hundreds of rows that is the difference between smooth and unusable.
+In older syntax it is <code>trackBy</code>. Good interview detail.</p>
+<p><strong>Signals.</strong> <code>signal()</code> is a value that knows when it changed; <code>computed()</code>
+derives from others and recalculates only when inputs change. Note you <strong>read</strong>
+a signal by calling it: <code>this.tracks()</code>.</p>
+<h3 id="345-to-355-services-and-dependency-injection">3:45 to 3:55 — Services and dependency injection</h3>
+<p>Components display. Everything else goes in a service.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">HttpClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/common/http'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Injectable</span><span class="p">,</span><span class="w"> </span><span class="nx">inject</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/core'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Observable</span><span class="p">,</span><span class="w"> </span><span class="nx">catchError</span><span class="p">,</span><span class="w"> </span><span class="nx">map</span><span class="p">,</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'rxjs'</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.model'</span><span class="p">;</span>
+
+<span class="kd">@Injectable</span><span class="p">({</span><span class="w"> </span><span class="nx">providedIn</span><span class="o">:</span><span class="w"> </span><span class="s1">'root'</span><span class="w"> </span><span class="p">})</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TrackService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">inject</span><span class="p">(</span><span class="nx">HttpClient</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">getTracks</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">'/api/v1/tracks'</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
+<span class="w">      </span><span class="nx">map</span><span class="p">((</span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)),</span>
+<span class="w">      </span><span class="nx">catchError</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">of</span><span class="p">([])),</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong><code>inject(HttpClient)</code></strong> asks Angular's dependency injection system for the HTTP
+client; the component never constructs one. The payoff is testability: a test
+supplies a fake.</p>
+<p><strong>Observables, not Promises.</strong> A Promise is one future value. An Observable is
+a cancellable stream of many over time, which is what a live track feed
+actually is. Nothing happens until you <code>subscribe</code>.</p>
+<p>The one risk to be able to name: <strong>a subscription that is never cleaned up
+keeps running after the component is destroyed.</strong> Use <code>takeUntilDestroyed()</code>,
+the <code>async</code> pipe, or unsubscribe in <code>ngOnDestroy</code>.</p>
+<p>Testing it:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">await</span><span class="w"> </span><span class="nx">TestBed</span><span class="p">.</span><span class="nx">configureTestingModule</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">imports</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">TrackListComponent</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">providers</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">provide</span><span class="o">:</span><span class="w"> </span><span class="kt">TrackService</span><span class="p">,</span><span class="w"> </span><span class="nx">useValue</span><span class="o">:</span><span class="w"> </span><span class="kt">fakeTrackService</span><span class="w"> </span><span class="p">}],</span>
+<span class="p">}).</span><span class="nx">compileComponents</span><span class="p">();</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">fixture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">TestBed</span><span class="p">.</span><span class="nx">createComponent</span><span class="p">(</span><span class="nx">TrackListComponent</span><span class="p">);</span>
+<span class="nx">fixture</span><span class="p">.</span><span class="nx">componentInstance</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">([</span><span class="nx">track</span><span class="p">(),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="w"> </span><span class="p">})]);</span>
+<span class="nx">fixture</span><span class="p">.</span><span class="nx">detectChanges</span><span class="p">();</span>
+<span class="nx">expect</span><span class="p">(</span><span class="nx">fixture</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'tbody tr'</span><span class="p">).</span><span class="nx">length</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>useValue</code> swaps in the fake. <code>detectChanges()</code> triggers rendering; forgetting
+it is the classic reason an Angular test sees an empty template.</p>
+<h3 id="355-to-400-self-test">3:55 to 4:00 — Self-test</h3>
+<p>From memory, write:</p>
+<ol>
+<li>A labelled <code>&lt;select&gt;</code> with a matching <code>id</code>, and a table with <code>thead</code>/<code>tbody</code>.</li>
+<li>The CSS rule that makes everything border-box, and a flex toolbar.</li>
+<li>A sort comparator that orders by confidence ascending then id.</li>
+<li><code>renderRows</code> using <code>textContent</code> and <code>replaceChildren</code>.</li>
+<li>A <code>Track</code> interface and an <code>Affiliation</code> union.</li>
+<li>The four Angular binding syntaxes and what direction each goes.</li>
+</ol>
+<p>Anything you cannot write, retype that section tomorrow.</p>
+<h2 id="what-you-can-honestly-claim">What you can honestly claim</h2>
+<p><strong>Say:</strong> you write HTML with semantic elements and labelled inputs, style with
+flexbox and custom properties, write TypeScript with strict mode, validate
+untrusted API data rather than casting it, test DOM code with jsdom, and
+understand Angular's components, bindings, signals, dependency injection and
+testing model.</p>
+<p><strong>Do not say</strong> you have shipped an Angular application. If asked, use the
+framing from <a href="frontend.html">lesson 12</a> section 12: name what you built, then
+ask for a ramp on their component structure and conventions.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<ol>
+<li><strong><a href="frontend.html">Lesson 12</a></strong> end to end, especially sections 4, 6 and 8.</li>
+<li><strong><code>ng new</code> for real</strong> and rebuild the page as a proper Angular app with a
+   service and routing.</li>
+<li><strong>The <a href="../practice/README.html">practice repo</a></strong>, <code>practice/frontend</code>: 32
+   tests against a framework-free TypeScript module.</li>
+<li><strong>Write a Playwright test</strong> for one journey: load, filter, assert a row
+   count.</li>
+<li><strong>Rebuild this page from an empty folder</strong>, without looking. That is worth
+   more than reading anything.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/testing-sprint.html">&larr; 5. Sprint: Testing in Four Hours</a><a class="next" href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

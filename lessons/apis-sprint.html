@@ -1,0 +1,675 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. The four-hour API sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li class="active"><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="7-the-four-hour-api-sprint">7. The four-hour API sprint</h1>
+<p>"Familiarity with Docker, <strong>REST APIs, or SOAP</strong>" is a basic qualification on
+your requisition. This sprint covers the REST half properly and gives you
+enough SOAP to talk about it honestly.</p>
+<p>You build <strong>one thing</strong>: a track API with full validation and correct status
+codes, its test suite, and a client that survives a flaky server. That last
+part is what separates someone who has called an API from someone who has run
+one in production.</p>
+<p><a href="apis.html">Lesson 13</a> is the reference. This is the sprint.</p>
+<h2 id="the-rules">The rules</h2>
+<ol>
+<li><strong>Type everything. Never paste.</strong></li>
+<li><strong>Exercise every endpoint</strong> after you write it. <code>curl</code> or the test client.</li>
+<li><strong>Write the test before you move on.</strong> In this sprint tests are not an
+   afterthought; they are how you check your work.</li>
+<li><strong>Break things on purpose</strong> where I say so.</li>
+<li><strong>Respect the clock.</strong></li>
+</ol>
+<h2 id="what-i-am-cutting-and-why">What I am cutting, and why</h2>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Databases</td>
+<td>Orthogonal. An in-memory dict teaches the same API design.</td>
+</tr>
+<tr>
+<td>Authentication implementation</td>
+<td>You need the vocabulary, not an OAuth flow.</td>
+</tr>
+<tr>
+<td>GraphQL</td>
+<td>Not on your req.</td>
+</tr>
+<tr>
+<td>Async frameworks (FastAPI, asyncio)</td>
+<td>Flask is named on the req; the design ideas transfer.</td>
+</tr>
+<tr>
+<td>Deployment, load balancers</td>
+<td>Covered in <a href="containers.html">lesson 20</a>.</td>
+</tr>
+<tr>
+<td>Writing a SOAP service</td>
+<td>You will consume and maintain one, not write one.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-five-minutes-before-the-clock">Setup: five minutes, before the clock</h2>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>apisprint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>apisprint
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>flask<span class="w"> </span>pytest
+</code></pre></div>
+
+<p>Start the clock.</p>
+<hr />
+<h2 id="hour-1-http-and-your-first-endpoints">Hour 1: HTTP and your first endpoints</h2>
+<h3 id="000-to-020-what-an-api-actually-is">0:00 to 0:20 — What an API actually is</h3>
+<p>Two programs need to talk. They agree on five things, and if you can name these
+you can specify any API:</p>
+<ol>
+<li><strong>A transport.</strong> Usually HTTP over TCP.</li>
+<li><strong>An address.</strong> A URL identifying the thing.</li>
+<li><strong>A message format.</strong> JSON, XML, or packed binary.</li>
+<li><strong>A vocabulary.</strong> What operations exist and what they take.</li>
+<li><strong>An error convention.</strong> How failure is signalled.</li>
+</ol>
+<p>An HTTP request:</p>
+<div class="codehilite"><pre><span></span><code>GET /api/v1/tracks?affiliation=hostile HTTP/1.1
+Host: eadge.internal
+Accept: application/json
+Authorization: Bearer &lt;token&gt;
+</code></pre></div>
+
+<p>A <strong>method</strong>, a <strong>path</strong>, <strong>query parameters</strong>, <strong>headers</strong>, sometimes a
+<strong>body</strong>. The response has a <strong>status code</strong>, headers and usually a body.</p>
+<p><strong>The methods, and the property that matters:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+<th>Idempotent?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>Retrieve. Must change nothing</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td>Create, or a general action</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>Replace entirely</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td>Modify part</td>
+<td>Usually not</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>Remove</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Idempotent</strong> means doing it twice has the same effect as doing it once. This
+is not trivia. It decides <strong>what a client may safely retry</strong>, which is the
+whole of hour four. A dropped response to a <code>PUT</code> can be repeated without
+thought. A dropped response to a <code>POST</code> may have already created the thing, so
+repeating it could create a second one.</p>
+<p><strong>The status codes to know cold:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>OK, with a body</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Created. <code>Location</code> header says where</td>
+</tr>
+<tr>
+<td>204</td>
+<td>Success, nothing to return</td>
+</tr>
+<tr>
+<td>400</td>
+<td>The client sent something malformed</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Not authenticated. "Who are you?"</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Authenticated but not permitted. "I know who you are, and no"</td>
+</tr>
+<tr>
+<td>404</td>
+<td>No such resource</td>
+</tr>
+<tr>
+<td>409</td>
+<td>Conflicts with current state</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Rate limited</td>
+</tr>
+<tr>
+<td>500</td>
+<td>The server broke</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Temporarily unavailable</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The 4xx versus 5xx split is the one that matters operationally: 4xx means the
+client is wrong, 5xx means you are.</strong> A server returning 200 with an error
+inside the body is a genuine design defect, because every load balancer, every
+monitor and every retry policy reads the status code.</p>
+<h3 id="020-to-050-your-first-endpoints">0:20 to 0:50 — Your first endpoints</h3>
+<p>Create <code>api.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="sd">"""A track API, built in the four-hour sprint."""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">TRACKS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"T-001"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-001"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="mi">32000</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.92</span><span class="p">},</span>
+    <span class="s2">"T-002"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-002"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"friend"</span><span class="p">,</span> <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="mi">12000</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.71</span><span class="p">},</span>
+    <span class="s2">"T-003"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-003"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"unknown"</span><span class="p">,</span> <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="mi">8000</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.44</span><span class="p">},</span>
+<span class="p">}</span>
+
+<span class="n">AFFILIATIONS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"friend"</span><span class="p">,</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"neutral"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""One error shape for the whole API, so clients can rely on it."""</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"error"</span><span class="p">:</span> <span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">}),</span> <span class="n">status</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks/&lt;track_id&gt;"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_track</span><span class="p">(</span><span class="n">track_id</span><span class="p">):</span>
+    <span class="n">track</span> <span class="o">=</span> <span class="n">TRACKS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">track_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">track</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"not found"</span><span class="p">,</span> <span class="mi">404</span><span class="p">,</span> <span class="n">trackId</span><span class="o">=</span><span class="n">track_id</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">track</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/health/live"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">live</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"alive"</span><span class="p">})</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/health/ready"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ready</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"ready"</span><span class="p">,</span> <span class="s2">"tracks"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">TRACKS</span><span class="p">)})</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>flask<span class="w"> </span>--app<span class="w"> </span>api<span class="w"> </span>run
+<span class="c1"># in another terminal:</span>
+curl<span class="w"> </span>-i<span class="w"> </span>localhost:5000/api/v1/tracks/T-001
+curl<span class="w"> </span>-i<span class="w"> </span>localhost:5000/api/v1/tracks/NOPE
+</code></pre></div>
+
+<p>What is new:</p>
+<p><strong><code>@app.get("/path")</code></strong> is a decorator registering the function as that route's
+handler. Same concept as a Python decorator anywhere.</p>
+<p><strong><code>&lt;track_id&gt;</code></strong> in the path is a parameter, handed to the function.</p>
+<p><strong>Returning a tuple</strong> <code>(body, status)</code> sets the status code.</p>
+<p><strong>One error shape.</strong> Every failure returns <code>{"error": ..., ...}</code>. A client can
+then handle errors generically instead of guessing per endpoint. Deciding this
+once, early, is a real design decision.</p>
+<p><strong>404 names what was missing.</strong> <code>{"error": "not found", "trackId": "NOPE"}</code>
+puts the reason in the client's logs. A bare 404 does not.</p>
+<p><strong>Two health endpoints</strong>, and the distinction gets asked: <strong>liveness</strong> says the
+process is alive, and failing it means restart me. <strong>Readiness</strong> says it can
+serve, and failing it means take me out of rotation but do not restart me.
+Confusing them causes restart loops during slow startup. Add both from the
+start; adding them later always means a deployment argument.</p>
+<h3 id="050-to-100-checkpoint">0:50 to 1:00 — Checkpoint</h3>
+<p><strong>Do now.</strong> Add <code>DELETE /api/v1/tracks/&lt;track_id&gt;</code> returning 204.</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/api/v1/tracks/&lt;track_id&gt;"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">delete_track</span><span class="p">(</span><span class="n">track_id</span><span class="p">):</span>
+    <span class="n">TRACKS</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">track_id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">""</span><span class="p">,</span> <span class="mi">204</span>
+</code></pre></div>
+
+<p>Call it twice. <strong>Both return 204.</strong> That is deliberate: <code>DELETE</code> is idempotent,
+so deleting something already gone is a success, not a 404. The end state the
+caller wanted is the end state they got. Being able to defend that choice is a
+good interview moment.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-2-validation-and-the-full-resource">Hour 2: validation and the full resource</h2>
+<h3 id="100-to-130-listing-filtering-paging">1:00 to 1:30 — Listing, filtering, paging</h3>
+<div class="codehilite"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_tracks</span><span class="p">():</span>
+    <span class="n">affiliation</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"affiliation"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">affiliation</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">affiliation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AFFILIATIONS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"unknown affiliation"</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">affiliation</span><span class="o">=</span><span class="n">affiliation</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">min_confidence</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"min_confidence"</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"min_confidence must be a number"</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"limit"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">limit</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">limit</span> <span class="o">&gt;</span> <span class="mi">200</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"limit must be between 1 and 200"</span><span class="p">,</span> <span class="mi">400</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">TRACKS</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">affiliation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">t</span><span class="p">[</span><span class="s2">"affiliation"</span><span class="p">]</span> <span class="o">==</span> <span class="n">affiliation</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">t</span><span class="p">[</span><span class="s2">"confidence"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span>
+    <span class="p">]</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">t</span><span class="p">[</span><span class="s2">"trackId"</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"tracks"</span><span class="p">:</span> <span class="n">results</span><span class="p">[:</span><span class="n">limit</span><span class="p">],</span> <span class="s2">"total"</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)})</span>
+</code></pre></div>
+
+<p>Four decisions, all defensible in an interview:</p>
+<p><strong>Every query parameter is validated.</strong> An unknown affiliation is a 400 with
+the offending value echoed, not a silent empty list. Silently returning nothing
+for a typo is the kind of behaviour that costs an operator an hour.</p>
+<p><strong><code>limit</code> is bounded.</strong> Without a cap, one client eventually asks for
+everything and takes the server down. <strong>Any collection that can grow must be
+paged.</strong></p>
+<p><strong>The result is sorted.</strong> Unsorted output means the same request can return a
+different order each time, which makes paging incoherent and tests
+non-deterministic.</p>
+<p><strong>The response is an object, not a bare array</strong>: <code>{"tracks": [...], "total": N}</code>.
+That leaves room to add fields later without breaking clients, and it carries
+the total separately from the page. Returning a bare array is a decision you
+cannot undo.</p>
+<h3 id="130-to-155-creating-and-validating-a-body">1:30 to 1:55 — Creating, and validating a body</h3>
+<div class="codehilite"><pre><span></span><code><span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">create_track</span><span class="p">():</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">(</span><span class="n">silent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"body must be a JSON object"</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="n">track_id</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"trackId"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">track_id</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">track_id</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"trackId must be a non-empty string"</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">track_id</span> <span class="ow">in</span> <span class="n">TRACKS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"already exists"</span><span class="p">,</span> <span class="mi">409</span><span class="p">,</span> <span class="n">trackId</span><span class="o">=</span><span class="n">track_id</span><span class="p">)</span>
+
+    <span class="n">affiliation</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"affiliation"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">affiliation</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">AFFILIATIONS</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"affiliation must be one of "</span> <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">AFFILIATIONS</span><span class="p">)),</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="n">confidence</span> <span class="o">=</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"confidence"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">or</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">confidence</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="s2">"confidence must be between 0 and 1"</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
+
+    <span class="n">track</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"trackId"</span><span class="p">:</span> <span class="n">track_id</span><span class="o">.</span><span class="n">strip</span><span class="p">(),</span>
+        <span class="s2">"affiliation"</span><span class="p">:</span> <span class="n">affiliation</span><span class="p">,</span>
+        <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="n">body</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"altitudeFt"</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="s2">"confidence"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">confidence</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">TRACKS</span><span class="p">[</span><span class="n">track</span><span class="p">[</span><span class="s2">"trackId"</span><span class="p">]]</span> <span class="o">=</span> <span class="n">track</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">track</span><span class="p">),</span> <span class="mi">201</span><span class="p">,</span> <span class="p">{</span><span class="s2">"Location"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"/api/v1/tracks/</span><span class="si">{</span><span class="n">track</span><span class="p">[</span><span class="s1">'trackId'</span><span class="p">]</span><span class="si">}</span><span class="s2">"</span><span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Validate everything that crosses the boundary.</strong> Type, presence, range,
+membership. A request body is untrusted input, exactly like a line from a log
+file. This is the same discipline as <code>parseTrack</code> in
+<a href="frontend-sprint.html">lesson 6</a> and <code>parse_line</code> in
+<a href="python-sprint.html">lesson 4</a>, and noticing that it is the same discipline is
+the point.</p>
+<p><strong>201 plus a <code>Location</code> header</strong> is the correct answer to a successful create.
+The client learns where the new thing lives without guessing the URL.</p>
+<p><strong>409 for a duplicate</strong>, not 400. The request was well-formed; it conflicts
+with current state. Using the right code lets a client tell "you sent rubbish"
+from "someone beat you to it."</p>
+<p><strong><code>get_json(silent=True)</code></strong> returns <code>None</code> instead of raising when the body is
+not JSON, so you return a clean 400 rather than a 500. <strong>A malformed request
+must never produce a 5xx</strong>, because 5xx means you broke, and that misdirects
+whoever is on call.</p>
+<h3 id="155-to-200-break-it">1:55 to 2:00 — Break it</h3>
+<p>Send each of these and confirm the status code:</p>
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:5000/api/v1/tracks<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"trackId":"T-009","affiliation":"hostile","confidence":0.5}'</span><span class="w">      </span><span class="c1"># 201</span>
+curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:5000/api/v1/tracks<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"trackId":"T-009","affiliation":"hostile","confidence":0.5}'</span><span class="w">      </span><span class="c1"># 409</span>
+curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:5000/api/v1/tracks<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'{"trackId":"X","affiliation":"banana","confidence":0.5}'</span><span class="w">           </span><span class="c1"># 400</span>
+curl<span class="w"> </span>-i<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>localhost:5000/api/v1/tracks<span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-d<span class="w"> </span><span class="s1">'not json at all'</span><span class="w">                                                    </span><span class="c1"># 400, not 500</span>
+</code></pre></div>
+
+<p>That last one is the one people get wrong. <strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-testing-the-api">Hour 3: testing the API</h2>
+<h3 id="200-to-235-the-test-suite">2:00 to 2:35 — The test suite</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">api</span><span class="w"> </span><span class="kn">import</span> <span class="n">TRACKS</span><span class="p">,</span> <span class="n">app</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">client</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""A test client, with the data reset so tests do not affect each other."""</span>
+    <span class="n">original</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">TRACKS</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
+    <span class="n">TRACKS</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+    <span class="n">TRACKS</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_lists_all_tracks</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">)</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="n">body</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">"trackId"</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">body</span><span class="p">[</span><span class="s2">"tracks"</span><span class="p">]]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"T-001"</span><span class="p">,</span> <span class="s2">"T-002"</span><span class="p">,</span> <span class="s2">"T-003"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_an_unknown_affiliation_with_400</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks?affiliation=banana"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">"affiliation"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"banana"</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"limit"</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">201</span><span class="p">,</span> <span class="mi">9999</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_an_out_of_range_limit</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">limit</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">"/api/v1/tracks?limit=</span><span class="si">{</span><span class="n">limit</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_limit_caps_the_page_but_total_reports_everything</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks?limit=1"</span><span class="p">)</span><span class="o">.</span><span class="n">get_json</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="s2">"tracks"</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">body</span><span class="p">[</span><span class="s2">"total"</span><span class="p">]</span> <span class="o">==</span> <span class="mi">3</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unknown_track_is_404_with_a_reason</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks/NOPE"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">"trackId"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"NOPE"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_creating_returns_201_and_a_location</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-009"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">})</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">201</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">"Location"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"/api/v1/tracks/T-009"</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks/T-009"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_creating_a_duplicate_is_409</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-001"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">409</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"payload"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">{},</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"X"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"banana"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"X"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">1.5</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"X"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="s2">"high"</span><span class="p">},</span>
+<span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_a_bad_body_with_400</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">payload</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="n">payload</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">400</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_delete_is_idempotent</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/api/v1/tracks/T-001"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span>
+    <span class="k">assert</span> <span class="n">client</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="s2">"/api/v1/tracks/T-001"</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">204</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q
+</code></pre></div>
+
+<p>The things to notice:</p>
+<p><strong><code>app.test_client()</code> exercises the whole request path with no server and no
+network.</strong> That is what makes API tests fast enough to run on every commit,
+which is the entire argument for having them.</p>
+<p><strong>The fixture resets the data.</strong> <code>TRACKS</code> is module-level mutable state, so a
+test that creates a track would otherwise change what the next test sees. <strong>A
+test that only passes when another ran first is worse than no test</strong>, because
+it fails mysteriously later. Notice that the need for this fixture is a hint
+that global mutable state is awkward; a real service would inject a store.</p>
+<p><strong>Test every status code your API can return</strong>, not just the happy path. The
+parametrised bad-body test is six tests from one function.</p>
+<h3 id="235-to-300-what-to-test-and-versioning">2:35 to 3:00 — What to test, and versioning</h3>
+<p>The checklist for any endpoint. Recite this in an interview:</p>
+<ul>
+<li>the happy path</li>
+<li>every validation failure, with its status code</li>
+<li>the not-found case</li>
+<li>the conflict case</li>
+<li>an empty collection</li>
+<li>the boundary of every limit, both sides</li>
+<li>a malformed body, proving it gives 400 and not 500</li>
+</ul>
+<p>Then the design topic that matters most on this programme:</p>
+<p><strong>Versioning.</strong> Commercial teams change an API and redeploy the clients. <strong>You
+cannot.</strong> Your consumers may be other programmes, on other schedules, possibly
+other contractors.</p>
+<ul>
+<li><strong>Version in the path</strong>, <code>/api/v1/</code>.</li>
+<li><strong>Additive changes only</strong> within a version. Adding a field is safe, because a
+  well-written client ignores what it does not recognise. Removing a field,
+  renaming one, changing a type, or tightening validation are all breaking.</li>
+<li><strong>Never repurpose a field.</strong> Reusing <code>status</code> to mean something new is the
+  most expensive kind of "small" change, because it fails silently in the
+  consumer.</li>
+<li><strong>Run versions in parallel</strong>, retire on an agreed date.</li>
+<li><strong>Changes go through interface control, not a merge request.</strong> The
+  coordination lead time with another programme is the real constraint, not the
+  code.</li>
+</ul>
+<p>If asked "how would you change a message format three other systems depend
+on?", that list is the answer and the last line is what makes it senior.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-4-clients-that-survive">Hour 4: clients that survive</h2>
+<h3 id="300-to-335-timeouts-retries-backoff-jitter">3:00 to 3:35 — Timeouts, retries, backoff, jitter</h3>
+<p>Writing the server is half the job. Most production incidents involve a client
+behaving badly when a server misbehaves.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">random</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="n">RETRYABLE_STATUS</span> <span class="o">=</span> <span class="p">{</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">}</span>
+<span class="n">IDEMPOTENT_METHODS</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"PUT"</span><span class="p">,</span> <span class="s2">"DELETE"</span><span class="p">,</span> <span class="s2">"HEAD"</span><span class="p">}</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">TransientError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A failure worth retrying."""</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ApiError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""A failure not worth retrying."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">message</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">status</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">call</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span>
+         <span class="n">sleep</span><span class="o">=</span><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">,</span> <span class="n">rand</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Make one call, retrying transient failures.</span>
+
+<span class="sd">    ``send`` is injected so tests can supply a fake instead of a network.</span>
+<span class="sd">    """</span>
+    <span class="n">last</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">attempts</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">status</span><span class="p">,</span> <span class="n">body</span> <span class="o">=</span> <span class="n">send</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TimeoutError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">TransientError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"timeout: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">body</span>
+            <span class="k">if</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">RETRYABLE_STATUS</span><span class="p">:</span>
+                <span class="n">last</span> <span class="o">=</span> <span class="n">TransientError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"server returned </span><span class="si">{</span><span class="n">status</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ApiError</span><span class="p">(</span><span class="n">status</span><span class="p">,</span> <span class="n">body</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">IDEMPOTENT_METHODS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">last</span>
+        <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">attempts</span><span class="p">:</span>
+            <span class="n">delay</span> <span class="o">=</span> <span class="n">base_delay</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="n">delay</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">+</span> <span class="n">rand</span><span class="p">()))</span>
+
+    <span class="k">raise</span> <span class="n">last</span>
+</code></pre></div>
+
+<p>Every line of that is a decision worth being able to defend:</p>
+<p><strong>A timeout on every call.</strong> A call with no timeout is a thread that may never
+come back. This is the single most common omission in client code, and it turns
+one slow dependency into a dead application.</p>
+<p><strong>Retry only transient failures.</strong> 429 and 5xx may succeed next time. A 404 or
+a 400 will not: retrying is pure waste and hides the real problem.</p>
+<p><strong>Retry only idempotent methods.</strong> Repeating a <code>POST</code> could create a second
+resource. This is where the idempotency table from hour one pays off.</p>
+<p><strong>Exponential backoff.</strong> 0.5s, 1s, 2s. Hammering a struggling server makes it
+worse.</p>
+<p><strong>Jitter</strong>, the <code>(0.5 + rand())</code>. Without it, every client that failed at the
+same moment retries at the same moment, and the synchronised wave finishes off
+the server that was about to recover. This is the detail that marks out
+somebody who has actually run a distributed system.</p>
+<p><strong>A bounded attempt budget.</strong> Infinite retry is a denial-of-service attack on
+your own infrastructure.</p>
+<p><strong><code>sleep</code> and <code>rand</code> are injected</strong>, so tests run instantly and deterministically.</p>
+<h3 id="335-to-350-testing-the-client">3:35 to 3:50 — Testing the client</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fake_sender</span><span class="p">(</span><span class="n">script</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return a send() that yields each scripted outcome in turn."""</span>
+    <span class="n">calls</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">send</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">calls</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">method</span><span class="p">,</span> <span class="n">url</span><span class="p">,</span> <span class="n">timeout</span><span class="p">))</span>
+        <span class="n">outcome</span> <span class="o">=</span> <span class="n">script</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">calls</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">outcome</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">outcome</span>
+        <span class="k">return</span> <span class="n">outcome</span>
+
+    <span class="n">send</span><span class="o">.</span><span class="n">calls</span> <span class="o">=</span> <span class="n">calls</span>
+    <span class="k">return</span> <span class="n">send</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_retries_a_timeout_then_succeeds</span><span class="p">():</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">fake_sender</span><span class="p">([</span><span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">"no route"</span><span class="p">),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">"ok"</span><span class="p">:</span> <span class="kc">True</span><span class="p">})])</span>
+    <span class="k">assert</span> <span class="n">call</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"/x"</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"ok"</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">calls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_does_not_retry_a_client_error</span><span class="p">():</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">fake_sender</span><span class="p">([(</span><span class="mi">404</span><span class="p">,</span> <span class="s2">"not found"</span><span class="p">)])</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">ApiError</span><span class="p">):</span>
+        <span class="n">call</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"/x"</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">calls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"a 404 will not become a 200; retrying is waste"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_does_not_retry_a_post</span><span class="p">():</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">fake_sender</span><span class="p">([(</span><span class="mi">503</span><span class="p">,</span> <span class="s2">"busy"</span><span class="p">),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">"ok"</span><span class="p">:</span> <span class="kc">True</span><span class="p">})])</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">TransientError</span><span class="p">):</span>
+        <span class="n">call</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="s2">"POST"</span><span class="p">,</span> <span class="s2">"/x"</span><span class="p">,</span> <span class="n">sleep</span><span class="o">=</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">calls</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"repeating a POST could create a second resource"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_backoff_grows_and_is_jittered</span><span class="p">():</span>
+    <span class="n">slept</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">fake_sender</span><span class="p">([(</span><span class="mi">503</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">),</span> <span class="p">(</span><span class="mi">503</span><span class="p">,</span> <span class="s2">"x"</span><span class="p">),</span> <span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="p">{})])</span>
+    <span class="n">call</span><span class="p">(</span><span class="n">send</span><span class="p">,</span> <span class="s2">"GET"</span><span class="p">,</span> <span class="s2">"/x"</span><span class="p">,</span> <span class="n">attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">base_delay</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+         <span class="n">sleep</span><span class="o">=</span><span class="n">slept</span><span class="o">.</span><span class="n">append</span><span class="p">,</span> <span class="n">rand</span><span class="o">=</span><span class="k">lambda</span><span class="p">:</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">slept</span> <span class="o">==</span> <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]</span>
+</code></pre></div>
+
+<p><strong>This is the highest-value test suite in the sprint.</strong> It proves properties
+that are impossible to check by hand: that a POST is not retried, that backoff
+grows, that a 404 stops immediately. And it runs in milliseconds because
+everything slow is injected.</p>
+<h3 id="350-to-357-soap-enough-to-be-honest">3:50 to 3:57 — SOAP, enough to be honest</h3>
+<p>You will not write SOAP today. You should be able to discuss it, because
+fielded defence systems are full of it.</p>
+<p>SOAP is a <strong>specification</strong>, not a style. Every message is an XML envelope:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;soap:Envelope</span><span class="w"> </span><span class="na">xmlns:soap=</span><span class="s">"http://www.w3.org/2003/05/soap-envelope"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;soap:Header&gt;</span>...<span class="nt">&lt;/soap:Header&gt;</span>
+<span class="w">  </span><span class="nt">&lt;soap:Body&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GetTrack</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">"urn:eadge:tracks"</span><span class="nt">&gt;&lt;TrackId&gt;</span>T-001<span class="nt">&lt;/TrackId&gt;&lt;/GetTrack&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/soap:Body&gt;</span>
+<span class="nt">&lt;/soap:Envelope&gt;</span>
+</code></pre></div>
+
+<p>Failures come back as a <strong>Fault</strong> inside the body, not as an HTTP status.
+<strong>WSDL</strong> is the machine-readable contract; point a tool at it and it generates
+client code. That generated, strongly-typed contract is genuinely SOAP's
+strength and why it persists in regulated environments.</p>
+<p><strong>The one thing you must know if you touch XML:</strong> disable external entities and
+DTDs in the parser. <strong>XXE</strong> lets a document read local files or fetch URLs;
+<strong>billion laughs</strong> is an expansion bomb that exhausts memory from a tiny input.
+In Python use <code>defusedxml</code>. Legacy message parsing is exactly where this lives
+on a tech refresh, and raising it unprompted lands very well with a cyber
+engineer.</p>
+<p><strong>The honest summary:</strong> SOAP is verbose and out of fashion, but it brought a
+formal contract and enterprise standards that REST leaves you to assemble. You
+meet it because it is already there and its consumers are not yours to change.</p>
+<h3 id="357-to-400-self-test">3:57 to 4:00 — Self-test</h3>
+<p>From memory:</p>
+<ol>
+<li>Which methods are idempotent, and what that decides.</li>
+<li>The difference between 400, 401, 403, 404 and 409.</li>
+<li>Why a malformed body must give 400 and not 500.</li>
+<li>Why <code>limit</code> must be bounded.</li>
+<li>The four rules of versioning an API other programmes consume.</li>
+<li>Four things a resilient client does, and why jitter matters.</li>
+</ol>
+<h2 id="what-you-can-honestly-claim">What you can honestly claim</h2>
+<p><strong>Say:</strong> you design and build REST APIs with proper status codes and full input
+validation, you test every response path without a network, you understand
+versioning under interface control, and you write clients with timeouts,
+bounded retries, backoff and jitter.</p>
+<p><strong>Do not claim</strong> SOAP implementation experience. Say you understand the model,
+WSDL contracts and the XML security risks, and that you would expect a ramp on
+the specific interfaces.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<ol>
+<li><strong><a href="apis.html">Lesson 13</a></strong>, especially gRPC and the cross-cutting concerns.</li>
+<li><strong>Add a circuit breaker</strong> to the client: after N consecutive failures, stop
+   calling for a cool-down. Test it.</li>
+<li><strong>Write the OpenAPI document</strong> for your API, then generate a client from it.</li>
+<li><strong>Add <code>PUT</code></strong> and write the test proving it is idempotent where <code>POST</code> is
+   not.</li>
+<li><strong>Rebuild the API from an empty file</strong> without looking.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/frontend-sprint.html">&larr; 6. Sprint: Frontend in Four Hours</a><a class="next" href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# 8. APIs: REST, SOAP, gRPC and Flask
+# 13. APIs: REST, SOAP, gRPC and Flask
 
 Your requisition lists "familiarity with **Docker, REST APIs, or SOAP**" as a
 basic qualification, and **gRPC** and **Flask** under desired skills. This
@@ -238,7 +238,7 @@ root = fromstring(untrusted_xml)
 
 Legacy message parsing is exactly where this class of vulnerability lives on a
 tech refresh. Raising it unprompted lands very well with a cyber engineer on
-the panel. See [lesson 17](cyber.html).
+the panel. See [lesson 22](cyber.html).
 
 ## 4. gRPC
 
@@ -354,7 +354,7 @@ GET /health/ready                      -> 200
 Points to make about that code:
 
 **`@app.get("/path")`** is a decorator registering the function as the handler
-for that route. Same decorator concept as [lesson 6](python-practice.html).
+for that route. Same decorator concept as [lesson 11](python-practice.html).
 
 **`<track_id>`** in the path is a parameter, passed to the function as an
 argument.
@@ -368,7 +368,7 @@ a JSON body that names what was not found is much better than a bare 404,
 because the client's logs then contain the reason.
 
 **`/health/ready`** is a readiness endpoint. Kubernetes and load balancers need
-one, as in [lesson 15](containers.html). Add it from the start; adding it later
+one, as in [lesson 20](containers.html). Add it from the start; adding it later
 always means a deployment argument.
 
 ### Testing a Flask API
@@ -474,7 +474,7 @@ skipped or duplicated when a new track is inserted mid-paging.
 **A4.** Write the OpenAPI snippet describing your endpoints.
 
 **A5.** Take a JSON payload and write a validating parser that treats the input
-as untrusted, as in [lesson 7](frontend.html) section 6.
+as untrusted, as in [lesson 12](frontend.html) section 6.
 
 **A6.** Write a client with a timeout, three retries with exponential backoff
 and jitter, and a test using a fake that fails twice then succeeds.
@@ -505,4 +505,4 @@ A6 is the most valuable. It is the reliability pattern you will be asked about.
     and DTDs.
 12. **What goes in a health endpoint?** Liveness says the process is alive;
     readiness says it can serve, including that its dependencies are reachable.
-    See [lesson 15](containers.html).
+    See [lesson 20](containers.html).

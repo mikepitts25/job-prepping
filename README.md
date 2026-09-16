@@ -4,10 +4,16 @@ A GitHub Pages study site for the **Senior Software Engineer &ndash; EADGE-T Tec
 Refresh &ndash; EXPAT UAE** role at Lockheed Martin, plus a runnable practice
 repo.
 
-Twenty-two lessons covering every skill named in the job posting, roughly one
-hundred and ten worked code examples, a 146-question mock interview bank,
+Twenty-seven lessons covering every skill named in the job posting, roughly one
+hundred and fifty worked code examples, a 146-question mock interview bank,
 sixteen worked scenario answers, and 138 passing tests across Python, Java and
 TypeScript practice modules.
+
+**Lessons 4 to 9 are timed four-hour sprints**, one per basic qualification.
+Each builds one real, working thing rather than covering a topic: a tested
+command-line tool, 46 unit tests, a filterable page rebuilt in Angular, a
+validated REST API with a resilient client, a hardened container image, and a
+CI/CD pipeline with real Git drills.
 
 Built against the **Senior Software Engineer, EADGE-T Tech Refresh, EXPAT UAE**
 requisition specifically. Lockheed has several EADGE-T software reqs open with
@@ -52,25 +58,30 @@ python3 -m http.server 8000
 | 1 | Program and role brief: what EADGE-T is and what the job actually does |
 | 2 | Track data, standards and fusion: plots, tracks, Link 16, ASTERIX, data reduction |
 | 3 | Interview map and a 14-day study plan |
-| 4 | The four-hour Python sprint: build a tested command-line tool from nothing |
-| 5 | Python foundations: the language from zero, and why each piece exists |
-| 6 | Python in practice: standard library, generators, decorators, testing |
-| 7 | Frontend: Angular, TypeScript, HTML and CSS, from nothing to tested components |
-| 8 | APIs: REST, SOAP, gRPC and a working Flask service |
-| 9 | Java refresher |
-| 10 | Data structures, algorithms, and 24 practice problems |
-| 11 | Object-oriented design, SOLID, and a live design exercise |
-| 12 | Linux / RHEL and production troubleshooting |
-| 13 | Git, GitLab, baseline merges, Scrum and Kanban |
-| 14 | Testing and CI/CD |
-| 15 | Docker, Kubernetes and Helm |
-| 16 | Architecture and the Software Factory |
-| 17 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
-| 18 | Turning the Qatar ADOC product owner role into credible answers |
-| 19 | Behavioral questions and the expat conversation |
-| 20 | Sixteen worked scenario answers, with the follow-ups |
-| 21 | Mock interview bank, 146 questions |
-| 22 | Cheat sheets for the morning of |
+| 4 | **Sprint:** Python in four hours, ending in a tested command-line tool |
+| 5 | **Sprint:** testing in four hours, a simple program and 46 unit tests |
+| 6 | **Sprint:** frontend in four hours, HTML to tested TypeScript to Angular |
+| 7 | **Sprint:** APIs in four hours, a validated REST API and a resilient client |
+| 8 | **Sprint:** Docker in four hours, ending in a hardened multi-stage image |
+| 9 | **Sprint:** SDLC in four hours, Git drills, review, and a CI/CD pipeline |
+| 10 | Python foundations: the language from zero, and why each piece exists |
+| 11 | Python in practice: standard library, generators, decorators, testing |
+| 12 | Frontend reference: Angular, TypeScript, HTML and CSS |
+| 13 | APIs reference: REST, SOAP, gRPC and a working Flask service |
+| 14 | Java refresher |
+| 15 | Data structures, algorithms, and 24 practice problems |
+| 16 | Object-oriented design, SOLID, and a live design exercise |
+| 17 | Linux / RHEL and production troubleshooting |
+| 18 | Git, GitLab, baseline merges, Scrum and Kanban |
+| 19 | Testing and CI/CD |
+| 20 | Docker, Kubernetes and Helm |
+| 21 | Architecture and the Software Factory |
+| 22 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
+| 23 | Turning the Qatar ADOC product owner role into credible answers |
+| 24 | Behavioral questions and the expat conversation |
+| 25 | Sixteen worked scenario answers, with the follow-ups |
+| 26 | Mock interview bank, 146 questions |
+| 27 | Cheat sheets for the morning of |
 
 ## Practice
 

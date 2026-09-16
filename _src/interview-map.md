@@ -35,7 +35,7 @@ Have crisp answers to: are you a US citizen; what is your current clearance
 status; are you genuinely willing to relocate to the UAE for two to three years;
 what is your compensation expectation; when could you start. Do not improvise
 the comp number. Decide it beforehand and give a range with a rationale
-(see [lesson 19](behavioral.html)).
+(see [lesson 24](behavioral.html)).
 
 ### Hiring manager screen
 
@@ -49,7 +49,7 @@ This one decides the most. Prepare:
   mission-critical systems where the integration problem is the real problem,
   and I want the international assignment" beats anything generic.
 - Two or three **questions for them** that only someone who read about the
-  program would ask. Examples in [lesson 21](mock-interview.html).
+  program would ask. Examples in [lesson 26](mock-interview.html).
 
 ### Technical interview
 
@@ -57,21 +57,21 @@ Plan for a mix of:
 
 - One or two **small coding problems** in Python, Java or TypeScript,
   15&ndash;25 minutes each. String and collection manipulation, parsing, a light
-  algorithm. See [lesson 10](dsa.html).
+  algorithm. See [lesson 15](dsa.html).
 - **Frontend questions**, because Angular is a basic qualification on this req.
   Components versus services, data binding, dependency injection, observables,
-  and how you would test a component. See [lesson 7](frontend.html).
+  and how you would test a component. See [lesson 12](frontend.html).
 - **API questions.** REST verbs and status codes, idempotency, versioning under
   interface control, and possibly SOAP because the fielded baseline has it. See
-  [lesson 8](apis.html).
+  [lesson 13](apis.html).
 - **Language depth questions.** Python: mutability, generators, GIL, context
   managers, virtual environments. Java: collections, equals/hashCode,
-  concurrency, streams, memory. See lessons 5, 6 and 9.
+  concurrency, streams, memory. See lessons 10, 11 and 14.
 - **Linux questions.** Find the file, follow the log, diagnose the full disk,
-  read the process list. See [lesson 12](linux.html).
+  read the process list. See [lesson 17](linux.html).
 - **Testing and CI questions.** How do you test legacy code with no tests; what
   goes in a pipeline; what makes a test suite trustworthy.
-  See [lesson 14](testing-ci.html).
+  See [lesson 19](testing-ci.html).
 - **A debugging scenario.** "The service works in the lab and fails in
   integration. Walk me through what you do." This is the highest-signal question
   they can ask for this role. Prepare a structured answer.
@@ -120,81 +120,81 @@ Rehearse the three-minute program summary out loud once.
 **Day 2 &ndash; Python.** Two routes, pick one. If you learn by building, do
 [the four-hour sprint](python-sprint.html) end to end: you finish the day with a
 working, tested command-line tool. If you prefer to understand before building,
-do [lesson 5](python.html) sections 1&ndash;7 instead. Either way, type every
+do [lesson 10](python.html) sections 1&ndash;7 instead. Either way, type every
 example. This is the day that matters most if you are rusty.
 
 **Day 3 &ndash; Python: functions, classes, testing.** Rest of
-[lesson 5](python.html), then [lesson 6](python-practice.html) sections 1, 2 and
-7. Do the six REPL exercises at the end of lesson 5, especially the sixth. Write
+[lesson 10](python.html), then [lesson 11](python-practice.html) sections 1, 2 and
+7. Do the six REPL exercises at the end of lesson 10, especially the sixth. Write
 pytest tests for two practice problems.
 
-**Day 4 &ndash; Frontend.** [Lesson 7](frontend.html) sections 1&ndash;6: how
+**Day 4 &ndash; Frontend.** [Lesson 12](frontend.html) sections 1&ndash;6: how
 the web works, HTML, CSS, JavaScript and TypeScript. Do practice problems
 F1&ndash;F4. Angular is a basic qualification on your req, so this is not
 optional.
 
 **Day 4b, if you can find the hours &ndash; Angular and APIs.**
-[Lesson 7](frontend.html) sections 7&ndash;8 and [lesson 8](apis.html). Run the
+[Lesson 12](frontend.html) sections 7&ndash;8 and [lesson 13](apis.html). Run the
 frontend practice module and read its tests.
 
-**Day 5 &ndash; Java refresher.** [Lesson 9](java.html). Compile and run
+**Day 5 &ndash; Java refresher.** [Lesson 14](java.html). Compile and run
 everything. Write one class with proper `equals`, `hashCode`, and `toString`
 from memory. Java is listed as "Java and/or Python", so if time is short,
 prefer the language you are stronger in and be honest about the other.
 
-**Day 5 &ndash; Complexity and core structures.** [Lesson 10](dsa.html)
+**Day 5 &ndash; Complexity and core structures.** [Lesson 15](dsa.html)
 sections 1&ndash;4. Problems A1&ndash;A6, timed at 20 minutes each.
 
-**Day 6 &ndash; Algorithm patterns.** Lesson 10 sections 5&ndash;8. Problems
+**Day 6 &ndash; Algorithm patterns.** Lesson 15 sections 5&ndash;8. Problems
 A7&ndash;A14. Narrate out loud on at least three of them.
 
-**Day 7 &ndash; OO design.** [Lesson 11](ood.html) end to end, including the
+**Day 7 &ndash; OO design.** [Lesson 16](ood.html) end to end, including the
 design exercise. Then rest. Actually rest.
 
 ### Week 2: the job-shaped material
 
-**Day 8 &ndash; Linux and troubleshooting.** [Lesson 12](linux.html) plus the
+**Day 8 &ndash; Linux and troubleshooting.** [Lesson 17](linux.html) plus the
 drills. Do them on a real shell, not from memory.
 
-**Day 9 &ndash; Git, GitLab, Agile.** [Lesson 13](git-agile.html). Do the
+**Day 9 &ndash; Git, GitLab, Agile.** [Lesson 18](git-agile.html). Do the
 merge-conflict exercise for real in a scratch repo.
 
-**Day 10 &ndash; Testing and CI/CD.** [Lesson 14](testing-ci.html). Write a
+**Day 10 &ndash; Testing and CI/CD.** [Lesson 19](testing-ci.html). Write a
 `.gitlab-ci.yml` for the practice repo and be able to explain each stage.
 
 **Day 11 &ndash; Containers and architecture.** Lessons
 [10](containers.html) and [11](architecture.html). Write and run a
 Dockerfile for the practice service.
 
-**Day 12 &ndash; Cyber and sustainment.** [Lesson 17](cyber.html). Prepare
+**Day 12 &ndash; Cyber and sustainment.** [Lesson 22](cyber.html). Prepare
 your answer to the dependency-upgrade question, which is nearly certain to
 appear in some form.
 
-**Day 13 &ndash; Behavioral and your bridge.** [Lesson 18](adoc-bridge.html)
-and [lesson 19](behavioral.html). Write out your positioning statement and six
+**Day 13 &ndash; Behavioral and your bridge.** [Lesson 23](adoc-bridge.html)
+and [lesson 24](behavioral.html). Write out your positioning statement and six
 STAR stories in full. Rehearse the expat answer with someone else in the room.
 
-**Day 14 &ndash; Mock and taper.** Work [lesson 21](mock-interview.html)
+**Day 14 &ndash; Mock and taper.** Work [lesson 26](mock-interview.html)
 under time pressure. Two coding problems, timed and narrated, then six scenario
-answers from [lesson 20](scenarios.html) out loud. Then stop. Skim
+answers from [lesson 25](scenarios.html) out loud. Then stop. Skim
 [the cheat sheets](cheatsheets.html) the morning of, and nothing else.
 
 ## Compressed plans
 
-**Seven days:** Days 1, 2, 3, 5, 6, 10, 13, 14 compressed into one week. Skip
-lessons 15 and 16 as study; skim them for vocabulary only.
+**Seven days:** one sprint a day, lessons 4 to 9, then a day on behavioral and
+a day on the mock bank. That is the highest-return week available. Skip
+lessons 20 and 21 as study; skim them for vocabulary only.
 
 **Three days:** Day one, [the four-hour sprint](python-sprint.html) end to end,
-then problems A1&ndash;A8 timed. Day two, lesson 7's Angular sections plus
-lesson 14, and lesson 1's program summary. Day three, lesson 18's positioning
-statement and six STAR stories written out in full, plus lesson 20's scenario
-answers out loud. If
+then the testing sprint. Day two, the frontend sprint plus lesson 1's program
+summary. Day three, lesson 23's positioning statement and six STAR stories
+written out in full, plus lesson 25's scenario answers out loud. If
 you only have three days, behavioral and program fluency return more than
 algorithms.
 
 **One evening:** [Cheat sheets](cheatsheets.html), the program summary in
-lesson 1, your positioning statement from lesson 18, and six STAR stories from
-lesson 19. In that order.
+lesson 1, your positioning statement from lesson 23, and six STAR stories from
+lesson 24. In that order.
 
 ## During the interview
 

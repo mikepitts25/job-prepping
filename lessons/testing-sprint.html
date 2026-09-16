@@ -1,0 +1,711 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>5. The four-hour testing sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li class="active"><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="5-the-four-hour-testing-sprint">5. The four-hour testing sprint</h1>
+<p>"Developing unit tests and automated test capabilities" is what the posting
+says the job <em>is</em>. This sprint is therefore the highest-value four hours on the
+site.</p>
+<p>We use a deliberately <strong>boring</strong> program: a shopping basket. No radars, no
+tracks, no domain to learn. You already know what a basket costs and what a
+discount does, which means every minute goes into the testing rather than into
+understanding the thing being tested.</p>
+<p>By hour four you will have a small program and 46 tests, you will have written
+code test-first, and you will have proved to yourself why a high coverage
+number can be worthless.</p>
+<p><a href="testing-ci.html">Lesson 19</a> is the reference. <a href="python-sprint.html">Lesson 4</a>
+is the Python sprint, and this assumes you have done it or already know basic
+Python.</p>
+<h2 id="the-rules">The rules</h2>
+<ol>
+<li><strong>Type everything.</strong></li>
+<li><strong>Run <code>pytest</code> after every block.</strong> It takes half a second.</li>
+<li><strong>When I say break it, break it.</strong> Watching a test fail is the only way to
+   learn that it works.</li>
+<li><strong>Read the failure output.</strong> pytest prints the actual values. That is the
+   whole point of it.</li>
+</ol>
+<h2 id="what-i-am-cutting">What I am cutting</h2>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Integration and end-to-end tests</td>
+<td>Unit testing is the skill that transfers. <a href="testing-ci.html">Lesson 19</a> has the pyramid.</td>
+</tr>
+<tr>
+<td>Property-based testing (Hypothesis)</td>
+<td>Excellent, not day one.</td>
+</tr>
+<tr>
+<td>Mutation testing</td>
+<td>Mentioned in hour four; a tool for later.</td>
+</tr>
+<tr>
+<td><code>unittest</code> (the standard library one)</td>
+<td>pytest is what teams use. You can read <code>unittest</code> once you know pytest.</td>
+</tr>
+<tr>
+<td>Mocking frameworks in depth</td>
+<td>We use fakes, which are better anyway, and one <code>MagicMock</code> example.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-three-minutes-before-the-clock">Setup: three minutes, before the clock</h2>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>testsprint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>testsprint
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate
+pip<span class="w"> </span>install<span class="w"> </span>pytest<span class="w"> </span>pytest-cov
+pytest<span class="w"> </span>--version
+</code></pre></div>
+
+<p>Start the clock.</p>
+<hr />
+<h2 id="hour-1-what-a-test-is">Hour 1: what a test is</h2>
+<h3 id="000-to-015-assert-and-nothing-else">0:00 to 0:15 — assert, and nothing else</h3>
+<p>A test is a function whose name starts with <code>test_</code>, containing an <code>assert</code>.</p>
+<p><code>assert</code> means "this had better be true." If it is, <strong>nothing happens at all</strong>.
+If it is not, it raises <code>AssertionError</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>        <span class="c1"># true: silence</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">3</span>        <span class="c1"># false</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+
+<p>Silence means pass. That is why a passing suite is quiet.</p>
+<p>Make <code>test_first.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_arithmetic_still_works</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_this_one_fails_on_purpose</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">5</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q
+</code></pre></div>
+
+<p>Read the failure carefully. pytest shows you <code>assert 4 == 5</code>, the actual values,
+not just "failed." <strong>That is why plain <code>assert</code> is enough in Python and you
+need no special assertion methods.</strong></p>
+<p>Delete the failing test. Delete the file. Now the real work.</p>
+<h3 id="015-to-045-the-program">0:15 to 0:45 — The program</h3>
+<p>Create <code>basket.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="sd">"""A shopping basket.</span>
+
+<span class="sd">Money is held in whole pence as integers, never as floats. 0.1 + 0.2 is not</span>
+<span class="sd">0.3 in binary floating point, and a rounding error in a price is the kind of</span>
+<span class="sd">bug a customer notices.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">BasketError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Base class for anything this module rejects."""</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Item</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One line in the basket."""</span>
+
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">unit_price_pence</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">BasketError</span><span class="p">(</span><span class="s2">"name must not be blank"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">unit_price_pence</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BasketError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"price must not be negative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_price_pence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">quantity</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BasketError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"quantity must be at least 1: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">quantity</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">line_total</span><span class="p">(</span><span class="n">item</span><span class="p">:</span> <span class="n">Item</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What one line costs, in pence."""</span>
+    <span class="k">return</span> <span class="n">item</span><span class="o">.</span><span class="n">unit_price_pence</span> <span class="o">*</span> <span class="n">item</span><span class="o">.</span><span class="n">quantity</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">subtotal</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What every line costs together, in pence. An empty basket costs nothing."""</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">line_total</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Two design decisions that exist <strong>because of testing</strong>, and both are worth
+saying in an interview:</p>
+<p><strong>Integer pence, not floats.</strong> Floats cannot represent a tenth exactly, so
+money arithmetic drifts. Using pence makes every assertion exact:
+<code>assert total == 270</code>, with no tolerance and no <code>pytest.approx</code>.</p>
+<p><strong>Validation in <code>__post_init__</code>.</strong> An <code>Item</code> that violates the rules cannot be
+constructed, so nothing downstream has to defend against one. That converts a
+scattering of defensive checks into one place with one test each.</p>
+<h3 id="045-to-100-your-first-real-tests">0:45 to 1:00 — Your first real tests</h3>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">basket</span><span class="w"> </span><span class="kn">import</span> <span class="n">BasketError</span><span class="p">,</span> <span class="n">Item</span><span class="p">,</span> <span class="n">line_total</span><span class="p">,</span> <span class="n">subtotal</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_line_total_multiplies_price_by_quantity</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">line_total</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span> <span class="o">==</span> <span class="mi">150</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_subtotal_adds_the_lines_up</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">subtotal</span><span class="p">([</span><span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">Item</span><span class="p">(</span><span class="s2">"bread"</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">270</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_empty_basket_costs_nothing</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">subtotal</span><span class="p">([])</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_single_line_basket</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">subtotal</span><span class="p">([</span><span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">)])</span> <span class="o">==</span> <span class="mi">50</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q
+</code></pre></div>
+
+<p><strong>The names are the specification.</strong> Read them on their own: a line total
+multiplies price by quantity, a subtotal adds the lines up, an empty basket
+costs nothing. Someone who has never seen the code now knows what it does.
+<code>test_1</code>, <code>test_2</code>, <code>test_3</code> would have told them nothing.</p>
+<p><strong>Arrange, Act, Assert</strong> is the shape of every test:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_subtotal_adds_the_lines_up</span><span class="p">():</span>
+    <span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">Item</span><span class="p">(</span><span class="s2">"bread"</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>   <span class="c1"># Arrange</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">subtotal</span><span class="p">(</span><span class="n">items</span><span class="p">)</span>                                 <span class="c1"># Act</span>
+    <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">270</span>                                     <span class="c1"># Assert</span>
+</code></pre></div>
+
+<p>One-liners like the versions above are fine when all three fit on a line.</p>
+<p><strong>Do now, five minutes.</strong> Break <code>line_total</code> by changing <code>*</code> to <code>+</code>. Run
+pytest. Notice that <strong>three tests fail, not one</strong>, and that the failure output
+tells you the expected and actual numbers. Put it back.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-2-the-cases-that-catch-real-bugs">Hour 2: the cases that catch real bugs</h2>
+<h3 id="100-to-120-testing-that-something-is-rejected">1:00 to 1:20 — Testing that something is rejected</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_a_valid_item_is_accepted</span><span class="p">():</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">"apple"</span>
+    <span class="k">assert</span> <span class="n">item</span><span class="o">.</span><span class="n">quantity</span> <span class="o">==</span> <span class="mi">3</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_negative_price_is_rejected</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">):</span>
+        <span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_the_error_says_what_was_wrong</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">"quantity"</span><span class="p">):</span>
+        <span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong><code>with pytest.raises(...)</code> passes only if the block raises that exception.</strong> If
+the code wrongly accepts the bad value, the test fails. That is how you test a
+guard.</p>
+<p><strong><code>match=</code> checks the message</strong>, so you are testing that the <em>right</em> error was
+raised and not merely that something went wrong. Without it, a test can pass
+because of an unrelated crash.</p>
+<h3 id="120-to-140-one-test-many-cases">1:20 to 1:40 — One test, many cases</h3>
+<p>When the same logic needs several inputs, do not write five near-identical
+functions:</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"name,price,quantity,why"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"blank name"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"   "</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"whitespace-only name"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"negative price"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"zero quantity"</span><span class="p">),</span>
+    <span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="s2">"negative quantity"</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_invalid_items_are_rejected</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">,</span> <span class="n">why</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">):</span>
+        <span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">price</span><span class="p">,</span> <span class="n">quantity</span><span class="p">)</span>
+</code></pre></div>
+
+<p>pytest runs that as <strong>five separate tests</strong>, each named by its inputs, so a
+failure tells you exactly which case broke. Run <code>pytest -v</code> and look at the
+names.</p>
+<p>The <code>why</code> column is never used by the code. It is there so the list reads as
+documentation.</p>
+<p>And one case that is easy to miss:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_a_free_item_is_allowed</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Zero is a legitimate price. Only negative is nonsense."""</span>
+    <span class="k">assert</span> <span class="n">line_total</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="s2">"free sample"</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div>
+
+<p><strong>Zero versus negative is a boundary</strong>, and boundaries are where bugs live. If
+you had written <code>if not self.unit_price_pence</code> instead of <code>&lt; 0</code>, this test
+would catch it. Try that substitution and watch it go red.</p>
+<h3 id="140-to-200-the-checklist">1:40 to 2:00 — The checklist</h3>
+<p>Here is the thing to memorise. Given any function, ask for these. <strong>Say this
+list out loud in an interview even when you are not asked</strong>, because it is what
+separates a senior answer from a correct one:</p>
+<ul>
+<li>the normal case</li>
+<li>empty input</li>
+<li>a single item</li>
+<li>duplicates and ties</li>
+<li>malformed or wrong-typed input</li>
+<li><strong>boundaries: zero, one, and either side of every threshold</strong></li>
+<li>the error path: does it raise what it should?</li>
+</ul>
+<p>Apply it to a discount function. Add this to <code>basket.py</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">apply_discount</span><span class="p">(</span><span class="n">amount_pence</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">percent</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Take a whole-number percentage off, rounding to the nearest penny.</span>
+
+<span class="sd">    Rounds half up, because rounding a customer's money down by default is the</span>
+<span class="sd">    sort of thing that shows up in a complaint.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">percent</span> <span class="o">&lt;=</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">BasketError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"percent must be between 0 and 100: </span><span class="si">{</span><span class="n">percent</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">discount</span> <span class="o">=</span> <span class="p">(</span><span class="n">amount_pence</span> <span class="o">*</span> <span class="n">percent</span> <span class="o">+</span> <span class="mi">50</span><span class="p">)</span> <span class="o">//</span> <span class="mi">100</span>
+    <span class="k">return</span> <span class="n">amount_pence</span> <span class="o">-</span> <span class="n">discount</span>
+</code></pre></div>
+
+<p>Now write the checklist out as tests:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_no_discount_leaves_the_amount_alone</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">apply_discount</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1000</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_full_discount_makes_it_free</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">apply_discount</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_ten_percent_off_a_round_number</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">apply_discount</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">900</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rounding_goes_half_up_in_the_customers_favour</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""10% of 995 is 99.5p. Rounding up the discount gives the customer 895."""</span>
+    <span class="k">assert</span> <span class="n">apply_discount</span><span class="p">(</span><span class="mi">995</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">==</span> <span class="mi">895</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_discounting_nothing_is_still_nothing</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">apply_discount</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"percent"</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_impossible_percentage_is_rejected</span><span class="p">(</span><span class="n">percent</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">):</span>
+        <span class="n">apply_discount</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">percent</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>The rounding test is the one that earns its keep.</strong> Remove the <code>+ 50</code> from
+<code>apply_discount</code>, which turns round-half-up into truncation, and run pytest:</p>
+<div class="codehilite"><pre><span></span><code>&gt;       assert apply_discount(995, 10) == 895
+E       assert 896 == 895
+FAILED test_basket.py::test_rounding_goes_half_up_in_the_customers_favour
+1 failed, 45 passed
+</code></pre></div>
+
+<p>A one penny error, caught automatically, on a line that looks obviously
+correct. That is what tests are for. Put the <code>+ 50</code> back.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-testing-things-that-touch-the-world">Hour 3: testing things that touch the world</h2>
+<p>The hard part of testing is never the arithmetic. It is the clock, the
+filesystem, the network and the database. The answer is always the same:
+<strong>make the awkward thing a parameter.</strong></p>
+<h3 id="200-to-220-the-clock">2:00 to 2:20 — The clock</h3>
+<p>Add a time-limited voucher:</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Voucher</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A discount code that only works between two dates."""</span>
+
+    <span class="n">code</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">percent</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">valid_from</span><span class="p">:</span> <span class="nb">str</span>   <span class="c1"># ISO date, e.g. '2026-01-01'</span>
+    <span class="n">valid_to</span><span class="p">:</span> <span class="nb">str</span>     <span class="c1"># inclusive</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">voucher_percent</span><span class="p">(</span><span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">vouchers</span><span class="p">,</span> <span class="n">today</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""How much this code is worth today. Unknown or expired codes are worth 0.</span>
+
+<span class="sd">    `today` is a parameter rather than a call to date.today() inside, which is</span>
+<span class="sd">    what lets a test check an expired voucher without waiting for time to pass.</span>
+<span class="sd">    """</span>
+    <span class="k">for</span> <span class="n">voucher</span> <span class="ow">in</span> <span class="n">vouchers</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">voucher</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="n">code</span> <span class="ow">and</span> <span class="n">voucher</span><span class="o">.</span><span class="n">valid_from</span> <span class="o">&lt;=</span> <span class="n">today</span> <span class="o">&lt;=</span> <span class="n">voucher</span><span class="o">.</span><span class="n">valid_to</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">voucher</span><span class="o">.</span><span class="n">percent</span>
+    <span class="k">return</span> <span class="mi">0</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">VOUCHERS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">Voucher</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s2">"2026-01-01"</span><span class="p">,</span> <span class="s2">"2026-12-31"</span><span class="p">),</span>
+    <span class="n">Voucher</span><span class="p">(</span><span class="s2">"OLD"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"2020-01-01"</span><span class="p">,</span> <span class="s2">"2020-12-31"</span><span class="p">),</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_current_voucher_is_worth_its_percentage</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-06-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_expired_voucher_is_worth_nothing</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"OLD"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-06-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_unknown_code_is_worth_nothing</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"NOPE"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-06-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_voucher_works_on_its_first_day</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-01-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_voucher_works_on_its_last_day</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-12-31"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_voucher_does_not_work_the_day_before_it_starts</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2025-12-31"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_voucher_does_not_work_the_day_after_it_ends</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2027-01-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div>
+
+<p><strong>Look at those last four.</strong> First day, last day, one day before, one day
+after. Off-by-one errors in date ranges are extremely common, and only boundary
+tests find them. If <code>voucher_percent</code> used <code>&lt;</code> instead of <code>&lt;=</code>, exactly one of
+these would fail and tell you which end was wrong.</p>
+<p><strong>Now imagine testing this with <code>date.today()</code> inside the function.</strong> You could
+not test the expired case at all without changing the system clock. Passing
+<code>today</code> in costs one parameter and buys the entire test suite. <strong>That is
+dependency injection</strong>, and it is the single most useful idea in testable
+design.</p>
+<h3 id="220-to-245-the-filesystem">2:20 to 2:45 — The filesystem</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_prices</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Read a 'name,pence' price list, skipping blanks, comments and bad rows."""</span>
+    <span class="n">prices</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">handle</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">handle</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">prices</span><span class="p">[</span><span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="k">continue</span>
+    <span class="k">return</span> <span class="n">prices</span>
+</code></pre></div>
+
+<p>pytest gives you a real temporary directory, cleaned up afterwards:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_loads_a_simple_price_list</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"prices.csv"</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">"apple,50</span><span class="se">\n</span><span class="s2">bread,120</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">load_prices</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"apple"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"bread"</span><span class="p">:</span> <span class="mi">120</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_skips_blanks_and_comments</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"prices.csv"</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">"# a comment</span><span class="se">\n\n</span><span class="s2">apple,50</span><span class="se">\n\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">load_prices</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"apple"</span><span class="p">:</span> <span class="mi">50</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_skips_malformed_rows_without_giving_up</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"prices.csv"</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">"apple,50</span><span class="se">\n</span><span class="s2">broken-row</span><span class="se">\n</span><span class="s2">cheese,notanumber</span><span class="se">\n</span><span class="s2">bread,120</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">load_prices</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="p">{</span><span class="s2">"apple"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"bread"</span><span class="p">:</span> <span class="mi">120</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_empty_file_gives_an_empty_price_list</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"prices.csv"</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="s2">""</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">load_prices</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">==</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_missing_file_raises</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">FileNotFoundError</span><span class="p">):</span>
+        <span class="n">load_prices</span><span class="p">(</span><span class="n">tmp_path</span> <span class="o">/</span> <span class="s2">"nope.csv"</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong><code>tmp_path</code> is a fixture</strong>: ask for it by name in the parameter list and
+pytest supplies a fresh directory per test. No cleanup code, no shared state,
+no tests interfering with each other.</p>
+<p>Notice <code>test_skips_malformed_rows_without_giving_up</code>. Real data files contain
+garbage, and the policy question, do we crash or do we skip, is a decision the
+test now documents.</p>
+<h3 id="245-to-300-your-own-fixtures">2:45 to 3:00 — Your own fixtures</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Basket</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A basket you add to, which knows what it costs."""</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prices</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prices</span> <span class="o">=</span> <span class="n">prices</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Item</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prices</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BasketError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"unknown item: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">Item</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prices</span><span class="p">[</span><span class="n">name</span><span class="p">],</span> <span class="n">quantity</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">vouchers</span><span class="o">=</span><span class="p">(),</span> <span class="n">today</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""What the customer pays, in pence, after any valid voucher."""</span>
+        <span class="n">gross</span> <span class="o">=</span> <span class="n">subtotal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">)</span>
+        <span class="n">percent</span> <span class="o">=</span> <span class="n">voucher_percent</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="n">vouchers</span><span class="p">,</span> <span class="n">today</span><span class="p">)</span> <span class="k">if</span> <span class="n">code</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">apply_discount</span><span class="p">(</span><span class="n">gross</span><span class="p">,</span> <span class="n">percent</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>Basket</code> takes its price list as a constructor argument rather than loading a
+file itself. Same idea again: <strong>the awkward thing is a parameter.</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">prices</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""The price list every basket test starts from."""</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">"apple"</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">"bread"</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span> <span class="s2">"milk"</span><span class="p">:</span> <span class="mi">95</span><span class="p">}</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">basket</span><span class="p">(</span><span class="n">prices</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""An empty basket. Fixtures can use other fixtures."""</span>
+    <span class="k">return</span> <span class="n">Basket</span><span class="p">(</span><span class="n">prices</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_new_basket_is_empty</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">items</span> <span class="o">==</span> <span class="p">()</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">total</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_adding_several_items</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+    <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"bread"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">total</span><span class="p">()</span> <span class="o">==</span> <span class="mi">270</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_an_unknown_item_is_rejected</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">"unknown item"</span><span class="p">):</span>
+        <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"caviar"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_rejected_item_does_not_end_up_in_the_basket</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="n">BasketError</span><span class="p">):</span>
+        <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"caviar"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">items</span> <span class="o">==</span> <span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_a_valid_voucher_reduces_the_total</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+    <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">basket</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"bread"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">total</span><span class="p">(</span><span class="s2">"SAVE10"</span><span class="p">,</span> <span class="n">VOUCHERS</span><span class="p">,</span> <span class="s2">"2026-06-01"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">243</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_tests_do_not_leak_into_each_other</span><span class="p">(</span><span class="n">basket</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""This basket is empty even though the test above added two items."""</span>
+    <span class="k">assert</span> <span class="n">basket</span><span class="o">.</span><span class="n">items</span> <span class="o">==</span> <span class="p">()</span>
+</code></pre></div>
+
+<p><strong>A fixture runs fresh for every test that asks for it.</strong> That last test proves
+it, and that property is what makes a suite trustworthy: <strong>a test that only
+passes when another ran first is worse than no test</strong>, because it fails
+mysteriously months later.</p>
+<p><code>test_a_rejected_item_does_not_end_up_in_the_basket</code> is worth noticing too. It
+tests that a failure left <strong>no</strong> side effect, which is a case people routinely
+forget.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-4-judgement">Hour 4: judgement</h2>
+<h3 id="300-to-320-test-driven-development">3:00 to 3:20 — Test-driven development</h3>
+<p>So far you wrote code then tested it. Now reverse it. <strong>Red, green, refactor:</strong></p>
+<ol>
+<li>Write a failing test for behaviour that does not exist. Run it. <strong>See it
+   fail.</strong></li>
+<li>Write the least code that makes it pass.</li>
+<li>Tidy up, with the test protecting you.</li>
+</ol>
+<p>Do it now, for a "buy two get one free" offer.</p>
+<p><strong>Red:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_three_apples_cost_two</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">bogof_price</span><span class="p">(</span><span class="n">unit_price</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">100</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q<span class="w">       </span><span class="c1"># NameError: name 'bogof_price' is not defined</span>
+</code></pre></div>
+
+<p><strong>Green</strong>, the least code that passes:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">bogof_price</span><span class="p">(</span><span class="n">unit_price</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">100</span>
+</code></pre></div>
+
+<p>That is not a joke. It passes. Which tells you the test does not yet pin the
+behaviour, so write the next failing test:</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"quantity,expected"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span> <span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">200</span><span class="p">),</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">250</span><span class="p">),</span>
+<span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_every_third_apple_is_free</span><span class="p">(</span><span class="n">quantity</span><span class="p">,</span> <span class="n">expected</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">bogof_price</span><span class="p">(</span><span class="n">unit_price</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">quantity</span><span class="o">=</span><span class="n">quantity</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected</span>
+</code></pre></div>
+
+<p><strong>Green</strong> properly:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">bogof_price</span><span class="p">(</span><span class="n">unit_price</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">quantity</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Buy two, get one free: every third item costs nothing."""</span>
+    <span class="n">payable</span> <span class="o">=</span> <span class="n">quantity</span> <span class="o">-</span> <span class="n">quantity</span> <span class="o">//</span> <span class="mi">3</span>
+    <span class="k">return</span> <span class="n">payable</span> <span class="o">*</span> <span class="n">unit_price</span>
+</code></pre></div>
+
+<p>What TDD actually buys, and this is the honest version rather than the
+evangelical one:</p>
+<ul>
+<li><strong>You cannot write an untestable design</strong>, because the test exists first.</li>
+<li><strong>You see every test fail</strong>, so you know it can fail. A test you never saw
+  red might be asserting nothing.</li>
+<li><strong>You write less code</strong>, because you stop when the tests pass.</li>
+</ul>
+<p>It is not compulsory, and plenty of good engineers use it selectively. Use it
+when the behaviour is well specified and fiddly, which is exactly what a
+pricing rule is.</p>
+<h3 id="320-to-340-coverage-and-why-the-number-lies">3:20 to 3:40 — Coverage, and why the number lies</h3>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q<span class="w"> </span>--cov<span class="o">=</span>basket<span class="w"> </span>--cov-report<span class="o">=</span>term-missing
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>Name        Stmts   Miss  Cover   Missing
+basket.py      66      0   100%
+TOTAL          66      0   100%
+</code></pre></div>
+
+<p>100%. Now prove to yourself that this means less than it looks. Write this
+deliberately useless test in a file of its own:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_everything_runs</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">"""Executes a lot of lines and asserts nothing useful."""</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="n">Item</span><span class="p">(</span><span class="s2">"apple"</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">line_total</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="n">subtotal</span><span class="p">([</span><span class="n">item</span><span class="p">])</span>
+    <span class="n">apply_discount</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">format_pence</span><span class="p">(</span><span class="mi">1234</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="kc">True</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q<span class="w"> </span>test_weak.py<span class="w"> </span>--cov<span class="o">=</span>basket<span class="w"> </span>--cov-report<span class="o">=</span>term
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>basket.py      66     31    53%
+1 passed
+</code></pre></div>
+
+<p><strong>One test, no real assertions, and it claims to cover half the module.</strong> Every
+one of those functions could return the wrong answer and this test would still
+pass.</p>
+<p>So state it honestly, and this is the interview answer:</p>
+<blockquote>
+<p><strong>Coverage is a good detector of untested code and a bad measure of test
+quality.</strong> It counts lines executed, not assertions made. Zero coverage on
+the pricing logic is alarming; ninety percent with assertions that cannot
+fail is worthless. I use it to find gaps and to set a floor that must not
+regress, never as a target in itself. The honest check is to break the code
+deliberately and confirm a test goes red.</p>
+</blockquote>
+<p>Branch coverage is more informative than line coverage. <strong>Mutation testing</strong>
+tools such as <code>mutmut</code> do the breaking automatically: they change your code in
+small ways and report which mutations your tests failed to catch. That is the
+real measure, when a programme will pay for it.</p>
+<h3 id="340-to-352-doubles-and-the-one-rule-about-them">3:40 to 3:52 — Doubles, and the one rule about them</h3>
+<p>The vocabulary, which interviewers do ask you to distinguish:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Dummy</strong></td>
+<td>Filler to satisfy a signature, never used</td>
+</tr>
+<tr>
+<td><strong>Stub</strong></td>
+<td>Returns canned answers</td>
+</tr>
+<tr>
+<td><strong>Spy</strong></td>
+<td>A stub that also records how it was called</td>
+</tr>
+<tr>
+<td><strong>Mock</strong></td>
+<td>Pre-programmed with expectations; you assert on the interaction</td>
+</tr>
+<tr>
+<td><strong>Fake</strong></td>
+<td>A real but simplified implementation</td>
+</tr>
+</tbody>
+</table>
+<p>Everything you have written this sprint used <strong>fakes</strong>: a dict of prices
+instead of a database, a tuple of vouchers instead of a service, <code>tmp_path</code>
+instead of a real data directory. That is deliberate.</p>
+<p>Here is a mock, for comparison:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">unittest.mock</span><span class="w"> </span><span class="kn">import</span> <span class="n">MagicMock</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_checkout_notifies_the_customer</span><span class="p">():</span>
+    <span class="n">notifier</span> <span class="o">=</span> <span class="n">MagicMock</span><span class="p">()</span>
+    <span class="n">checkout</span><span class="p">(</span><span class="n">basket</span><span class="p">,</span> <span class="n">notifier</span><span class="o">=</span><span class="n">notifier</span><span class="p">)</span>
+    <span class="n">notifier</span><span class="o">.</span><span class="n">send</span><span class="o">.</span><span class="n">assert_called_once</span><span class="p">()</span>
+</code></pre></div>
+
+<p><strong>Prefer fakes to mocks, and be ready to say why:</strong> a test that asserts on a
+chain of mock interactions breaks whenever you restructure the code, even when
+the behaviour is unchanged. A test against a fake asserts on outcomes and
+survives refactoring.</p>
+<p>And the deeper point, which is the single best sentence you can offer on this
+topic:</p>
+<blockquote>
+<p><strong>If a class is hard to test, that is a design defect, not a testing
+problem.</strong> Hard to test almost always means it builds its own dependencies,
+reads global state, or does several unrelated things.</p>
+</blockquote>
+<h3 id="352-to-400-self-test">3:52 to 4:00 — Self-test</h3>
+<p>From memory, write:</p>
+<ol>
+<li>A test that a function raises <code>ValueError</code> on bad input, checking the
+   message.</li>
+<li>A parametrised test with four cases.</li>
+<li>A fixture, and a test that uses it.</li>
+<li>The seven-item checklist of what to test.</li>
+<li>One sentence on what coverage does and does not tell you.</li>
+<li>One sentence on why you would inject a clock.</li>
+</ol>
+<h2 id="what-you-can-honestly-claim">What you can honestly claim</h2>
+<p><strong>Say:</strong> you write pytest suites including parametrised cases, exception tests
+and fixtures; you test boundaries and error paths rather than just the happy
+path; you design for testability by injecting clocks, paths and collaborators;
+you can work test-first; and you read coverage honestly.</p>
+<p>That is a genuine, defensible skill set, and it is precisely what the posting
+asks for.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<ol>
+<li><strong><a href="testing-ci.html">Lesson 19</a></strong>: the pyramid, flaky tests, and CI gates.</li>
+<li><strong>The <a href="../practice/README.html">practice repo</a></strong>: 84 Python tests to read,
+   and stubs to fill in with <code>PREP_TARGET=exercises pytest -q</code>.</li>
+<li><strong>Add characterization tests</strong> to something you did not write: capture what
+   it does today, then refactor safely behind them.</li>
+<li><strong>Install <code>mutmut</code></strong> and run it against <code>basket.py</code>. Fix what it finds.</li>
+<li><strong>Wire the suite into CI</strong>, per <a href="sdlc-sprint.html">lesson 9</a>.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/python-sprint.html">&larr; 4. Sprint: Python in Four Hours</a><a class="next" href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

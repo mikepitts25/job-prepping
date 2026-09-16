@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. The four-hour Docker sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li class="active"><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="8-the-four-hour-docker-sprint">8. The four-hour Docker sprint</h1>
+<p>"Familiarity with <strong>Docker</strong>, REST APIs, or SOAP" is a basic qualification, and
+Docker also appears in the desired skills alongside Kubernetes and Helm. Four
+hours gets you from nothing to a hardened, multi-stage image you can defend in
+a review.</p>
+<p>We containerise <strong>the API you built in <a href="apis-sprint.html">lesson 7</a></strong>. If you
+skipped that sprint, any small Flask app or the Python tool from
+<a href="python-sprint.html">lesson 4</a> works; the Dockerfile barely changes.</p>
+<p><a href="containers.html">Lesson 20</a> is the reference. This is the sprint.</p>
+<p><strong>One honesty note.</strong> The command outputs shown below are representative rather
+than captured, because the environment this lesson was written in had the
+Docker client but no daemon. The Dockerfile and compose file were validated
+structurally, and the application inside them was run under gunicorn exactly as
+the container runs it. Everything else you will verify yourself as you go,
+which is the point of a sprint.</p>
+<h2 id="the-rules">The rules</h2>
+<ol>
+<li><strong>Type everything.</strong></li>
+<li><strong>Build and run after every change.</strong> The loop is fast; use it.</li>
+<li><strong>Read the build output.</strong> It tells you which layers were cached. That is
+   the single most useful feedback Docker gives you.</li>
+<li><strong>Break things on purpose</strong> where I say so.</li>
+</ol>
+<h2 id="what-i-am-cutting">What I am cutting</h2>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kubernetes beyond vocabulary</td>
+<td>A sprint of its own. <a href="containers.html">Lesson 20</a> has what you need to talk about it.</td>
+</tr>
+<tr>
+<td>Helm</td>
+<td>Same.</td>
+</tr>
+<tr>
+<td>Swarm, Nomad</td>
+<td>Not on your req.</td>
+</tr>
+<tr>
+<td>Networking internals (bridge, overlay)</td>
+<td>You need port publishing and compose, not CNI.</td>
+</tr>
+<tr>
+<td>Writing base images from scratch</td>
+<td>You will consume approved bases, not build them.</td>
+</tr>
+<tr>
+<td>BuildKit cache mounts, buildx</td>
+<td>Real, but not day-one.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="setup-five-minutes-before-the-clock">Setup: five minutes, before the clock</h2>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>--version<span class="w">          </span><span class="c1"># any recent version</span>
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>hello-world
+</code></pre></div>
+
+<p>If that second command prints a greeting, you have a working daemon. If it
+says it cannot connect to the Docker daemon, start Docker Desktop or
+<code>sudo systemctl start docker</code> before going further.</p>
+<p>Start the clock.</p>
+<hr />
+<h2 id="hour-1-what-a-container-is-and-driving-one">Hour 1: what a container is, and driving one</h2>
+<h3 id="000-to-020-the-concept">0:00 to 0:20 — The concept</h3>
+<p>Learn this definition properly, because it is the most common interview
+question on the topic and most candidates answer it vaguely:</p>
+<blockquote>
+<p>A container is a <strong>normal Linux process</strong>, isolated using kernel features
+rather than virtualised. <strong>Namespaces</strong> give it its own view of the process
+table, network stack, mounts, hostname and users. <strong>cgroups</strong> limit what it
+can consume in CPU, memory and I/O. Its filesystem comes from a stack of
+read-only image layers with a thin writable layer on top. There is no guest
+operating system and no guest kernel, which is why it starts in milliseconds.</p>
+</blockquote>
+<p><strong>Container versus virtual machine</strong>, the inevitable follow-up: a VM
+virtualises hardware and runs its own kernel, giving stronger isolation at the
+cost of size and startup time. A container shares the host kernel. The security
+consequence is real: kernel isolation is weaker than hypervisor isolation,
+which is why high-assurance environments often still run containers <em>inside</em>
+VMs.</p>
+<p><strong>Image versus container</strong>: the image is the immutable template, the container
+is a running instance of it. Same relation as a class and an object.</p>
+<p><strong>Why anyone bothers</strong>, stated as the thing the posting cares about: an image
+is a <strong>reproducible unit</strong>. The same bytes run identically on a developer
+laptop, in CI, and on a server. That kills "works on my machine," and it is the
+direct enabler for the disposable test environments a tech refresh needs.</p>
+<h3 id="020-to-050-driving-containers">0:20 to 0:50 — Driving containers</h3>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>python:3.11-slim<span class="w"> </span>bash
+</code></pre></div>
+
+<p>You are now inside a container, at a shell, with Python 3.11. Try:</p>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-V
+ls<span class="w"> </span>/
+cat<span class="w"> </span>/etc/os-release
+<span class="nb">exit</span>
+</code></pre></div>
+
+<p>You just ran a different Linux distribution in about a second without
+installing anything. That is the demonstration; sit with it for a moment.</p>
+<p>The flags matter:</p>
+<ul>
+<li><code>--rm</code> deletes the container when it exits. Without it you accumulate dead
+  containers forever.</li>
+<li><code>-it</code> gives you an interactive terminal.</li>
+</ul>
+<p>The commands you will use daily:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--name<span class="w"> </span>api<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>myimage:1.0<span class="w">   </span><span class="c1"># detached, with a port published</span>
+docker<span class="w"> </span>ps<span class="w">                        </span><span class="c1"># running containers</span>
+docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w">                     </span><span class="c1"># including stopped ones</span>
+docker<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>api<span class="w">               </span><span class="c1"># follow the output</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>api<span class="w"> </span>sh<span class="w">           </span><span class="c1"># a shell INSIDE a running container</span>
+docker<span class="w"> </span>inspect<span class="w"> </span>api<span class="w">               </span><span class="c1"># everything, as JSON</span>
+docker<span class="w"> </span>stats<span class="w">                     </span><span class="c1"># live CPU and memory</span>
+docker<span class="w"> </span>stop<span class="w"> </span>api<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>docker<span class="w"> </span>rm<span class="w"> </span>api
+docker<span class="w"> </span>images<span class="w">                    </span><span class="c1"># local images</span>
+docker<span class="w"> </span>rmi<span class="w"> </span>myimage:1.0
+docker<span class="w"> </span>system<span class="w"> </span>df<span class="w">                 </span><span class="c1"># what is using disk</span>
+docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w"> </span>-a<span class="w">           </span><span class="c1"># reclaim it. Careful.</span>
+</code></pre></div>
+
+<p><strong><code>-p 8080:8080</code> is host port to container port.</strong> Getting the order backwards
+is the most common beginner mistake. The container's network is its own;
+without publishing, nothing outside can reach it.</p>
+<p><strong><code>docker exec -it &lt;name&gt; sh</code> is your debugging lifeline.</strong> When a container
+misbehaves, get a shell inside it and look.</p>
+<h3 id="050-to-100-checkpoint">0:50 to 1:00 — Checkpoint</h3>
+<p><strong>Do now.</strong></p>
+<ol>
+<li>Run <code>nginx</code> detached with <code>-p 8080:80</code>, load <code>http://localhost:8080</code>, then
+   <code>docker logs</code> it and watch your own request appear.</li>
+<li><code>docker exec -it</code> into it and <code>ls /usr/share/nginx/html</code>.</li>
+<li>Stop and remove it.</li>
+<li>Now run it <strong>without</strong> <code>-p</code> and try the browser again. Nothing. That is
+   network isolation, and understanding it now saves an hour later.</li>
+</ol>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-2-your-first-image">Hour 2: your first image</h2>
+<h3 id="100-to-120-a-naive-dockerfile">1:00 to 1:20 — A naive Dockerfile</h3>
+<p>A <strong>Dockerfile</strong> is a recipe. Each instruction creates a <strong>layer</strong>.</p>
+<p>In your API directory, create <code>Dockerfile</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/opt/app</span>
+<span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>flask<span class="w"> </span>gunicorn
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">"gunicorn"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--bind"</span><span class="p">,</span><span class="w"> </span><span class="s2">"0.0.0.0:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"api:app"</span><span class="p">]</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>trackapi:0.1<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>trackapi:0.1
+curl<span class="w"> </span>localhost:8080/health/ready
+</code></pre></div>
+
+<p>It works. It is also wrong in five ways, and the rest of this sprint is fixing
+each one.</p>
+<p>The instructions:</p>
+<p><strong><code>FROM</code></strong> picks the base image. Everything starts from something.
+<strong><code>WORKDIR</code></strong> sets the directory for what follows, and creates it.
+<strong><code>COPY src dest</code></strong> copies from your machine into the image.
+<strong><code>RUN</code></strong> executes a command <strong>at build time</strong>, and the result is baked in.
+<strong><code>CMD</code></strong> is what runs <strong>at container start</strong>. It is not executed during build.</p>
+<p><strong><code>RUN</code> versus <code>CMD</code> is a real interview question.</strong> Build time versus run
+time.</p>
+<h3 id="120-to-145-layer-caching-the-thing-that-makes-builds-fast">1:20 to 1:45 — Layer caching, the thing that makes builds fast</h3>
+<p>Change one character in <code>api.py</code> and rebuild. Watch the output: it reinstalls
+Flask. Every time. That is because <code>COPY . .</code> comes before <code>RUN pip install</code>,
+so changing any source file invalidates the install layer and everything after
+it.</p>
+<p><strong>Docker caches layers and reuses them until something changes. A change
+invalidates that layer and every layer after it.</strong> Therefore: <strong>order
+instructions from least to most frequently changed.</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">python:3.11-slim</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/opt/app</span>
+
+<span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>.<span class="w">                      </span>#<span class="w"> </span>changes<span class="w"> </span>rarely
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="k">COPY</span><span class="w"> </span>api.py<span class="w"> </span>client.py<span class="w"> </span>./<span class="w">                     </span>#<span class="w"> </span>changes<span class="w"> </span>constantly
+
+<span class="k">CMD</span><span class="w"> </span><span class="p">[</span><span class="s2">"gunicorn"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--bind"</span><span class="p">,</span><span class="w"> </span><span class="s2">"0.0.0.0:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"api:app"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>with</p>
+<div class="codehilite"><pre><span></span><code>flask==3.0.3
+gunicorn==23.0.0
+</code></pre></div>
+
+<p>in <code>requirements.txt</code>.</p>
+<p>Rebuild twice, changing <code>api.py</code> between them. The second build reuses the
+install layer and finishes in about a second.</p>
+<p><strong>This is the single highest-value Docker skill</strong>, because it is the difference
+between a two second and a two minute inner loop, and between a pipeline that
+takes three minutes and one that takes twenty.</p>
+<p><strong>Pin exact versions.</strong> <code>flask==3.0.3</code>, never <code>flask</code>. An unpinned build pulls
+something different next week and is therefore not reproducible. On a
+configuration-controlled programme reproducibility is a requirement, not a
+preference.</p>
+<h3 id="145-to-200-dockerignore">1:45 to 2:00 — .dockerignore</h3>
+<p>Create <code>.dockerignore</code>:</p>
+<div class="codehilite"><pre><span></span><code>.git
+.venv
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+*.md
+</code></pre></div>
+
+<p>Everything in the directory is sent to the daemon as <strong>build context</strong> before
+the build starts. Without this, you ship your <code>.git</code> directory and your
+virtualenv into the build, which is slow and can leak things.</p>
+<p><strong>Do now.</strong> Run <code>docker build</code> and read the first line: <code>transferring context</code>.
+Add and remove <code>.dockerignore</code> and compare the size. <strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-an-image-you-would-defend-in-a-review">Hour 3: an image you would defend in a review</h2>
+<h3 id="200-to-240-multi-stage-non-root-healthcheck">2:00 to 2:40 — Multi-stage, non-root, healthcheck</h3>
+<p>This is the version that matters. Type it.</p>
+<div class="codehilite"><pre><span></span><code><span class="c"># ---- build stage --------------------------------------------------------</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">registry.access.redhat.com/ubi9/python-311</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">build</span>
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/build</span>
+<span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>.
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--no-cache-dir<span class="w"> </span>--prefix<span class="o">=</span>/install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+
+<span class="c"># ---- runtime stage ------------------------------------------------------</span>
+<span class="k">FROM</span><span class="w"> </span><span class="s">registry.access.redhat.com/ubi9/python-311-minimal</span>
+
+<span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>build<span class="w"> </span>/install<span class="w"> </span>/usr/local
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/opt/app</span>
+<span class="k">COPY</span><span class="w"> </span>api.py<span class="w"> </span>client.py<span class="w"> </span>./
+
+<span class="k">USER</span><span class="w"> </span><span class="s">1001</span>
+
+<span class="k">ENV</span><span class="w"> </span><span class="nv">PYTHONUNBUFFERED</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">PYTHONDONTWRITEBYTECODE</span><span class="o">=</span><span class="m">1</span><span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>INFO
+
+<span class="k">EXPOSE</span><span class="w"> </span><span class="s">8080</span>
+
+<span class="k">HEALTHCHECK</span><span class="w"> </span>--interval<span class="o">=</span>30s<span class="w"> </span>--timeout<span class="o">=</span>3s<span class="w"> </span>--start-period<span class="o">=</span>10s<span class="w"> </span>--retries<span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>CMD<span class="w"> </span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8080/health/ready').status==200 else 1)"</span>
+
+<span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">"gunicorn"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--workers"</span><span class="p">,</span><span class="w"> </span><span class="s2">"4"</span><span class="p">,</span><span class="w"> </span><span class="s2">"--bind"</span><span class="p">,</span><span class="w"> </span><span class="s2">"0.0.0.0:8080"</span><span class="p">,</span><span class="w"> </span><span class="s2">"api:app"</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Every choice is defensible, and being able to defend them is exactly what a
+reviewer probes:</p>
+<p><strong>Multi-stage build.</strong> Compilers and build tooling live in the first stage and
+never reach the runtime image. Only <code>/install</code> is copied forward. Smaller
+image, smaller attack surface, fewer CVEs to remediate for the life of the
+programme.</p>
+<p><strong>UBI base image.</strong> Red Hat Universal Base Images are the natural choice on a
+RHEL programme: same package ecosystem, redistributable, and supported for
+vulnerability remediation. On a defence programme you will likely be required
+to use an approved, already-hardened base rather than picking your own.</p>
+<p><strong><code>USER 1001</code>.</strong> The container does not run as root. This is a hard requirement
+in any hardened environment and usually an explicit control. <strong>This is the
+first thing a reviewer looks for.</strong></p>
+<p><strong><code>ENV PYTHONUNBUFFERED=1</code>.</strong> Without it, Python buffers stdout and your logs
+appear late or not at all when the container dies. A small line that saves real
+debugging pain.</p>
+<p><strong><code>HEALTHCHECK</code>.</strong> The orchestrator needs to distinguish "the process is
+running" from "the service works." Without one, a hung process looks healthy
+forever.</p>
+<p><strong><code>ENTRYPOINT</code> in exec form</strong>, the JSON array. In exec form the process is PID 1
+and receives signals, so <code>docker stop</code> shuts it down gracefully. In shell form
+it runs under <code>/bin/sh -c</code>, signals go to the shell, and your process is killed
+after the timeout instead of cleaning up.</p>
+<p><strong>gunicorn, not <code>flask run</code>.</strong> The Flask development server is single-threaded
+and not hardened. Saying this unprompted is a good signal.</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>trackapi:1.0<span class="w"> </span>.
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8080<span class="w"> </span>trackapi:1.0
+docker<span class="w"> </span>inspect<span class="w"> </span>--format<span class="w"> </span><span class="s1">'{{.State.Health.Status}}'</span><span class="w"> </span>&lt;container&gt;
+</code></pre></div>
+
+<h3 id="240-to-300-configuration-data-and-compose">2:40 to 3:00 — Configuration, data, and compose</h3>
+<p><strong>Never bake configuration or secrets into an image.</strong> An image is a shareable
+artifact; anything inside it travels everywhere it goes, and <code>docker history</code>
+will show it.</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">LOG_LEVEL</span><span class="o">=</span>DEBUG<span class="w"> </span>-e<span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span>...<span class="w"> </span>trackapi:1.0
+docker<span class="w"> </span>run<span class="w"> </span>--env-file<span class="w"> </span>./local.env<span class="w"> </span>trackapi:1.0
+</code></pre></div>
+
+<p><strong>The writable layer dies with the container.</strong> Anything you need to keep goes
+in a volume:</p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-v<span class="w"> </span>trackdata:/var/lib/app<span class="w"> </span>trackapi:1.0<span class="w">        </span><span class="c1"># named volume</span>
+docker<span class="w"> </span>run<span class="w"> </span>-v<span class="w"> </span><span class="s2">"</span><span class="nv">$PWD</span><span class="s2">/logs:/opt/app/logs"</span><span class="w"> </span>trackapi:1.0<span class="w">      </span><span class="c1"># bind mount</span>
+</code></pre></div>
+
+<p>For several services at once, <code>compose.yaml</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">services</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">api</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">build</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<span class="w">    </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"8080:8080"</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">LOG_LEVEL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEBUG</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"CMD"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"python"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"-c"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"import</span><span class="nv"> </span><span class="s">urllib.request,sys;</span><span class="nv"> </span><span class="s">sys.exit(0</span><span class="nv"> </span><span class="s">if</span><span class="nv"> </span><span class="s">urllib.request.urlopen('http://localhost:8080/health/ready').status==200</span><span class="nv"> </span><span class="s">else</span><span class="nv"> </span><span class="s">1)"</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10s</span>
+<span class="w">      </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+<span class="w">    </span><span class="nt">depends_on</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">db</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">service_healthy</span>
+
+<span class="w">  </span><span class="nt">db</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16</span>
+<span class="w">    </span><span class="nt">environment</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">POSTGRES_USER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="w">      </span><span class="nt">POSTGRES_PASSWORD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dev</span>
+<span class="w">    </span><span class="nt">healthcheck</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">test</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">"CMD-SHELL"</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">"pg_isready</span><span class="nv"> </span><span class="s">-U</span><span class="nv"> </span><span class="s">dev"</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5s</span>
+<span class="w">      </span><span class="nt">retries</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>--build
+docker<span class="w"> </span>compose<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>api
+docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w"> </span>-v
+</code></pre></div>
+
+<p><strong><code>condition: service_healthy</code> rather than plain <code>depends_on</code>.</strong> Plain
+<code>depends_on</code> waits for the container to <em>start</em>, not to be <em>ready</em>, so your app
+races the database and fails on first connect. This is a very common bug and a
+good thing to know.</p>
+<p>The value to state: <strong>a new engineer on a dispersed team gets a working
+environment with one command</strong> instead of a two-day setup document. On a
+programme with people in several time zones that is a real productivity
+argument.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-4-shipping-security-and-debugging">Hour 4: shipping, security and debugging</h2>
+<h3 id="300-to-320-tags-digests-and-registries">3:00 to 3:20 — Tags, digests and registries</h3>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>tag<span class="w"> </span>trackapi:1.0<span class="w"> </span>registry.internal/eadge/trackapi:1.4.0
+docker<span class="w"> </span>push<span class="w"> </span>registry.internal/eadge/trackapi:1.4.0
+docker<span class="w"> </span>pull<span class="w"> </span>registry.internal/eadge/trackapi@sha256:abc123...
+</code></pre></div>
+
+<p><strong>Never deploy <code>:latest</code>.</strong> A tag is a mutable pointer: it can be moved to
+different content. <code>latest</code> means "whatever someone pushed most recently,"
+which makes a deployment untraceable and unrepeatable.</p>
+<p><strong>Tag by version and by commit.</strong> <code>1.4.0</code> for humans, the commit SHA for
+traceability. Then anyone can map a running container back to the exact source.</p>
+<p><strong>Pin by digest for production.</strong> <code>@sha256:...</code> is content-addressed and cannot
+be moved. That is the only way to be certain what you deployed.</p>
+<h3 id="320-to-340-security-and-the-air-gapped-reality">3:20 to 3:40 — Security and the air-gapped reality</h3>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>scout<span class="w"> </span>cves<span class="w"> </span>trackapi:1.0<span class="w">        </span><span class="c1"># or: trivy image trackapi:1.0</span>
+docker<span class="w"> </span><span class="nb">history</span><span class="w"> </span>trackapi:1.0<span class="w">           </span><span class="c1"># what each layer added</span>
+</code></pre></div>
+
+<p>The rules, which map directly onto <a href="cyber.html">lesson 22</a>:</p>
+<ul>
+<li><strong>Non-root, always.</strong> And <code>--read-only</code> with a writable volume for anything
+  that genuinely needs to write.</li>
+<li><strong>Drop capabilities</strong>: <code>--cap-drop ALL</code>, adding back only what is needed.</li>
+<li><strong>No secrets in the image.</strong> Not in <code>ENV</code>, not in a <code>COPY</code>ed file, not in a
+  <code>RUN</code> that is later deleted: earlier layers still contain it and
+  <code>docker history</code> reveals it.</li>
+<li><strong>Smaller is safer.</strong> Every package in the image is something you must
+  monitor, scan and patch for the life of the programme.</li>
+<li><strong>Scan on build and on a schedule.</strong> A clean image today is not a clean image
+  in three months; the image did not change, the vulnerability database did.</li>
+</ul>
+<p><strong>The air-gapped reality on a programme like this</strong>, which is worth raising
+unprompted:</p>
+<ul>
+<li>No pulls from Docker Hub. Everything comes from an <strong>internal registry
+  mirror</strong> whose contents were reviewed and scanned on entry.</li>
+<li>Images arrive through a controlled transfer, often as <code>docker save</code> tar
+  archives, and are imported.</li>
+<li>Approved hardened base images are mandated rather than chosen.</li>
+<li><strong>The hardened base may be missing something your application assumes</strong>, and
+  finding that out is engineering work, not a ticket for someone else.</li>
+</ul>
+<h3 id="340-to-355-debugging-containers">3:40 to 3:55 — Debugging containers</h3>
+<p>The scenarios, in the order you will meet them:</p>
+<p><strong>It exits immediately.</strong></p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w">                       </span><span class="c1"># see the exit code</span>
+docker<span class="w"> </span>logs<span class="w"> </span>&lt;container&gt;
+</code></pre></div>
+
+<p>Exit code 0 usually means the main process finished, often because you ran a
+command that returns rather than a server. Exit code 137 is an out-of-memory
+kill. Exit code 126 or 127 means the entrypoint was not executable or not
+found.</p>
+<p><strong>It builds but the app cannot be reached.</strong></p>
+<p>Check in this order: did you publish the port with <code>-p</code>; is the app bound to
+<code>0.0.0.0</code> and not <code>127.0.0.1</code> (<strong>binding to localhost inside a container means
+only the container can reach it</strong>, and this is the single most common cause);
+is the port in the app the same as the one you published.</p>
+<p><strong>The build fails at a <code>COPY</code>.</strong> The file is outside the build context or
+excluded by <code>.dockerignore</code>.</p>
+<p><strong>It works for you and fails in CI.</strong> Different base image tag pulled at a
+different time, missing build context, or a file that exists locally and is not
+in git.</p>
+<p><strong>Get inside and look.</strong></p>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container&gt;<span class="w"> </span>sh
+docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-it<span class="w"> </span>--entrypoint<span class="w"> </span>sh<span class="w"> </span>trackapi:1.0<span class="w">     </span><span class="c1"># bypass the entrypoint</span>
+</code></pre></div>
+
+<p>That second one is the trick worth remembering: when the container will not
+stay up, override the entrypoint and get a shell so you can look around the
+filesystem the image actually produced.</p>
+<h3 id="355-to-400-self-test">3:55 to 4:00 — Self-test</h3>
+<p>From memory:</p>
+<ol>
+<li>Define a container in terms of namespaces, cgroups and layers.</li>
+<li>Why does <code>COPY requirements.txt</code> come before <code>COPY api.py</code>?</li>
+<li>Three reasons for a multi-stage build.</li>
+<li>Why <code>ENTRYPOINT ["a","b"]</code> rather than <code>ENTRYPOINT a b</code>?</li>
+<li>Why is <code>:latest</code> wrong in production, and what do you use instead?</li>
+<li>The app is up but unreachable. Name three causes.</li>
+</ol>
+<h2 id="what-you-can-honestly-claim">What you can honestly claim</h2>
+<p><strong>Say:</strong> you write multi-stage Dockerfiles that run as a non-root user with
+pinned dependencies, healthchecks and layer ordering for cache efficiency; you
+use compose for multi-service local environments; you understand tagging,
+digests, image scanning and the constraints of an air-gapped registry.</p>
+<p><strong>Do not claim</strong> production Kubernetes operations experience unless you have
+it. Say you understand the model and would expect a ramp.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<ol>
+<li><strong><a href="containers.html">Lesson 20</a></strong> for Kubernetes and Helm vocabulary.</li>
+<li><strong>Add a CI job</strong> that builds and scans the image. See
+   <a href="sdlc-sprint.html">lesson 9</a>.</li>
+<li><strong>Get the image under 150 MB</strong> and record what each change saved.</li>
+<li><strong>Run it read-only</strong> with <code>--read-only --cap-drop ALL</code> and fix what breaks.</li>
+<li><strong>Rebuild the Dockerfile from empty</strong> without looking.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/apis-sprint.html">&larr; 7. Sprint: APIs in Four Hours</a><a class="next" href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# 7. Frontend: Angular, TypeScript, HTML and CSS
+# 12. Frontend: Angular, TypeScript, HTML and CSS
 
 This is a **basic qualification** on your requisition, not a nice-to-have. The
 posting asks for "frontend framework development experience using Angular,
@@ -6,7 +6,7 @@ JavaScript, CSS, and HTML." If you cannot hold a conversation about Angular, you
 will not pass the technical screen, however good the rest is.
 
 The lesson assumes you know nothing about web development. It also assumes you
-have done [lesson 4](python-sprint.html) or [lesson 5](python.html), so I will
+have done [lesson 4](python-sprint.html) or [lesson 10](python.html), so I will
 lean on Python comparisons, which shortens the work considerably.
 
 ## 1. Why a C2 system has a frontend at all
@@ -297,7 +297,7 @@ let counter = 0;             // reassignable. Use when you must.
 
 **Always `const` unless you need to reassign.** Note that `const` on an object
 or array stops you reassigning the *name*, not modifying the contents, exactly
-like Python's name-binding model from [lesson 5](python.html).
+like Python's name-binding model from [lesson 10](python.html).
 
 ### Arrow functions and array methods
 
@@ -397,7 +397,7 @@ runtime.**
 Why it exists: JavaScript will happily let `track.altitide` (misspelled) be
 `undefined`, and you find out when the display shows blank. TypeScript catches
 it before the code runs. That is the same argument as `mypy` in
-[lesson 6](python-practice.html), and it carries more weight here because the
+[lesson 11](python-practice.html), and it carries more weight here because the
 codebase is bigger and the failure is visible to an operator.
 
 ```typescript
@@ -683,7 +683,7 @@ as a single shared instance.
 
 **`inject(HttpClient)`** asks Angular's **dependency injection** system for the
 HTTP client. The component never constructs its own. That is the same
-dependency injection argument as [lesson 11](ood.html): it makes the thing
+dependency injection argument as [lesson 16](ood.html): it makes the thing
 testable, because a test supplies a fake instead.
 
 ### Observables, and how they differ from Promises
@@ -779,7 +779,7 @@ Jest)** under desired skills. Know what each is for.
 | **Playwright** | End to end | Drives real Chromium, Firefox and WebKit; fast, parallel, good CI story |
 | **Selenium** | End to end | The long-established one; WebDriver standard, every language |
 
-The pyramid from [lesson 14](testing-ci.html) applies unchanged: **many unit
+The pyramid from [lesson 19](testing-ci.html) applies unchanged: **many unit
 tests, some component tests, few end-to-end tests.** End-to-end tests are slow
 and brittle, so use them for a handful of critical journeys, not for coverage.
 
@@ -868,7 +868,7 @@ selectors break on every restyle; role-based ones express what the user sees,
 and they double as an accessibility check.
 
 **End-to-end tests are where flakiness breeds.** Never wait with a fixed sleep;
-wait for a condition. The guidance in [lesson 14](testing-ci.html) about flaky
+wait for a condition. The guidance in [lesson 19](testing-ci.html) about flaky
 tests applies with double force here.
 
 ## 9. Design tools

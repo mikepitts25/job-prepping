@@ -5,7 +5,7 @@ the thing that decides this interview. What decides it is whether you can talk
 credibly about shipping software in a large, regulated, integration-heavy
 program, and then not fumble a straightforward coding exercise.
 
-This site is built for that. Twenty-two lessons, roughly 110 worked code examples, a
+This site is built for that. Twenty-seven lessons, roughly 150 worked code examples, a
 runnable practice repo, a 146-question mock bank and 16 worked scenario answers.
 
 ## The short version of what you are walking into
@@ -52,7 +52,7 @@ Three things in that list are worth reading twice, because they are easy to
 miss and they change how you prepare.
 
 **Angular is a basic qualification, not a nice-to-have.** This is a full-stack
-role, not a backend one. [Lesson 7](lessons/frontend.html) covers it from
+role, not a backend one. [Lesson 12](lessons/frontend.html) covers it from
 nothing.
 
 **The bar is three years, not five,** and an advanced degree substitutes for
@@ -66,10 +66,23 @@ Every one of those rows has a lesson below.
 ## How to use this
 
 If your interview is more than two weeks out, work the lessons in order and do
-the practice repo alongside. If it is sooner, go straight to
-[the interview map](lessons/interview-map.html), pick the compressed plan,
-and do [the four-hour sprint](lessons/python-sprint.html) first, then
-lessons 7, 14 and 20.
+the practice repo alongside.
+
+If it is sooner, **work the sprints**, lessons 4 to 9. Each is a timed
+four-hour intensive that builds one real, working thing, and between them they
+cover every basic qualification on the requisition:
+
+| Sprint | You finish with |
+| --- | --- |
+| [4. Python](lessons/python-sprint.html) | A tested command-line log analyser |
+| [5. Testing](lessons/testing-sprint.html) | A small program and 46 unit tests |
+| [6. Frontend](lessons/frontend-sprint.html) | A filterable page, tested, then rebuilt in Angular |
+| [7. APIs](lessons/apis-sprint.html) | A validated REST API and a resilient client |
+| [8. Docker](lessons/docker-sprint.html) | A hardened multi-stage image |
+| [9. SDLC](lessons/sdlc-sprint.html) | Git fluency and a working CI/CD pipeline |
+
+One a day is a hard but achievable week, and it is the highest-return week
+available to you.
 
 Type the code. Do not read it. The gap between "I recognize this" and "I can
 produce this while someone watches" is the entire problem you are solving in the
