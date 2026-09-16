@@ -1,9 +1,9 @@
 # Practice repo
 
-Runnable practice for the [EADGE-T interview prep](../index.html). Two modules:
-a Python package with 84 tests, and a Maven project with 22 JUnit tests. Both
-pass as written, so you have a known-good baseline before you start changing
-things.
+Runnable practice for the [EADGE-T interview prep](../index.html). Three
+modules: a Python package with 84 tests, a Maven project with 22 JUnit tests,
+and a TypeScript module with 32 Vitest tests. All pass as written, so you have a
+known-good baseline before you start changing things.
 
 The exercises are deliberately job-shaped. Version comparison for CVE triage,
 config diffing for a migration, bounded queues, rate limiting, out-of-order
@@ -73,6 +73,45 @@ mvn dependency:tree                    # the command you use for CVE triage
 | `LruCache` | `LinkedHashMap` access order, `removeEldestEntry` |
 | `BoundedIngestQueue` | Bounded queue, drop-oldest policy, atomic counters, a latch-based concurrency test |
 
+## TypeScript and the frontend
+
+```bash
+cd frontend
+npm install
+npm test                               # 32 tests
+npm run test:watch                     # re-runs on save
+npm run typecheck                      # tsc --noEmit, strict mode
+```
+
+| File | What it is |
+| --- | --- |
+| `src/track.model.ts` | The `Track` interface and the `Affiliation` union type |
+| `src/tracks.ts` | Validation, filtering, sorting, formatting and staleness |
+| `src/tracks.test.ts` | The tests. Read them first. |
+
+This module is deliberately **framework-free**. There is no Angular here, and
+that is the lesson: the filtering, sorting, formatting and validation are where
+the bugs live, and keeping them in plain functions means they test in
+milliseconds without a browser. The Angular component becomes a thin shell that
+calls them.
+
+"Push the logic out of the component" is the most useful piece of frontend
+advice there is, and this module is what it looks like.
+
+Things worth noticing in the code:
+
+* `parseTrack` takes `Record<string, unknown>`, not `any`. External data is
+  untrusted until proven otherwise, and `unknown` is what forces the proof.
+* `sortForDisplay` breaks ties by track id. Without that the row order of equal
+  tracks is unspecified, the list reshuffles on every refresh, and an operator
+  loses their place.
+* `ageSeconds` takes `now` as a parameter rather than calling `Date.now()`.
+  Same injected-clock discipline as the Python module.
+* `tsconfig.json` sets `strict` and `noUnusedLocals`. It caught a real unused
+  import while this module was being written.
+
+See lesson 7 of the site for Angular itself.
+
 ## How to work through this
 
 **Do not read `solutions.py` first.** Read the test file, write the function in
@@ -98,6 +137,9 @@ For each problem:
 **Day six:** redo the four you found hardest, from a blank file, timed.
 **Day seven:** the Java module, then read `tracks.py` and its tests and be able
 to explain the four metrics out loud.
+
+**Day eight:** the TypeScript module. Run the tests, then delete one function's
+body and make its tests fail before restoring it.
 
 If you only have time for five, do `parse_detections`, `top_sensors`,
 `compare_versions`, `packages_needing_upgrade`, and `RateLimiter`. Those five

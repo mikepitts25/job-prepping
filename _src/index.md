@@ -5,8 +5,8 @@ the thing that decides this interview. What decides it is whether you can talk
 credibly about shipping software in a large, regulated, integration-heavy
 program, and then not fumble a straightforward coding exercise.
 
-This site is built for that. Twenty lessons, roughly 90 worked code examples, a
-runnable practice repo, a 132-question mock bank and 16 worked scenario answers.
+This site is built for that. Twenty-two lessons, roughly 110 worked code examples, a
+runnable practice repo, a 146-question mock bank and 16 worked scenario answers.
 
 ## The short version of what you are walking into
 
@@ -32,16 +32,34 @@ weight accordingly.
 
 ## What the posting asks for
 
+This is the **Senior Software Engineer, EADGE-T Tech Refresh, EXPAT UAE**
+requisition specifically. Lockheed has several EADGE-T software reqs open and
+their qualification lists differ, so check yours against this table.
+
 | Basic qualifications | Desired skills |
 | --- | --- |
-| Python and Java proficiency | Services, microservices, SOA, cloud-native architecture |
-| RHEL and Windows | Docker, Kubernetes, Helm |
-| Agile (Scrum / Kanban) | CI/CD tooling: Git, GitLab, Jenkins |
-| Full SDLC experience | Software Factory concepts |
-| Git, GitLab, Jira, Confluence | |
-| Data structures, algorithms, OO design | |
-| Automated testing, unit tests, CI/CD | |
-| BS + 5 years, or equivalent | |
+| 3+ years relevant experience (an advanced degree substitutes for 2) | Agile methodologies and tools |
+| Java and/or Python | UI/UX test frameworks: Cypress, Selenium, Playwright, Jest |
+| **Frontend framework development: Angular, JavaScript, CSS, HTML** | Full-stack engineering experience |
+| Familiarity with **Docker, REST APIs, or SOAP** | GitLab CI/CD, Helm, Kubernetes |
+| Full SDLC experience | gRPC |
+| Ability to obtain a US DoD Secret clearance | Python, Flask |
+| | UI/UX design tools: MockFlow, UXPin, Axure |
+| | RHEL and Windows |
+| | Services, microservices, software factories, cloud-native architectures |
+
+Three things in that list are worth reading twice, because they are easy to
+miss and they change how you prepare.
+
+**Angular is a basic qualification, not a nice-to-have.** This is a full-stack
+role, not a backend one. [Lesson 7](lessons/frontend.html) covers it from
+nothing.
+
+**The bar is three years, not five,** and an advanced degree substitutes for
+two of them. This req is more accessible than it first looks.
+
+**The clearance requirement is the ability to obtain one**, not holding one
+already. If you are not currently cleared, that is not a disqualifier here.
 
 Every one of those rows has a lesson below.
 
@@ -51,7 +69,7 @@ If your interview is more than two weeks out, work the lessons in order and do
 the practice repo alongside. If it is sooner, go straight to
 [the interview map](lessons/interview-map.html), pick the compressed plan,
 and do [the four-hour sprint](lessons/python-sprint.html) first, then
-lessons 12 and 18.
+lessons 7, 14 and 20.
 
 Type the code. Do not read it. The gap between "I recognize this" and "I can
 produce this while someone watches" is the entire problem you are solving in the

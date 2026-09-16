@@ -1,4 +1,4 @@
-# 19. Mock interview bank
+# 21. Mock interview bank
 
 Work these under time pressure. Cover the answer, say yours out loud, then
 compare. Answering silently in your head is not practice.
@@ -13,11 +13,14 @@ half the time; anything more than ten years back gets a clause.
 
 **2. Are you a US citizen and what is your clearance status?**
 Precise facts. Level, granting agency if you know it, date of last
-investigation, whether it is current or would need reinstatement.
+investigation, whether it is current or would need reinstatement. Note that
+this req asks for the *ability to obtain* a Secret clearance, so not currently
+holding one is not a disqualifier. Say plainly that you are eligible and
+willing to be sponsored.
 
 **3. Are you genuinely willing to relocate to the UAE for two to three years?**
 Yes, plus one specific sentence about why and one about having discussed it with
-family. See [lesson 17](behavioral.html).
+family. See [lesson 19](behavioral.html).
 
 **4. Why are you looking to leave your current role?**
 Toward something, never away from someone. Never criticize a current employer.
@@ -78,7 +81,7 @@ code.
 Story 5, with numbers.
 
 **17. How do you handle competing priorities?**
-[Lesson 17](behavioral.html), section 5.
+[Lesson 19](behavioral.html), section 5.
 
 **18. Tell me about a time you disagreed with a decision.**
 Story 2.
@@ -269,7 +272,7 @@ apart via `jstack`, look for BLOCKED threads and the lock owners.
 files still held open.
 
 **67. A service will not start. Walk me through it.**
-[Lesson 10](linux.html), section 10, in that order.
+[Lesson 12](linux.html), section 10, in that order.
 
 **68. What does load average mean?**
 Runnable plus uninterruptible-sleep processes, averaged. Compare to core count.
@@ -293,7 +296,7 @@ Exit on error, error on unset variable, fail a pipeline on any stage.
 `py-spy` for Python. Check log level and any hot loop with a missing sleep.
 
 **74. It works in the lab and fails in integration.**
-[Lesson 10](linux.html), section 10. This is the high-value one; rehearse it.
+[Lesson 12](linux.html), section 10. This is the high-value one; rehearse it.
 
 ---
 
@@ -308,7 +311,7 @@ assumptions.
 **77. How do you test legacy code with no tests?** Characterization tests, find
 a seam, inject, then refactor.
 
-**78. Mock vs stub vs fake?** [Lesson 12](testing-ci.html), section 4. Say you
+**78. Mock vs stub vs fake?** [Lesson 14](testing-ci.html), section 4. Say you
 prefer fakes and why.
 
 **79. How do you test time-dependent code?** Inject the clock. Use monotonic
@@ -353,7 +356,7 @@ upgrade and rollback. Use `helm template` to review, `--atomic` to auto-rollback
 ## Round 8: Design and architecture (10 questions)
 
 **91. Design a sensor ingest and track fusion service.**
-[Lesson 9](ood.html), section 6. Clarify first, then components, then
+[Lesson 11](ood.html), section 6. Clarify first, then components, then
 justify each boundary, then tests, then what you deliberately did not build.
 
 **92. How would you add a new sensor format?** New adapter class, register it in
@@ -381,7 +384,7 @@ last-message-age, queue depth, drop count, latency percentiles, track count,
 error rate. Alert on symptoms, not causes.
 
 **99. What is a Software Factory and why migrate into one?**
-[Lesson 14](architecture.html), section 5.
+[Lesson 16](architecture.html), section 5.
 
 **100. How would you migrate a legacy build into a pipeline?** Reproducible on a
 clean machine first, then green with tests skipped, then tests, then scanning
@@ -393,7 +396,7 @@ time.
 ## Round 9: Security and sustainment (10 questions)
 
 **101. A critical CVE lands in a library you use. What do you do?**
-[Lesson 15](cyber.html), section 2. This is the most likely security question
+[Lesson 17](cyber.html), section 2. This is the most likely security question
 for this posting.
 
 **102. Direct or transitive dependency, and does it matter?** Yes:
@@ -419,7 +422,7 @@ understand what it protects, adapt the application. Do not disable the control.
 Test against a hardened image in CI so you find it before the lab does.
 
 **109. Security wants an upgrade that breaks an interface this sprint.**
-[Lesson 15](cyber.html), section 6: get the real constraint, size it
+[Lesson 17](cyber.html), section 6: get the real constraint, size it
 honestly, offer three options with costs, escalate early with a recommendation.
 
 **110. Why is adding a dependency not free here?** Monitoring, scanning,
@@ -441,7 +444,7 @@ artifact.
 options, not just a refusal.
 
 **115. How do you work with people you never meet in person?**
-[Lesson 11](git-agile.html), section 9: write don't ping, protect the overlap,
+[Lesson 13](git-agile.html), section 9: write don't ping, protect the overlap,
 never leave someone blocked overnight, update the ticket rather than the person.
 
 **116. How do you handle a teammate whose code you think is poor?** In review,
@@ -459,7 +462,7 @@ question. "How the lab access works from the UAE side" is a good one. "Nothing"
 is a wasted answer.
 
 **120. Do you have questions for us?** Three or four from
-[lesson 17](behavioral.html), section 8. Never zero.
+[lesson 19](behavioral.html), section 8. Never zero.
 
 ---
 
@@ -544,6 +547,85 @@ fielded system and prove the mission behavior is unchanged.
 
 ---
 
+## Round 12: Frontend and APIs (14 questions)
+
+Angular is a **basic qualification** on your requisition, so expect several of
+these. See [lesson 7](frontend.html) and [lesson 8](apis.html).
+
+**133. What are HTML, CSS and JavaScript each for?**
+Structure, presentation, behaviour. The browser parses HTML into the DOM, CSS
+styles it, JavaScript changes it.
+
+**134. Why use a framework rather than plain JavaScript?**
+You describe what the page should look like for a given state and the framework
+computes the DOM changes. Hand-written imperative DOM updates drift out of sync
+with the data as an application grows.
+
+**135. Why does a defence programme pick Angular?**
+It is opinionated and complete: components, routing, dependency injection, HTTP,
+forms and testing in the box. Every project looks the same, so an engineer can
+move between them. That consistency is worth more to a large organisation than
+the flexibility of assembling a stack yourself.
+
+**136. Component versus service?**
+Components display; services hold data access and logic. Keeping logic out of
+components is what makes it testable without a rendering environment.
+
+**137. Explain Angular's data binding.**
+`{{ }}` interpolates a value into the view, `[prop]` binds a property,
+`(event)` listens, and `[(ngModel)]` does both. The first two go class to view,
+the third view to class.
+
+**138. What is dependency injection and what does it buy you?**
+Angular supplies a class's dependencies rather than the class constructing them.
+The payoff is testability: a test provides a fake service instead of the real
+one. Decoupling is the secondary benefit.
+
+**139. Observable versus Promise?**
+A Promise is a single future value. An Observable is a cancellable stream of
+many values over time. `HttpClient` returns an Observable and nothing happens
+until you subscribe.
+
+**140. How do you avoid a memory leak in a component?**
+Unsubscribe when the component is destroyed, using `takeUntilDestroyed`, the
+`async` pipe, or `ngOnDestroy`. A live subscription outlives the component
+otherwise.
+
+**141. What does `trackBy` do and why does it matter here?**
+It identifies list items across renders so Angular reuses DOM nodes rather than
+destroying and rebuilding them. On a track table refreshing at 1 Hz with
+hundreds of rows, it is the difference between smooth and unusable.
+
+**142. `any` versus `unknown` in TypeScript?**
+`any` switches type checking off for that value and lets bad data through
+silently. `unknown` forces you to prove the type before use. Data arriving from
+an external interface should be `unknown` and pass through a validating parser.
+
+**143. How would you test an Angular component that calls an API?**
+Configure the testing module with a fake service in place of the real one, then
+assert on the rendered output. Never hit the network in a unit test. Reserve
+end-to-end tests for a few critical journeys, because they are slow and flaky.
+
+**144. Which HTTP methods are idempotent, and why does anyone care?**
+`GET`, `PUT` and `DELETE`. It decides what a client may safely retry after a
+dropped response. `POST` is not, which is why creation endpoints need
+idempotency keys.
+
+**145. How would you version an API that three other programmes consume?**
+Version in the path, additive changes only, never repurpose a field, run the old
+version in parallel and retire it on an agreed date. And the change goes through
+interface control, not a merge request, because the coordination lead time is
+the real constraint.
+
+**146. REST or SOAP, and when would you meet SOAP?**
+REST is a style over HTTP with JSON; SOAP is an XML specification with a formal
+WSDL contract and built-in enterprise standards. You meet SOAP because a fielded
+baseline already uses it and its consumers are not yours to change. If you touch
+XML parsing, disable external entities: XXE and entity-expansion attacks are
+exactly the risk in legacy message handling.
+
+---
+
 ## Self-scoring
 
 After a mock run, score yourself honestly:
@@ -552,6 +634,8 @@ After a mock run, score yourself honestly:
 | --- | --- | --- | --- |
 | Program knowledge | Vague | Knows the mission | Can discuss the tech refresh trade-offs |
 | Domain fluency | Lost in the vocabulary | Follows the conversation | Plot vs track, and how to test a fusion system |
+| Frontend | Has heard of Angular | Explains components and binding | Explains DI, observables and how to test a component |
+| APIs | Knows GET and POST | Status codes and REST shape | Idempotency, versioning under interface control |
 | Coding fluency | Long silences | Gets there slowly | Fluent, narrating, tests named |
 | Python depth | Recognizes terms | Explains correctly | Explains and gives the tradeoff |
 | Java depth | Recognizes terms | Explains correctly | Explains and gives the tradeoff |

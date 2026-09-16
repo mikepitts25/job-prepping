@@ -1,4 +1,4 @@
-# 20. Cheat sheets
+# 22. Cheat sheets
 
 Skim these the morning of the interview. Nothing else.
 

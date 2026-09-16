@@ -71,7 +71,7 @@ recent.popleft()
 The `maxlen` behavior is genuinely useful: it gives you a bounded buffer with
 no code. An unbounded queue between a fast producer and a slow consumer is a
 deferred out-of-memory crash, so bounding it is a design decision, not an
-optimization. See [lesson 9](ood.html).
+optimization. See [lesson 11](ood.html).
 
 ### `itertools`: tools for iteration
 
@@ -176,7 +176,7 @@ os.environ.get("LOG_LEVEL", "INFO")     # read config from the environment
 
 Configuration that differs between environments belongs in environment
 variables, not in the code and not in the container image. See
-[lesson 15](cyber.html).
+[lesson 17](cyber.html).
 
 ## 2. Generators: processing data too big to hold
 
@@ -448,7 +448,7 @@ log.debug(f"state: {expensive_summary()}")      # ALWAYS called
 ```
 
 **Never log secrets, credentials or full payloads.** Logs get copied, shipped
-and read by people who are not you. See [lesson 15](cyber.html).
+and read by people who are not you. See [lesson 17](cyber.html).
 
 ## 7. Testing with pytest
 
@@ -794,7 +794,7 @@ pip-audit              # known vulnerabilities in your dependencies
 have caught, in a language where those errors otherwise wait until runtime.
 That is a strong argument on a system where "runtime" may mean the lab or the
 field. `pip-audit` connects directly to the COTS and FOSS upgrade work the
-posting describes; see [lesson 15](cyber.html).
+posting describes; see [lesson 17](cyber.html).
 
 ## 10. Practice problems
 
@@ -857,7 +857,7 @@ task, proving a configuration migration changed exactly what was intended.
     equal must hash equal, or they get lost in sets and dicts.
 11. **How do you test code with no tests?** Characterization tests that pin
     current behavior, then find a seam, inject the dependency, then refactor.
-    See [lesson 12](testing-ci.html).
+    See [lesson 14](testing-ci.html).
 12. **How do you test time-dependent code?** Inject the clock. Never
     `time.sleep` in a test.
 13. **How much coverage is enough?** It finds gaps, it does not measure

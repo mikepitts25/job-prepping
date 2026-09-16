@@ -1349,7 +1349,7 @@ new class, not editing existing logic.
 **Use inheritance sparingly.** It is the tightest coupling available, because a
 subclass depends on the parent's implementation. Prefer **composition**, where
 an object holds another object and delegates to it. The rule of thumb:
-inheritance for "is a," composition for "has a." [Lesson 9](ood.html) develops
+inheritance for "is a," composition for "has a." [Lesson 11](ood.html) develops
 this.
 
 ## 13. Virtual environments

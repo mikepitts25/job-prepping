@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8. APIs: REST, SOAP, gRPC and Flask &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. The Four-Hour Python Sprint</a></li><li><a href="../lessons/python.html">5. Python Foundations</a></li><li><a href="../lessons/python-practice.html">6. Python in Practice</a></li><li><a href="../lessons/frontend.html">7. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li class="active"><a href="../lessons/apis.html">8. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">9. Java Refresher</a></li><li><a href="../lessons/dsa.html">10. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">11. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">12. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">13. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">14. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">15. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">16. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">17. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">18. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">19. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">20. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">21. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">22. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="8-apis-rest-soap-grpc-and-flask">8. APIs: REST, SOAP, gRPC and Flask</h1>
+<p>Your requisition lists "familiarity with <strong>Docker, REST APIs, or SOAP</strong>" as a
+basic qualification, and <strong>gRPC</strong> and <strong>Flask</strong> under desired skills. This
+lesson covers all of it.</p>
+<p>The framing that matters: an API is the <strong>contract</strong> between two pieces of
+software. On a programme that integrates separately procured systems, the
+contract is the product. The code behind it can be rewritten; the contract
+cannot, because other people's systems depend on it.</p>
+<h2 id="1-what-an-api-is-from-zero">1. What an API is, from zero</h2>
+<p>Two programs need to talk. They may be on different machines, written in
+different languages, built by different companies. They agree on:</p>
+<ul>
+<li><strong>A transport.</strong> Usually HTTP over TCP.</li>
+<li><strong>An address.</strong> A URL identifying what you are talking to.</li>
+<li><strong>A message format.</strong> JSON, XML, or a packed binary form.</li>
+<li><strong>A vocabulary.</strong> Which operations exist, what they take, what they return.</li>
+<li><strong>An error convention.</strong> How failure is signalled.</li>
+</ul>
+<p>Write those five down and you have specified an API. Everything below is a
+different set of choices for them.</p>
+<h3 id="http-the-thing-underneath">HTTP, the thing underneath</h3>
+<div class="codehilite"><pre><span></span><code>GET /api/v1/tracks?affiliation=hostile HTTP/1.1
+Host: eadge.internal
+Accept: application/json
+Authorization: Bearer &lt;token&gt;
+</code></pre></div>
+
+<p>A request has a <strong>method</strong>, a <strong>path</strong>, optional <strong>query parameters</strong>,
+<strong>headers</strong>, and sometimes a <strong>body</strong>. The response has a <strong>status code</strong>,
+headers, and usually a body.</p>
+<p><strong>Methods</strong>, and the property that matters:</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Purpose</th>
+<th>Idempotent?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td>Retrieve. Must not change anything</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td>Create, or a general action</td>
+<td><strong>No</strong></td>
+</tr>
+<tr>
+<td><code>PUT</code></td>
+<td>Replace a resource entirely</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><code>PATCH</code></td>
+<td>Modify part of a resource</td>
+<td>Usually not</td>
+</tr>
+<tr>
+<td><code>DELETE</code></td>
+<td>Remove</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Idempotent</strong> means doing it twice has the same effect as doing it once. That
+is not trivia: it decides what a client may safely retry. A dropped response to
+a <code>PUT</code> can be retried without thought. A dropped response to a <code>POST</code> might
+have created the thing already, so retrying could create a second one. This is
+why payment and order APIs use idempotency keys, and it is a very good thing to
+raise unprompted.</p>
+<p><strong>Status codes</strong> worth knowing cold:</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200 OK</td>
+<td>Success with a body</td>
+</tr>
+<tr>
+<td>201 Created</td>
+<td>New resource made; <code>Location</code> header says where</td>
+</tr>
+<tr>
+<td>202 Accepted</td>
+<td>Taken for later processing, not done yet</td>
+</tr>
+<tr>
+<td>204 No Content</td>
+<td>Success, nothing to return</td>
+</tr>
+<tr>
+<td>400 Bad Request</td>
+<td>The client sent something malformed</td>
+</tr>
+<tr>
+<td>401 Unauthorized</td>
+<td>Not authenticated. You are nobody</td>
+</tr>
+<tr>
+<td>403 Forbidden</td>
+<td>Authenticated but not permitted. You are somebody, but no</td>
+</tr>
+<tr>
+<td>404 Not Found</td>
+<td>No such resource</td>
+</tr>
+<tr>
+<td>409 Conflict</td>
+<td>Clashes with current state</td>
+</tr>
+<tr>
+<td>422 Unprocessable</td>
+<td>Well-formed but semantically invalid</td>
+</tr>
+<tr>
+<td>429 Too Many Requests</td>
+<td>Rate limited</td>
+</tr>
+<tr>
+<td>500 Internal Server Error</td>
+<td>The server broke. Your fault, not theirs</td>
+</tr>
+<tr>
+<td>503 Service Unavailable</td>
+<td>Temporarily down or overloaded</td>
+</tr>
+</tbody>
+</table>
+<p>The 401 versus 403 distinction gets asked. <strong>401 is "who are you?", 403 is "I
+know who you are and the answer is no."</strong></p>
+<p>The 4xx versus 5xx split is the one that matters operationally: <strong>4xx means the
+client is wrong, 5xx means you are.</strong> A server returning 200 with an error
+message inside the body is a genuine design defect, because every piece of
+monitoring, every load balancer and every retry policy in the world reads the
+status code.</p>
+<h2 id="2-rest">2. REST</h2>
+<p>REST is an architectural style, not a standard. In practice, "a REST API" means
+an HTTP API organised around <strong>resources</strong> identified by URLs, using the HTTP
+methods for the verbs.</p>
+<div class="codehilite"><pre><span></span><code>GET    /api/v1/tracks                    list them
+GET    /api/v1/tracks?affiliation=hostile  filtered
+GET    /api/v1/tracks/T-001              one of them
+POST   /api/v1/tracks                    create one
+PUT    /api/v1/tracks/T-001              replace it
+PATCH  /api/v1/tracks/T-001              change part of it
+DELETE /api/v1/tracks/T-001              remove it
+GET    /api/v1/sensors/RDR-1/tracks      a sub-collection
+</code></pre></div>
+
+<p>The design conventions:</p>
+<ul>
+<li><strong>Nouns in paths, verbs as methods.</strong> <code>/api/v1/tracks</code> with <code>DELETE</code>, never
+  <code>/api/v1/deleteTrack</code>.</li>
+<li><strong>Plural collection names.</strong> <code>/tracks</code>, not <code>/track</code>.</li>
+<li><strong>Filtering, sorting and paging go in the query string</strong>, not the path.</li>
+<li><strong>Stateless.</strong> Every request carries what it needs. The server holds no
+  session between calls, which is what lets you run several instances behind a
+  load balancer.</li>
+</ul>
+<p>A JSON body:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">"trackId"</span><span class="p">:</span><span class="w"> </span><span class="s2">"T-001"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"affiliation"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hostile"</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"altitudeFt"</span><span class="p">:</span><span class="w"> </span><span class="mi">32000</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"confidence"</span><span class="p">:</span><span class="w"> </span><span class="mf">0.92</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">"lastSeen"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2026-09-16T12:00:00Z"</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Note the timestamp: <strong>ISO 8601, UTC, with the zone spelled out.</strong> Never send a
+naive local time across an interface. On a system with sites in different
+countries that is a defect waiting to happen, as in
+<a href="track-data.html">lesson 2</a>.</p>
+<h3 id="versioning-which-is-the-part-that-matters-here">Versioning, which is the part that matters here</h3>
+<p>Commercial teams change an API and redeploy the clients. <strong>You cannot.</strong> Your
+consumers may be other programmes, on their own schedules, possibly other
+contractors.</p>
+<p>So:</p>
+<ul>
+<li><strong>Version explicitly</strong>, usually in the path: <code>/api/v1/</code>.</li>
+<li><strong>Additive changes only</strong> within a version. Adding a field is safe, because a
+  well-written client ignores what it does not recognise. Removing a field,
+  renaming one, changing a type, or tightening validation are all breaking
+  changes.</li>
+<li><strong>Never repurpose a field.</strong> Reusing <code>status</code> to mean something new is the
+  most expensive kind of "small" change, because it fails silently in the
+  consumer.</li>
+<li><strong>Run versions in parallel</strong> and retire the old one on an agreed date.</li>
+<li><strong>Changes go through interface control</strong>, not a merge request. On a programme
+  like this the lead time for agreeing a change with another programme is the
+  real constraint, not the code.</li>
+</ul>
+<p>If you are asked "how would you change a message format three other systems
+depend on?", that list is the answer, and the last point is what makes it a
+senior answer.</p>
+<h3 id="pagination">Pagination</h3>
+<div class="codehilite"><pre><span></span><code>GET /api/v1/tracks?limit=100&amp;cursor=eyJpZCI6IlQtMTAwIn0
+</code></pre></div>
+
+<p>Any collection that can grow must be paged, or one day a client asks for
+everything and takes the server down. Cursor-based paging is more robust than
+<code>offset</code>/<code>limit</code> because it does not skip or duplicate rows when the data
+changes underneath you.</p>
+<h2 id="3-soap">3. SOAP</h2>
+<p>SOAP is the older, heavier, XML-based approach. It appears in the basic
+qualifications because <strong>fielded defence and enterprise systems are full of
+it</strong>, and a tech refresh means meeting it.</p>
+<p>Where REST is a style, SOAP is a <strong>specification</strong>. Every message is an XML
+envelope with a defined structure:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;soap:Envelope</span><span class="w"> </span><span class="na">xmlns:soap=</span><span class="s">"http://www.w3.org/2003/05/soap-envelope"</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;soap:Header&gt;</span>
+<span class="w">    </span><span class="nt">&lt;auth:Credentials</span><span class="w"> </span><span class="na">xmlns:auth=</span><span class="s">"urn:eadge:auth"</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;auth:Token&gt;</span>...<span class="nt">&lt;/auth:Token&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/auth:Credentials&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/soap:Header&gt;</span>
+<span class="w">  </span><span class="nt">&lt;soap:Body&gt;</span>
+<span class="w">    </span><span class="nt">&lt;GetTrack</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">"urn:eadge:tracks"</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;TrackId&gt;</span>T-001<span class="nt">&lt;/TrackId&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/GetTrack&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/soap:Body&gt;</span>
+<span class="nt">&lt;/soap:Envelope&gt;</span>
+</code></pre></div>
+
+<p>A failure comes back as a <strong>Fault</strong>, not an HTTP status:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;soap:Body&gt;</span>
+<span class="w">  </span><span class="nt">&lt;soap:Fault&gt;</span>
+<span class="w">    </span><span class="nt">&lt;soap:Code&gt;&lt;soap:Value&gt;</span>soap:Sender<span class="nt">&lt;/soap:Value&gt;&lt;/soap:Code&gt;</span>
+<span class="w">    </span><span class="nt">&lt;soap:Reason&gt;&lt;soap:Text&gt;</span>Unknown<span class="w"> </span>track<span class="w"> </span>id<span class="nt">&lt;/soap:Text&gt;&lt;/soap:Reason&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/soap:Fault&gt;</span>
+<span class="nt">&lt;/soap:Body&gt;</span>
+</code></pre></div>
+
+<p><strong>WSDL</strong> (Web Services Description Language) is the machine-readable contract:
+an XML document listing every operation, its inputs and outputs and their
+types. Point a tool at a WSDL and it generates client code for you. That
+code-generated, strongly-typed contract is genuinely SOAP's strength, and the
+reason it persists in regulated environments.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>REST</th>
+<th>SOAP</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Style or standard</td>
+<td>Style</td>
+<td>Specification</td>
+</tr>
+<tr>
+<td>Format</td>
+<td>Usually JSON</td>
+<td>XML only</td>
+</tr>
+<tr>
+<td>Contract</td>
+<td>OpenAPI, optional</td>
+<td>WSDL, intrinsic</td>
+</tr>
+<tr>
+<td>Errors</td>
+<td>HTTP status codes</td>
+<td>SOAP Fault</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>HTTP</td>
+<td>HTTP, but also message queues</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>Light</td>
+<td>Heavy, verbose</td>
+</tr>
+<tr>
+<td>Built-in standards</td>
+<td>No</td>
+<td>WS-Security, WS-ReliableMessaging, transactions</td>
+</tr>
+<tr>
+<td>Where you meet it</td>
+<td>New services</td>
+<td>Legacy and enterprise integration</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The honest summary to give:</strong> SOAP is verbose and out of fashion, but it
+brought a formal contract and a set of enterprise standards that REST leaves you
+to assemble. On a fielded system it is often already there, and replacing a
+working SOAP interface that three other programmes depend on is a large
+coordination exercise, not a technical one.</p>
+<h3 id="the-security-warning">The security warning</h3>
+<p>If you work with XML, you must know this. Two attacks:</p>
+<ul>
+<li><strong>XXE</strong>, XML external entity: a document tells the parser to read a local
+  file or fetch a URL, exfiltrating data.</li>
+<li><strong>Billion laughs</strong>, an entity expansion bomb that consumes all available
+  memory from a tiny document.</li>
+</ul>
+<p>The fix is to disable external entities and DTDs in the parser.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Python: use a hardened parser rather than the standard library defaults</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">defusedxml.ElementTree</span><span class="w"> </span><span class="kn">import</span> <span class="n">fromstring</span>
+<span class="n">root</span> <span class="o">=</span> <span class="n">fromstring</span><span class="p">(</span><span class="n">untrusted_xml</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Legacy message parsing is exactly where this class of vulnerability lives on a
+tech refresh. Raising it unprompted lands very well with a cyber engineer on
+the panel. See <a href="cyber.html">lesson 17</a>.</p>
+<h2 id="4-grpc">4. gRPC</h2>
+<p>gRPC is the modern high-performance option, listed under desired skills.</p>
+<p>You define the service and messages in a <code>.proto</code> file, and a compiler
+generates client and server code in any supported language:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">syntax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"proto3"</span><span class="p">;</span>
+<span class="kn">package</span><span class="w"> </span><span class="nn">eadge.tracks.v1</span><span class="p">;</span>
+
+<span class="kd">message</span><span class="w"> </span><span class="nc">Track</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">string</span><span class="w"> </span><span class="na">track_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="n">Affiliation</span><span class="w"> </span><span class="na">affiliation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="na">altitude_ft</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="na">confidence</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">enum</span><span class="w"> </span><span class="n">Affiliation</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="na">AFFILIATION_UNSPECIFIED</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="na">AFFILIATION_FRIEND</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="na">AFFILIATION_HOSTILE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">service</span><span class="w"> </span><span class="n">TrackService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">rpc</span><span class="w"> </span><span class="n">GetTrack</span><span class="p">(</span><span class="n">GetTrackRequest</span><span class="p">)</span><span class="w"> </span><span class="k">returns</span><span class="w"> </span><span class="p">(</span><span class="n">Track</span><span class="p">);</span>
+<span class="w">  </span><span class="k">rpc</span><span class="w"> </span><span class="n">StreamTracks</span><span class="p">(</span><span class="n">StreamTracksRequest</span><span class="p">)</span><span class="w"> </span><span class="k">returns</span><span class="w"> </span><span class="p">(</span><span class="n">stream</span><span class="w"> </span><span class="n">Track</span><span class="p">);</span><span class="w">   </span><span class="c1">// server stream</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>What it gives you:</p>
+<ul>
+<li><strong>Binary encoding</strong> (Protocol Buffers), far smaller and faster to parse than
+  JSON or XML. On a bandwidth-planned link, that is the point.</li>
+<li><strong>A generated, strongly typed contract</strong> in every language.</li>
+<li><strong>Streaming</strong>, in either or both directions, over HTTP/2. A live track feed
+  is a server stream, which fits this domain naturally.</li>
+<li><strong>Schema evolution rules</strong>: those field numbers are the identity. Add new
+  numbered fields freely; never reuse a number.</li>
+</ul>
+<p>What it costs: it is not human-readable on the wire, browsers cannot call it
+directly without a proxy such as gRPC-Web, and it needs a build step.</p>
+<p><strong>Choosing between the three</strong>, which is the interview question:</p>
+<ul>
+<li><strong>REST</strong> for anything a browser or a human touches, and for broad
+  interoperability.</li>
+<li><strong>gRPC</strong> for high-rate internal service-to-service traffic, especially
+  streaming, where you control both ends.</li>
+<li><strong>SOAP</strong> when the existing interface is SOAP and the consumers are not yours
+  to change.</li>
+</ul>
+<h2 id="5-flask">5. Flask</h2>
+<p>Flask is a small Python web framework, named in the desired skills. "Micro"
+means it gives you routing and request handling and leaves the rest to you.</p>
+<p>Here is a complete, working API. Every response below was produced by running
+it.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">jsonify</span><span class="p">,</span> <span class="n">request</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">Flask</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">TRACKS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-001"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"hostile"</span><span class="p">,</span> <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="mi">32000</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.92</span><span class="p">},</span>
+    <span class="p">{</span><span class="s2">"trackId"</span><span class="p">:</span> <span class="s2">"T-002"</span><span class="p">,</span> <span class="s2">"affiliation"</span><span class="p">:</span> <span class="s2">"friend"</span><span class="p">,</span> <span class="s2">"altitudeFt"</span><span class="p">:</span> <span class="mi">12000</span><span class="p">,</span> <span class="s2">"confidence"</span><span class="p">:</span> <span class="mf">0.71</span><span class="p">},</span>
+<span class="p">]</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_tracks</span><span class="p">():</span>
+    <span class="n">affiliation</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"affiliation"</span><span class="p">)</span>
+    <span class="n">min_confidence</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"min_confidence"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">t</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">TRACKS</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">affiliation</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">t</span><span class="p">[</span><span class="s2">"affiliation"</span><span class="p">]</span> <span class="o">==</span> <span class="n">affiliation</span><span class="p">)</span>
+        <span class="ow">and</span> <span class="n">t</span><span class="p">[</span><span class="s2">"confidence"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span>
+    <span class="p">]</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks/&lt;track_id&gt;"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_track</span><span class="p">(</span><span class="n">track_id</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">TRACKS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">t</span><span class="p">[</span><span class="s2">"trackId"</span><span class="p">]</span> <span class="o">==</span> <span class="n">track_id</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"error"</span><span class="p">:</span> <span class="s2">"not found"</span><span class="p">,</span> <span class="s2">"trackId"</span><span class="p">:</span> <span class="n">track_id</span><span class="p">}),</span> <span class="mi">404</span>
+
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/health/ready"</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ready</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"ok"</span><span class="p">})</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>flask
+flask<span class="w"> </span>--app<span class="w"> </span>app<span class="w"> </span>run<span class="w">          </span><span class="c1"># development server on :5000</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>GET /api/v1/tracks                    -&gt; 200, 2 tracks
+GET /api/v1/tracks?affiliation=hostile -&gt; 200, ['T-001']
+GET /api/v1/tracks?min_confidence=0.8  -&gt; 200, ['T-001']
+GET /api/v1/tracks/T-001               -&gt; 200
+GET /api/v1/tracks/NOPE                -&gt; 404 {'error': 'not found', 'trackId': 'NOPE'}
+GET /health/ready                      -&gt; 200
+</code></pre></div>
+
+<p>Points to make about that code:</p>
+<p><strong><code>@app.get("/path")</code></strong> is a decorator registering the function as the handler
+for that route. Same decorator concept as <a href="python-practice.html">lesson 6</a>.</p>
+<p><strong><code>&lt;track_id&gt;</code></strong> in the path is a parameter, passed to the function as an
+argument.</p>
+<p><strong><code>request.args.get(..., type=float, default=0.0)</code></strong> reads and converts a query
+parameter, with a default. Converting at the boundary, and failing there if it
+is wrong, is the same discipline as everywhere else.</p>
+<p><strong>Returning a tuple</strong> <code>(body, status)</code> sets the status code. Returning 404 with
+a JSON body that names what was not found is much better than a bare 404,
+because the client's logs then contain the reason.</p>
+<p><strong><code>/health/ready</code></strong> is a readiness endpoint. Kubernetes and load balancers need
+one, as in <a href="containers.html">lesson 15</a>. Add it from the start; adding it later
+always means a deployment argument.</p>
+<h3 id="testing-a-flask-api">Testing a Flask API</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">test_filters_by_affiliation</span><span class="p">():</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks?affiliation=hostile"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="s2">"trackId"</span><span class="p">]</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"T-001"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_unknown_track_returns_404_with_a_reason</span><span class="p">():</span>
+    <span class="n">response</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">test_client</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"/api/v1/tracks/NOPE"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">404</span>
+    <span class="k">assert</span> <span class="n">response</span><span class="o">.</span><span class="n">get_json</span><span class="p">()[</span><span class="s2">"trackId"</span><span class="p">]</span> <span class="o">==</span> <span class="s2">"NOPE"</span>
+</code></pre></div>
+
+<p><code>app.test_client()</code> exercises the whole request path <strong>without starting a
+server or touching the network</strong>. That makes API tests fast enough to run on
+every commit, which is the entire argument for having them.</p>
+<h3 id="flask-in-production">Flask in production</h3>
+<p>Say this if it comes up, because it is a common gap:</p>
+<p><strong>The Flask development server is not for production.</strong> It is single-threaded
+and not hardened. In production you run the app behind a WSGI server such as
+Gunicorn or uWSGI, usually behind a reverse proxy:</p>
+<div class="codehilite"><pre><span></span><code>gunicorn<span class="w"> </span>--workers<span class="w"> </span><span class="m">4</span><span class="w"> </span>--bind<span class="w"> </span><span class="m">0</span>.0.0.0:8080<span class="w"> </span>app:app
+</code></pre></div>
+
+<p>Flask versus <strong>FastAPI</strong>: FastAPI is the modern alternative with built-in
+request validation from type hints and automatic OpenAPI documentation. Flask
+is older, simpler and more widely deployed. Knowing both exist is enough.</p>
+<h2 id="6-documenting-the-contract">6. Documenting the contract</h2>
+<p><strong>OpenAPI</strong>, formerly Swagger, is the REST equivalent of a WSDL: a
+machine-readable description of every endpoint.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">paths</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">/api/v1/tracks</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">get</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">List current tracks</span>
+<span class="w">      </span><span class="nt">parameters</span><span class="p">:</span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">affiliation</span>
+<span class="w">          </span><span class="nt">in</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">query</span>
+<span class="w">          </span><span class="nt">schema</span><span class="p">:</span>
+<span class="w">            </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">string</span>
+<span class="w">            </span><span class="nt">enum</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">friend</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">hostile</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">neutral</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">unknown</span><span class="p p-Indicator">]</span>
+<span class="w">      </span><span class="nt">responses</span><span class="p">:</span>
+<span class="w">        </span><span class="s">'200'</span><span class="p p-Indicator">:</span>
+<span class="w">          </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The current track list</span>
+</code></pre></div>
+
+<p>Why bother: it generates client code and interactive documentation, and it
+enables <strong>contract testing</strong>, where both sides are verified against the same
+document rather than against each other's assumptions. On an integration
+programme that is the difference between finding a mismatch in a design review
+and finding it in the lab.</p>
+<h2 id="7-cross-cutting-concerns">7. Cross-cutting concerns</h2>
+<p>Things every API needs, none of which are the happy path.</p>
+<p><strong>Authentication and authorisation.</strong> Who you are, then what you may do. Tokens
+go in the <code>Authorization</code> header, never in the URL, because URLs are logged.</p>
+<p><strong>Rate limiting.</strong> Return 429 with a <code>Retry-After</code> header. Without it, one
+misbehaving client can deny service to everyone.</p>
+<p><strong>Timeouts on every call you make.</strong> A call with no timeout is a thread that
+may never come back. This is the single most common omission in client code.</p>
+<p><strong>Retry with backoff and jitter.</strong> Retry only idempotent operations. Add random
+jitter, or many clients retry in lockstep and finish off a struggling service.</p>
+<p><strong>Circuit breaker.</strong> After enough consecutive failures, stop calling for a
+while. It lets a failing dependency recover instead of being hammered.</p>
+<p><strong>Correlation IDs.</strong> Generate an ID at the edge and pass it through every
+downstream call and log line. It is the only practical way to reconstruct one
+operation across several services.</p>
+<p><strong>Never return a stack trace to a caller.</strong> It leaks internal structure. Log
+the detail, return a generic message plus the correlation ID.</p>
+<h2 id="8-practice">8. Practice</h2>
+<p><strong>A1.</strong> Extend the Flask API with <code>POST /api/v1/tracks</code> that validates the body
+and returns 201 with a <code>Location</code> header, or 400 with a reason.</p>
+<p><strong>A2.</strong> Write tests for every status code your API can return, including 404
+and 400.</p>
+<p><strong>A3.</strong> Add pagination with <code>limit</code> and <code>cursor</code>, and a test proving no row is
+skipped or duplicated when a new track is inserted mid-paging.</p>
+<p><strong>A4.</strong> Write the OpenAPI snippet describing your endpoints.</p>
+<p><strong>A5.</strong> Take a JSON payload and write a validating parser that treats the input
+as untrusted, as in <a href="frontend.html">lesson 7</a> section 6.</p>
+<p><strong>A6.</strong> Write a client with a timeout, three retries with exponential backoff
+and jitter, and a test using a fake that fails twice then succeeds.</p>
+<p>A6 is the most valuable. It is the reliability pattern you will be asked about.</p>
+<h2 id="9-questions-to-be-ready-for">9. Questions to be ready for</h2>
+<ol>
+<li><strong>What makes an API RESTful?</strong> Resources as URLs, HTTP methods as verbs,
+   stateless requests, representations in a standard format.</li>
+<li><strong><code>PUT</code> versus <code>PATCH</code>?</strong> Replace the whole resource versus modify part of
+   it.</li>
+<li><strong>Which methods are idempotent, and why does it matter?</strong> <code>GET</code>, <code>PUT</code>,
+   <code>DELETE</code>. It decides what a client may safely retry.</li>
+<li><strong>401 versus 403?</strong> Not authenticated versus not permitted.</li>
+<li><strong>How do you version an API?</strong> Section 2, ending on interface control.</li>
+<li><strong>REST versus SOAP?</strong> The table in section 3, plus the honest note that SOAP
+   persists because it is already there and formally contracted.</li>
+<li><strong>What is a WSDL?</strong> SOAP's machine-readable contract; generates client code.</li>
+<li><strong>When would you choose gRPC?</strong> High-rate internal traffic and streaming,
+   where you control both ends and want a generated typed contract.</li>
+<li><strong>How do you handle a slow dependency?</strong> Timeout, bounded retry with jitter,
+   circuit breaker, degraded fallback, and make the degradation visible in
+   metrics rather than silent.</li>
+<li><strong>How do you test an API without a network?</strong> A test client that exercises
+    the request path in process, as in section 5.</li>
+<li><strong>What is XXE and why do you care?</strong> Section 3. Disable external entities
+    and DTDs.</li>
+<li><strong>What goes in a health endpoint?</strong> Liveness says the process is alive;
+    readiness says it can serve, including that its dependencies are reachable.
+    See <a href="containers.html">lesson 15</a>.</li>
+</ol>
+<nav class="pager"><a class="prev" href="../lessons/frontend.html">&larr; 7. Frontend: Angular, TypeScript, HTML &amp; CSS</a><a class="next" href="../lessons/java.html">9. Java Refresher &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -72,7 +72,7 @@ to entity expansion.
 **Migrate legacy capability into the Software Factory.** Take something that
 built on a developer's machine with a hand-maintained script and get it building
 reproducibly in a GitLab or Jenkins pipeline, with unit tests, static analysis,
-and artifact publishing. See [lesson 14](architecture.html) for what
+and artifact publishing. See [lesson 16](architecture.html) for what
 "Software Factory" means at LM.
 
 **Write unit tests and automated test capability.** On legacy code with little
@@ -84,9 +84,15 @@ together with a released baseline), defect resolution against a tracker, peer
 reviews, and troubleshooting integration failures that appear only when several
 subsystems run together.
 
+**Frontend work on operator-facing screens.** Your requisition lists Angular,
+JavaScript, CSS and HTML as a basic qualification, so this is a full-stack role
+rather than a backend one. On a command and control system the console is the
+product from the user's point of view, and a modernisation effort is exactly
+when the UI framework gets replaced. See [lesson 7](frontend.html).
+
 **Collaboration across disciplines.** Systems engineers own requirements,
 cybersecurity owns the hardening posture, integration and test own the lab.
-You will negotiate across all of them. See [lesson 15](cyber.html).
+You will negotiate across all of them. See [lesson 17](cyber.html).
 
 ## The vocabulary you should be comfortable with
 
@@ -138,17 +144,25 @@ eight to eleven hour time difference depending on the season.
 
 They will assess whether you have thought about this seriously. Vagueness reads
 as a flight risk, and a candidate who leaves an expat assignment at month eight
-is expensive. [Lesson 17](behavioral.html) covers how to prepare that
+is expensive. [Lesson 19](behavioral.html) covers how to prepare that
 conversation.
 
 ## Clearance and eligibility
 
-Roles on this program typically require US citizenship and a security clearance,
-commonly Secret, with the ability to obtain an interim. There may also be an
-international assignment eligibility screen: medical clearance, family status,
-and passport and visa processing for the UAE. Know your own status precisely
-before the interview, including whether any prior clearance is still current or
-would need reinstatement.
+Your requisition asks for **the ability to obtain a US DoD Secret clearance**,
+not for holding one already. That distinction matters: if you are not currently
+cleared, this req does not rule you out, and Lockheed sponsors the
+investigation. In practice it means US citizenship and a background you are
+willing to have investigated.
+
+There is also an international assignment eligibility screen on top: medical
+clearance, family status, and passport and visa processing for the UAE.
+
+Know your own status precisely before the interview. If you have held a
+clearance before, know the level, the granting agency and the date of the last
+investigation, and whether it is still current or would need reinstatement. A
+reinstatement is faster and cheaper than a fresh investigation, so it is worth
+saying.
 
 ## Three-minute program summary to rehearse
 

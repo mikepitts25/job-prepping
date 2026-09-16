@@ -1,4 +1,4 @@
-# 7. Java refresher
+# 9. Java refresher
 
 The posting pairs Java with Python. On a program like this, Java is likely to be
 where the long-lived server-side applications live, so expect depth questions

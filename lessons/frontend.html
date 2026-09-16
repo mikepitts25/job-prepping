@@ -1,0 +1,952 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7. Frontend: Angular, TypeScript, HTML and CSS &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. The Four-Hour Python Sprint</a></li><li><a href="../lessons/python.html">5. Python Foundations</a></li><li><a href="../lessons/python-practice.html">6. Python in Practice</a></li><li class="active"><a href="../lessons/frontend.html">7. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">8. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">9. Java Refresher</a></li><li><a href="../lessons/dsa.html">10. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">11. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">12. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">13. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">14. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">15. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">16. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">17. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">18. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">19. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">20. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">21. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">22. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="7-frontend-angular-typescript-html-and-css">7. Frontend: Angular, TypeScript, HTML and CSS</h1>
+<p>This is a <strong>basic qualification</strong> on your requisition, not a nice-to-have. The
+posting asks for "frontend framework development experience using Angular,
+JavaScript, CSS, and HTML." If you cannot hold a conversation about Angular, you
+will not pass the technical screen, however good the rest is.</p>
+<p>The lesson assumes you know nothing about web development. It also assumes you
+have done <a href="python-sprint.html">lesson 4</a> or <a href="python.html">lesson 5</a>, so I will
+lean on Python comparisons, which shortens the work considerably.</p>
+<h2 id="1-why-a-c2-system-has-a-frontend-at-all">1. Why a C2 system has a frontend at all</h2>
+<p>It is worth grounding this before the syntax.</p>
+<p>An air and missile defense command and control system exists to put a picture
+in front of a human being who has to make a decision quickly. The operator
+console <em>is</em> the product from the user's point of view. Everything discussed in
+<a href="track-data.html">lesson 2</a> — correlation, fusion, track quality — exists to
+produce something a battle manager can read at a glance.</p>
+<p>That makes UI work on this kind of programme different from commercial web work
+in ways worth saying out loud:</p>
+<ul>
+<li><strong>Latency and staleness are safety properties</strong>, not polish. A display
+  showing a track that stopped updating ninety seconds ago, with no indication
+  that it is stale, is worse than a blank screen.</li>
+<li><strong>Density beats whitespace.</strong> Operators want many rows visible at once. The
+  airy consumer-web aesthetic is wrong here.</li>
+<li><strong>Colour carries meaning</strong>, and it is standardised. Affiliation, hostile,
+  friend, neutral, unknown, has conventional symbology (see MIL-STD-2525 in
+  <a href="track-data.html">lesson 2</a>). You do not get to choose the palette.</li>
+<li><strong>It must degrade honestly.</strong> When the feed dies, the UI must say so loudly
+  rather than quietly showing the last good picture forever.</li>
+</ul>
+<p>Say one of those in the interview and you will sound like someone who has
+thought about the domain rather than someone who has built a shopping cart.</p>
+<h2 id="2-how-the-web-works-in-five-minutes">2. How the web works, in five minutes</h2>
+<p>A <strong>browser</strong> does three things: it fetches documents over HTTP, renders them,
+and runs JavaScript.</p>
+<p>Three languages, three jobs. This division is the foundation of everything
+else:</p>
+<table>
+<thead>
+<tr>
+<th>Language</th>
+<th>Job</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>HTML</strong></td>
+<td>Structure and content</td>
+<td>The nouns</td>
+</tr>
+<tr>
+<td><strong>CSS</strong></td>
+<td>Presentation</td>
+<td>The adjectives</td>
+</tr>
+<tr>
+<td><strong>JavaScript</strong></td>
+<td>Behaviour</td>
+<td>The verbs</td>
+</tr>
+</tbody>
+</table>
+<p>When the browser loads a page it parses the HTML into a tree of objects called
+the <strong>DOM</strong>, the Document Object Model. Every element is a node. JavaScript
+manipulates that tree, and the browser re-renders when it changes.</p>
+<p><strong>Angular's entire purpose is to stop you manipulating the DOM by hand.</strong> You
+describe what the page should look like for a given state; the framework works
+out the DOM changes. Hold onto that sentence; it is the answer to "why use a
+framework?"</p>
+<h2 id="3-html">3. HTML</h2>
+<p>HTML is a tree of <strong>elements</strong>, written as tags.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">article</span> <span class="na">class</span><span class="o">=</span><span class="s">"track-card"</span> <span class="na">id</span><span class="o">=</span><span class="s">"track-T001"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>T-001<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Altitude: <span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>32,000 ft<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">article</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>An opening tag, content, a closing tag. <strong>Attributes</strong> go in the opening tag:
+<code>class</code> for styling hooks, <code>id</code> for a unique identifier.</p>
+<p>A minimal document:</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"en"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">"utf-8"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">"viewport"</span> <span class="na">content</span><span class="o">=</span><span class="s">"width=device-width, initial-scale=1"</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Track Picture<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">"stylesheet"</span> <span class="na">href</span><span class="o">=</span><span class="s">"styles.css"</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Air Picture<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"app.js"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p><code>head</code> holds metadata the user does not see. <code>body</code> holds what they do.</p>
+<h3 id="use-semantic-elements">Use semantic elements</h3>
+<p>There is a real difference between these two:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">"header"</span><span class="p">&gt;</span>Air Picture<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>          <span class="cm">&lt;!-- means nothing --&gt;</span>
+<span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Air Picture<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>                           <span class="cm">&lt;!-- means "this is the heading" --&gt;</span>
+</code></pre></div>
+
+<p>Semantic elements (<code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code>,
+<code>footer</code>, <code>h1</code> to <code>h6</code>, <code>table</code>, <code>button</code>, <code>label</code>) tell the browser, search
+engines and <strong>screen readers</strong> what a thing <em>is</em>. A <code>div</code> with a click handler
+is not a button: it cannot be focused with the keyboard, it does not respond to
+Enter or Space, and assistive technology does not announce it. Use <code>&lt;button&gt;</code>.</p>
+<p>That is not pedantry. On a US government programme, <strong>accessibility is a legal
+requirement</strong> under Section 508, and an interviewer may well probe it. Knowing
+that semantic HTML is the cheapest route to it is a strong answer.</p>
+<h3 id="tables-which-you-will-use-constantly">Tables, which you will use constantly</h3>
+<p>A track list is a table. Use a real one:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">caption</span><span class="p">&gt;</span>Current air picture<span class="p">&lt;/</span><span class="nt">caption</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">thead</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Track<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Affiliation<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;&lt;</span><span class="nt">th</span> <span class="na">scope</span><span class="o">=</span><span class="s">"col"</span><span class="p">&gt;</span>Altitude<span class="p">&lt;/</span><span class="nt">th</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">thead</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>T-001<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Hostile<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;</span><span class="nt">td</span><span class="p">&gt;</span>32,000 ft<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p><code>thead</code>, <code>tbody</code>, <code>th</code> with <code>scope</code>, and a <code>caption</code> are what let a screen
+reader announce "Altitude, 32,000 feet" instead of reading a wall of numbers.</p>
+<h3 id="forms">Forms</h3>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">"min-confidence"</span><span class="p">&gt;</span>Minimum confidence<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">"min-confidence"</span> <span class="na">type</span><span class="o">=</span><span class="s">"number"</span> <span class="na">min</span><span class="o">=</span><span class="s">"0"</span> <span class="na">max</span><span class="o">=</span><span class="s">"1"</span> <span class="na">step</span><span class="o">=</span><span class="s">"0.1"</span> <span class="na">value</span><span class="o">=</span><span class="s">"0.5"</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">"affiliation"</span><span class="p">&gt;</span>Affiliation<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">select</span> <span class="na">id</span><span class="o">=</span><span class="s">"affiliation"</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"all"</span><span class="p">&gt;</span>All<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">"hostile"</span><span class="p">&gt;</span>Hostile<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">button</span> <span class="na">type</span><span class="o">=</span><span class="s">"submit"</span><span class="p">&gt;</span>Apply<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>The <code>for</code> on the label must match the <code>id</code> on the input. That pairing is what
+makes clicking the label focus the field, and what makes a screen reader
+announce the field's purpose. It is the single most commonly skipped detail in
+web forms.</p>
+<h2 id="4-css">4. CSS</h2>
+<p>CSS is a list of rules. Each has a <strong>selector</strong> saying what to style and
+<strong>declarations</strong> saying how.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">track-row</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#1d1b18</span><span class="p">;</span>
+<span class="w">  </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="kt">px</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">  </span><span class="k">border-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">px</span><span class="w"> </span><span class="kc">solid</span><span class="w"> </span><span class="mh">#e3ded5</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Selectors you need:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">h1</span><span class="w">              </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* every h1 element */</span>
+<span class="p">.</span><span class="nc">hostile</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* every element with class="hostile" */</span>
+<span class="p">#</span><span class="nn">track-T001</span><span class="w">     </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* the element with id="track-T001" */</span>
+<span class="p">.</span><span class="nc">track-row</span><span class="w"> </span><span class="nt">td</span><span class="w">   </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* td elements inside .track-row (descendant) */</span>
+<span class="p">.</span><span class="nc">track-row</span><span class="p">.</span><span class="nc">stale</span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* elements with BOTH classes */</span>
+<span class="nt">tr</span><span class="p">:</span><span class="nd">hover</span><span class="w">        </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* state */</span>
+<span class="nt">tr</span><span class="p">:</span><span class="nd">nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="c">/* alternating rows */</span>
+</code></pre></div>
+
+<p><strong>Use classes.</strong> IDs are too specific and cannot repeat; element selectors are
+too broad.</p>
+<h3 id="the-box-model">The box model</h3>
+<p>Every element is a box, and this is the thing beginners get wrong:</p>
+<div class="codehilite"><pre><span></span><code>+-------------------------------------+
+|              margin                 |   space OUTSIDE, between boxes
+|  +-------------------------------+  |
+|  |           border              |  |
+|  |  +-------------------------+  |  |
+|  |  |        padding          |  |  |   space INSIDE, around content
+|  |  |  +-------------------+  |  |  |
+|  |  |  |     content       |  |  |  |
+</code></pre></div>
+
+<p>Set this once, globally, and stop fighting it:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">*,</span><span class="w"> </span><span class="o">*</span><span class="p">::</span><span class="nd">before</span><span class="o">,</span><span class="w"> </span><span class="o">*</span><span class="p">::</span><span class="nd">after</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">box-sizing</span><span class="p">:</span><span class="w"> </span><span class="kc">border-box</span><span class="p">;</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Without it, <code>width: 200px</code> plus padding gives a box wider than 200px, because
+by default width measures the content only. With it, width means the whole box,
+which is what everyone intends.</p>
+<h3 id="layout-flexbox-and-grid">Layout: flexbox and grid</h3>
+<p>Two tools cover almost everything. <strong>Flexbox</strong> lays things out in one direction:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">toolbar</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
+<span class="w">  </span><span class="k">gap</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span><span class="p">;</span><span class="w">               </span><span class="c">/* space between children; better than margins */</span>
+<span class="w">  </span><span class="k">align-items</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span><span class="w">     </span><span class="c">/* vertical alignment (the cross axis) */</span>
+<span class="w">  </span><span class="k">justify-content</span><span class="p">:</span><span class="w"> </span><span class="kc">space-between</span><span class="p">;</span><span class="w">  </span><span class="c">/* horizontal distribution (the main axis) */</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Grid</strong> lays things out in two directions:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">dashboard</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="k">grid</span><span class="p">;</span>
+<span class="w">  </span><span class="k">grid-template-columns</span><span class="p">:</span><span class="w"> </span><span class="mi">280</span><span class="kt">px</span><span class="w"> </span><span class="mi">1</span><span class="n">fr</span><span class="p">;</span><span class="w">   </span><span class="c">/* fixed sidebar, rest to the content */</span>
+<span class="w">  </span><span class="k">gap</span><span class="p">:</span><span class="w"> </span><span class="mi">16</span><span class="kt">px</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>1fr</code> means "one fraction of the space left over." Flexbox for a row or column
+of things; grid for a page skeleton.</p>
+<h3 id="specificity-the-thing-that-confuses-everyone">Specificity, the thing that confuses everyone</h3>
+<p>When two rules target the same element, which wins? Roughly: inline styles beat
+IDs, IDs beat classes, classes beat element selectors, and on a tie the later
+rule wins.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">p</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">black</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">                  </span><span class="c">/* weakest */</span>
+<span class="p">.</span><span class="nc">warning</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">orange</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">          </span><span class="c">/* beats the above */</span>
+<span class="p">#</span><span class="nn">alert</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">red</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">               </span><span class="c">/* beats both */</span>
+</code></pre></div>
+
+<p><strong>Never use <code>!important</code> to win a fight.</strong> It works, it is invisible from the
+markup, and the next person has to use <code>!important</code> too. Fix the selector
+instead. That answer gets you credit.</p>
+<h3 id="custom-properties-and-themes">Custom properties and themes</h3>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nv">--colour-hostile</span><span class="p">:</span><span class="w"> </span><span class="mh">#b3261e</span><span class="p">;</span>
+<span class="w">  </span><span class="nv">--colour-friend</span><span class="p">:</span><span class="w"> </span><span class="mh">#0b5a8a</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">track-row</span><span class="p">.</span><span class="nc">hostile</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="nv">--colour-hostile</span><span class="p">);</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+
+<p>Variables in CSS. Define once, use everywhere, change a theme in one place.</p>
+<h3 id="responsive-design">Responsive design</h3>
+<div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">media</span><span class="w"> </span><span class="o">(</span><span class="nt">max-width</span><span class="o">:</span><span class="w"> </span><span class="nt">860px</span><span class="o">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">dashboard</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">grid-template-columns</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="n">fr</span><span class="p">;</span><span class="w"> </span><span class="p">}</span><span class="w">   </span><span class="c">/* stack on a narrow screen */</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>A <strong>media query</strong> applies rules conditionally. On an operator console you may
+have a fixed display size, but the tooling around it rarely does.</p>
+<h2 id="5-javascript-for-someone-who-knows-python">5. JavaScript, for someone who knows Python</h2>
+<p>Skip the introductions; here is the translation table.</p>
+<table>
+<thead>
+<tr>
+<th>Python</th>
+<th>JavaScript</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x = 5</code></td>
+<td><code>const x = 5;</code> or <code>let x = 5;</code></td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td><code>null</code> and <code>undefined</code> (two of them)</td>
+</tr>
+<tr>
+<td><code>True</code> / <code>False</code></td>
+<td><code>true</code> / <code>false</code></td>
+</tr>
+<tr>
+<td><code>def f(a, b=1):</code></td>
+<td><code>function f(a, b = 1) {}</code></td>
+</tr>
+<tr>
+<td><code>lambda x: x * 2</code></td>
+<td><code>(x) =&gt; x * 2</code></td>
+</tr>
+<tr>
+<td><code>[f(x) for x in xs]</code></td>
+<td><code>xs.map(f)</code></td>
+</tr>
+<tr>
+<td><code>[x for x in xs if p(x)]</code></td>
+<td><code>xs.filter(p)</code></td>
+</tr>
+<tr>
+<td><code>dict</code></td>
+<td>object <code>{}</code> or <code>Map</code></td>
+</tr>
+<tr>
+<td><code>list</code></td>
+<td><code>Array</code></td>
+</tr>
+<tr>
+<td>f-string</td>
+<td>template literal with backticks</td>
+</tr>
+<tr>
+<td><code>#</code> comment</td>
+<td><code>//</code> comment</td>
+</tr>
+<tr>
+<td>indentation</td>
+<td><code>{ }</code> braces, and semicolons</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">MAX_TRACKS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">500</span><span class="p">;</span><span class="w">      </span><span class="c1">// cannot be reassigned. Your default.</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">counter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span><span class="w">             </span><span class="c1">// reassignable. Use when you must.</span>
+<span class="c1">// var                       // the old one. Never use it.</span>
+</code></pre></div>
+
+<p><strong>Always <code>const</code> unless you need to reassign.</strong> Note that <code>const</code> on an object
+or array stops you reassigning the <em>name</em>, not modifying the contents, exactly
+like Python's name-binding model from <a href="python.html">lesson 5</a>.</p>
+<h3 id="arrow-functions-and-array-methods">Arrow functions and array methods</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-001'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="nx">altitude</span><span class="o">:</span><span class="w"> </span><span class="mf">32000</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'friend'</span><span class="p">,</span><span class="w">  </span><span class="nx">altitude</span><span class="o">:</span><span class="w"> </span><span class="mf">12000</span><span class="w"> </span><span class="p">},</span>
+<span class="p">];</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">hostiles</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">total</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">reduce</span><span class="p">((</span><span class="nx">sum</span><span class="p">,</span><span class="w"> </span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">sum</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">altitude</span><span class="p">,</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">highest</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">find</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">altitude</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">30000</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">anyHostile</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">some</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'hostile'</span><span class="p">);</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">allConfident</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">every</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">altitude</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0</span><span class="p">);</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">sorted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">tracks</span><span class="p">].</span><span class="nx">sort</span><span class="p">((</span><span class="nx">a</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">altitude</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nx">a</span><span class="p">.</span><span class="nx">altitude</span><span class="p">);</span>
+</code></pre></div>
+
+<p><code>map</code>, <code>filter</code> and <code>reduce</code> replace most loops. Note <code>[...tracks]</code> before
+<code>sort</code>: <strong><code>sort</code> mutates the array in place</strong>, so copy first if the caller still
+needs the original. That is a real bug source and a good detail to mention.</p>
+<p>The <code>...</code> is the <strong>spread</strong> operator: it expands an array or object.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">track</span><span class="w"> </span><span class="p">};</span><span class="w">                       </span><span class="c1">// shallow copy</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">updated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="nx">track</span><span class="p">,</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="w"> </span><span class="p">};</span><span class="w">   </span><span class="c1">// copy with a change</span>
+<span class="kd">const</span><span class="w"> </span><span class="nx">combined</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">listA</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">listB</span><span class="p">];</span>
+</code></pre></div>
+
+<p>That "copy with a change" idiom is everywhere in modern frontend code, because
+state is treated as immutable: you replace it rather than edit it.</p>
+<h3 id="equality-which-has-a-trap">Equality, which has a trap</h3>
+<div class="codehilite"><pre><span></span><code><span class="mf">1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">'1'</span><span class="w">      </span><span class="c1">// true   -- loose equality, converts types. Avoid.</span>
+<span class="mf">1</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'1'</span><span class="w">     </span><span class="c1">// false  -- strict equality, no conversion. Use this.</span>
+</code></pre></div>
+
+<p><strong>Always use <code>===</code> and <code>!==</code>.</strong> The loose ones perform type coercion with rules
+nobody remembers.</p>
+<h3 id="destructuring">Destructuring</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">altitude</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">track</span><span class="p">;</span><span class="w">              </span><span class="c1">// pull fields into names</span>
+<span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">first</span><span class="p">,</span><span class="w"> </span><span class="nx">second</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tracks</span><span class="p">;</span><span class="w">              </span><span class="c1">// pull array elements</span>
+<span class="kd">function</span><span class="w"> </span><span class="nx">show</span><span class="p">({</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">altitude</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">}</span><span class="w">          </span><span class="c1">// destructure a parameter</span>
+</code></pre></div>
+
+<p>Python's tuple unpacking, extended to objects.</p>
+<h3 id="asynchronous-code">Asynchronous code</h3>
+<p>This is the concept with no direct Python equivalent for a beginner, and it
+matters because every data fetch is asynchronous.</p>
+<p>JavaScript in the browser is <strong>single-threaded</strong>. If it waited for the network,
+the whole page would freeze. So anything slow returns a <strong>Promise</strong>: an object
+representing a result that is not here yet.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">loadTracks</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s1">'/api/v1/tracks'</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">response</span><span class="p">.</span><span class="nx">ok</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="sb">`HTTP </span><span class="si">${</span><span class="nx">response</span><span class="p">.</span><span class="nx">status</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">response</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">tracks</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">(</span><span class="s1">'failed to load tracks'</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>await</code> means "pause this function until the promise resolves, without blocking
+the page." <code>async</code> marks a function that contains <code>await</code>. If you have met
+Python's <code>async</code>/<code>await</code>, it is the same idea.</p>
+<p><strong>The trap:</strong> <code>fetch</code> only rejects on a <em>network</em> failure. A 404 or a 500 is a
+successful HTTP exchange as far as <code>fetch</code> is concerned, so you must check
+<code>response.ok</code> yourself. People miss this constantly.</p>
+<h2 id="6-typescript">6. TypeScript</h2>
+<p><strong>Angular is written in TypeScript</strong>, and you will write TypeScript, not
+JavaScript.</p>
+<p>TypeScript is JavaScript plus a type system. You write types; a compiler checks
+them and then erases them, producing plain JavaScript. <strong>Nothing is checked at
+runtime.</strong></p>
+<p>Why it exists: JavaScript will happily let <code>track.altitide</code> (misspelled) be
+<code>undefined</code>, and you find out when the display shows blank. TypeScript catches
+it before the code runs. That is the same argument as <code>mypy</code> in
+<a href="python-practice.html">lesson 6</a>, and it carries more weight here because the
+codebase is bigger and the failure is visible to an operator.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'T-001'</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">altitude</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">32000</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">isStale</span><span class="o">:</span><span class="w"> </span><span class="kt">boolean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s1">'air'</span><span class="p">,</span><span class="w"> </span><span class="s1">'fast'</span><span class="p">];</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="kt">number</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="mf">24.45</span><span class="p">,</span><span class="w"> </span><span class="mf">54.37</span><span class="p">];</span><span class="w">   </span><span class="c1">// tuple: fixed length</span>
+</code></pre></div>
+
+<h3 id="interfaces-and-type-aliases">Interfaces and type aliases</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kr">type</span><span class="w"> </span><span class="nx">Affiliation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'friend'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'hostile'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'neutral'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="s1">'unknown'</span><span class="p">;</span>
+
+<span class="k">export</span><span class="w"> </span><span class="kd">interface</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="kt">Affiliation</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">altitudeFt</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">confidence</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">lastSeen</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">;</span><span class="w">      </span><span class="c1">// ISO 8601, UTC</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Two things there are worth pointing out.</p>
+<p><code>Affiliation</code> is a <strong>union of literal types</strong>: the only legal values are those
+four strings. Assigning <code>'banana'</code> is a compile error. That is a type system
+doing real work, and it is how you model an enumerated field from an interface
+control document.</p>
+<p><code>readonly</code> means the field cannot be reassigned after construction. Immutable
+data is easier to reason about and safer to pass around, the same argument as
+frozen dataclasses in Python.</p>
+<h3 id="optional-fields-null-safety-and-unknown">Optional fields, null safety and <code>unknown</code></h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">interface</span><span class="w"> </span><span class="nx">Filter</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">affiliation?</span><span class="o">:</span><span class="w"> </span><span class="kt">Affiliation</span><span class="p">;</span><span class="w">    </span><span class="c1">// may be absent</span>
+<span class="w">  </span><span class="nx">minConfidence?</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">function</span><span class="w"> </span><span class="nx">describe</span><span class="p">(</span><span class="nx">track</span><span class="o">:</span><span class="w"> </span><span class="kt">Track</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">track</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">null</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="s1">'no track'</span><span class="p">;</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">track</span><span class="p">.</span><span class="nx">trackId</span><span class="p">;</span><span class="w">         </span><span class="c1">// safe: the compiler knows it is not null here</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>With <code>strictNullChecks</code> on, which it should be, the compiler forces you to
+handle the null case. That eliminates a whole category of "cannot read property
+of undefined" runtime errors.</p>
+<p><strong><code>any</code> versus <code>unknown</code></strong> is the most important distinction in practical
+TypeScript:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">const</span><span class="w"> </span><span class="nx">a</span><span class="o">:</span><span class="w"> </span><span class="kt">any</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+<span class="nx">a</span><span class="p">.</span><span class="nx">whatever</span><span class="p">.</span><span class="nx">nonsense</span><span class="p">;</span><span class="w">          </span><span class="c1">// compiles. Type checking is OFF.</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">u</span><span class="o">:</span><span class="w"> </span><span class="kt">unknown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+<span class="nx">u</span><span class="p">.</span><span class="nx">trackId</span><span class="p">;</span><span class="w">                    </span><span class="c1">// compile error: prove what it is first</span>
+</code></pre></div>
+
+<p><strong><code>any</code> switches the type system off</strong> for that value and lets bad data through
+silently. <code>unknown</code> forces you to validate. On a system fed by external
+interfaces, data arriving from the wire should be <code>unknown</code> and pass through a
+validating parser. Saying that in an interview shows you understand what the
+type system is for, rather than treating it as decoration.</p>
+<h3 id="generics-enough-to-read-them">Generics, enough to read them</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">function</span><span class="w"> </span><span class="nx">first</span><span class="o">&lt;</span><span class="nx">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">items</span><span class="o">:</span><span class="w"> </span><span class="kt">T</span><span class="p">[])</span><span class="o">:</span><span class="w"> </span><span class="nx">T</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">undefined</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="nx">items</span><span class="p">[</span><span class="mf">0</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">first</span><span class="o">&lt;</span><span class="nx">Track</span><span class="o">&gt;</span><span class="p">(</span><span class="nx">tracks</span><span class="p">);</span><span class="w">    </span><span class="c1">// t is Track | undefined</span>
+</code></pre></div>
+
+<p><code>T</code> is a placeholder for whatever type the caller uses. You will read far more
+generics than you write; this level is enough.</p>
+<h2 id="7-angular">7. Angular</h2>
+<h3 id="what-it-is-and-why">What it is and why</h3>
+<p>Angular is a <strong>component-based framework</strong> for building applications in the
+browser, made by Google, written in TypeScript. "Framework" rather than
+"library" means it is opinionated and provides the whole structure: components,
+routing, dependency injection, HTTP, forms and testing, all in the box. React
+is a library and you assemble the rest yourself.</p>
+<p>That opinionatedness is precisely why large organisations, and defence
+programmes in particular, pick Angular. Every project looks the same, the
+conventions are enforced, and a new engineer can find their way around. Say
+that if asked "why Angular?"</p>
+<h3 id="components">Components</h3>
+<p>A component is the unit: a piece of UI with its own template, styling and
+logic.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Component</span><span class="p">,</span><span class="w"> </span><span class="nx">computed</span><span class="p">,</span><span class="w"> </span><span class="nx">inject</span><span class="p">,</span><span class="w"> </span><span class="nx">signal</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/core'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">DecimalPipe</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/common'</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Affiliation</span><span class="p">,</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.model'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">TrackService</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.service'</span><span class="p">;</span>
+
+<span class="kd">@Component</span><span class="p">({</span>
+<span class="w">  </span><span class="nx">selector</span><span class="o">:</span><span class="w"> </span><span class="s1">'app-track-list'</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">standalone</span><span class="o">:</span><span class="w"> </span><span class="kt">true</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">imports</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">DecimalPipe</span><span class="p">],</span>
+<span class="w">  </span><span class="nx">template</span><span class="o">:</span><span class="w"> </span><span class="sb">`</span>
+<span class="sb">    &lt;label&gt;</span>
+<span class="sb">      Show:</span>
+<span class="sb">      &lt;select (change)="setFilter($event)"&gt;</span>
+<span class="sb">        &lt;option value="all"&gt;All&lt;/option&gt;</span>
+<span class="sb">        &lt;option value="hostile"&gt;Hostile&lt;/option&gt;</span>
+<span class="sb">      &lt;/select&gt;</span>
+<span class="sb">    &lt;/label&gt;</span>
+
+<span class="sb">    &lt;p&gt;{{ visible().length }} of {{ tracks().length }} tracks&lt;/p&gt;</span>
+
+<span class="sb">    @if (visible().length === 0) {</span>
+<span class="sb">      &lt;p class="empty"&gt;No tracks match.&lt;/p&gt;</span>
+<span class="sb">    } @else {</span>
+<span class="sb">      &lt;table&gt;</span>
+<span class="sb">        &lt;tbody&gt;</span>
+<span class="sb">          @for (track of visible(); track track.trackId) {</span>
+<span class="sb">            &lt;tr [class.hostile]="track.affiliation === 'hostile'"&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.trackId }}&lt;/td&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.affiliation }}&lt;/td&gt;</span>
+<span class="sb">              &lt;td&gt;{{ track.altitudeFt | number: '1.0-0' }} ft&lt;/td&gt;</span>
+<span class="sb">            &lt;/tr&gt;</span>
+<span class="sb">          }</span>
+<span class="sb">        &lt;/tbody&gt;</span>
+<span class="sb">      &lt;/table&gt;</span>
+<span class="sb">    }</span>
+<span class="sb">  `</span><span class="p">,</span>
+<span class="w">  </span><span class="nx">styles</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="sb">`</span>
+<span class="sb">    .hostile { color: #b3261e; font-weight: 600; }</span>
+<span class="sb">    .empty { color: #666; font-style: italic; }</span>
+<span class="sb">  `</span><span class="p">],</span>
+<span class="p">})</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TrackListComponent</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">inject</span><span class="p">(</span><span class="nx">TrackService</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">signal</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">([]);</span>
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">filter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">signal</span><span class="o">&lt;</span><span class="s1">'all'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Affiliation</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">'all'</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">readonly</span><span class="w"> </span><span class="nx">visible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">computed</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">();</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">f</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">'all'</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">().</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">f</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">load</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">service</span><span class="p">.</span><span class="nx">getTracks</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">tracks</span><span class="p">));</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="nx">setFilter</span><span class="p">(</span><span class="nx">event</span><span class="o">:</span><span class="w"> </span><span class="kt">Event</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">.</span><span class="nx">target</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="nx">HTMLSelectElement</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
+<span class="w">    </span><span class="k">this</span><span class="p">.</span><span class="nx">filter</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="s1">'all'</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">Affiliation</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>That compiles under Angular 18 with <code>strict</code> on. Take it apart.</p>
+<p><strong><code>@Component</code></strong> is a <strong>decorator</strong>: metadata attached to the class telling
+Angular how to use it. Same concept as a Python decorator.</p>
+<p><strong><code>selector</code></strong> is the custom HTML tag that places this component:
+<code>&lt;app-track-list&gt;&lt;/app-track-list&gt;</code>.</p>
+<p><strong><code>standalone: true</code></strong> means the component declares its own dependencies in
+<code>imports</code>, rather than being registered in an <code>NgModule</code>. Standalone is the
+modern default. Older Angular code uses NgModules everywhere, and on a tech
+refresh you will meet both.</p>
+<p><strong><code>template</code></strong> is the HTML. Inline in backticks here; larger components use
+<code>templateUrl: './track-list.component.html'</code>.</p>
+<h3 id="the-four-bindings">The four bindings</h3>
+<p>This table is the core of Angular and worth memorising:</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Direction</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{ value }}</code></td>
+<td>class to view</td>
+<td>Interpolation: print a value</td>
+</tr>
+<tr>
+<td><code>[property]="expr"</code></td>
+<td>class to view</td>
+<td>Bind a property or attribute</td>
+</tr>
+<tr>
+<td><code>(event)="handler()"</code></td>
+<td>view to class</td>
+<td>Listen for an event</td>
+</tr>
+<tr>
+<td><code>[(ngModel)]="field"</code></td>
+<td>both</td>
+<td>Two-way binding on a form control</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code>{{ track.trackId }}                                 <span class="cm">&lt;!-- print it --&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span> <span class="err">[</span><span class="na">class</span><span class="err">.</span><span class="na">hostile</span><span class="err">]="</span><span class="na">track</span><span class="err">.</span><span class="na">affiliation </span><span class="o">=</span><span class="s">==</span> <span class="err">'</span><span class="na">hostile</span><span class="err">'"</span><span class="p">&gt;</span>  <span class="cm">&lt;!-- conditional class --&gt;</span>
+<span class="p">&lt;</span><span class="nt">img</span> <span class="err">[</span><span class="na">src</span><span class="err">]="</span><span class="na">track</span><span class="err">.</span><span class="na">iconUrl</span><span class="err">"</span><span class="p">&gt;</span>                          <span class="cm">&lt;!-- dynamic attribute --&gt;</span>
+<span class="p">&lt;</span><span class="nt">button</span> <span class="err">(</span><span class="na">click</span><span class="err">)="</span><span class="na">refresh</span><span class="err">()"</span><span class="p">&gt;</span>Refresh<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>         <span class="cm">&lt;!-- event --&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="err">[(</span><span class="na">ngModel</span><span class="err">)]="</span><span class="na">searchTerm</span><span class="err">"</span><span class="p">&gt;</span>                     <span class="cm">&lt;!-- two-way --&gt;</span>
+</code></pre></div>
+
+<p>The "banana in a box" <code>[(...)]</code> is just <code>[...]</code> and <code>(...)</code> combined.</p>
+<h3 id="control-flow-in-templates">Control flow in templates</h3>
+<div class="codehilite"><pre><span></span><code>@if (loading()) {
+  <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Loading…<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+} @else if (error()) {
+  <span class="p">&lt;</span><span class="nt">p</span> <span class="na">class</span><span class="o">=</span><span class="s">"error"</span><span class="p">&gt;</span>{{ error() }}<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+} @else {
+  @for (track of tracks(); track track.trackId) {
+    <span class="p">&lt;</span><span class="nt">app-track-row</span> <span class="err">[</span><span class="na">track</span><span class="err">]="</span><span class="na">track</span><span class="err">"</span> <span class="p">/&gt;</span>
+  } @empty {
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>No tracks.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  }
+}
+</code></pre></div>
+
+<p>That <code>@if</code> / <code>@for</code> syntax arrived in Angular 17. Older code uses structural
+directives, and you must be able to read them because that is what is in a
+legacy baseline:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">p</span> <span class="err">*</span><span class="na">ngIf</span><span class="o">=</span><span class="s">"loading"</span><span class="p">&gt;</span>Loading…<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">tr</span> <span class="err">*</span><span class="na">ngFor</span><span class="o">=</span><span class="s">"let track of tracks; trackBy: trackById"</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p><strong><code>track</code> / <code>trackBy</code> matters for performance.</strong> It tells Angular how to
+identify a row across updates so it can reuse the DOM element instead of
+destroying and rebuilding it. On a table refreshing at 1 Hz with hundreds of
+rows, that is the difference between smooth and unusable. Good interview
+detail.</p>
+<h3 id="signals">Signals</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">readonly</span><span class="w"> </span><span class="nx">tracks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">signal</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">([]);</span><span class="w">          </span><span class="c1">// a reactive value</span>
+<span class="k">readonly</span><span class="w"> </span><span class="nx">visible</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">computed</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">...);</span><span class="w">         </span><span class="c1">// derived, recalculates automatically</span>
+
+<span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">newList</span><span class="p">);</span><span class="w">                       </span><span class="c1">// replace</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">update</span><span class="p">((</span><span class="nx">list</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[...</span><span class="nx">list</span><span class="p">,</span><span class="w"> </span><span class="nx">extra</span><span class="p">]);</span><span class="w"> </span><span class="c1">// derive from current</span>
+<span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">();</span><span class="w">                                  </span><span class="c1">// READ it: note the parentheses</span>
+</code></pre></div>
+
+<p>A <strong>signal</strong> is a value that knows when it changes, so Angular can update
+exactly the parts of the view that depend on it. <code>computed</code> derives a new signal
+from others and recalculates only when its inputs change.</p>
+<p>Signals arrived in Angular 16 and are the current direction. Older code relies
+on <strong>zone.js</strong> change detection, which checks everything after every event.
+Knowing both exist, and that signals are more precise, is enough depth.</p>
+<h3 id="services-and-dependency-injection">Services and dependency injection</h3>
+<p>Components should display things. Anything else — fetching, caching, business
+logic — belongs in a <strong>service</strong>.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">HttpClient</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/common/http'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Injectable</span><span class="p">,</span><span class="w"> </span><span class="nx">inject</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/core'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Observable</span><span class="p">,</span><span class="w"> </span><span class="nx">catchError</span><span class="p">,</span><span class="w"> </span><span class="nx">map</span><span class="p">,</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'rxjs'</span><span class="p">;</span>
+
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">Track</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./track.model'</span><span class="p">;</span>
+
+<span class="kd">@Injectable</span><span class="p">({</span><span class="w"> </span><span class="nx">providedIn</span><span class="o">:</span><span class="w"> </span><span class="s1">'root'</span><span class="w"> </span><span class="p">})</span>
+<span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TrackService</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">private</span><span class="w"> </span><span class="k">readonly</span><span class="w"> </span><span class="nx">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">inject</span><span class="p">(</span><span class="nx">HttpClient</span><span class="p">);</span>
+
+<span class="w">  </span><span class="nx">getTracks</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">Observable</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">http</span><span class="p">.</span><span class="nx">get</span><span class="o">&lt;</span><span class="nx">Track</span><span class="p">[]</span><span class="o">&gt;</span><span class="p">(</span><span class="s1">'/api/v1/tracks'</span><span class="p">).</span><span class="nx">pipe</span><span class="p">(</span>
+<span class="w">      </span><span class="nx">map</span><span class="p">((</span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">tracks</span><span class="p">.</span><span class="nx">filter</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">confidence</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)),</span>
+<span class="w">      </span><span class="nx">catchError</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">of</span><span class="p">([])),</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong><code>@Injectable({ providedIn: 'root' })</code></strong> registers the service application-wide
+as a single shared instance.</p>
+<p><strong><code>inject(HttpClient)</code></strong> asks Angular's <strong>dependency injection</strong> system for the
+HTTP client. The component never constructs its own. That is the same
+dependency injection argument as <a href="ood.html">lesson 11</a>: it makes the thing
+testable, because a test supplies a fake instead.</p>
+<h3 id="observables-and-how-they-differ-from-promises">Observables, and how they differ from Promises</h3>
+<p><code>HttpClient</code> returns an <strong>Observable</strong> from a library called RxJS, not a
+Promise.</p>
+<ul>
+<li>A <strong>Promise</strong> is one future value. It happens once.</li>
+<li>An <strong>Observable</strong> is a stream of values over time. It can emit many, and it
+  can be cancelled.</li>
+</ul>
+<p>For a single HTTP call the difference barely matters. For a websocket of track
+updates, which is exactly what a live air picture needs, it matters a lot.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">this</span><span class="p">.</span><span class="nx">service</span><span class="p">.</span><span class="nx">getTracks</span><span class="p">().</span><span class="nx">subscribe</span><span class="p">((</span><span class="nx">tracks</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="k">this</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="nx">tracks</span><span class="p">));</span>
+</code></pre></div>
+
+<p>Nothing happens until you <code>subscribe</code>. Observables are lazy.</p>
+<p>The operators you will actually meet, inside <code>.pipe(...)</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>map</code></td>
+<td>Transform each emitted value</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>Drop values that fail a test</td>
+</tr>
+<tr>
+<td><code>catchError</code></td>
+<td>Handle a failure, usually returning a fallback</td>
+</tr>
+<tr>
+<td><code>switchMap</code></td>
+<td>Swap to a new stream, cancelling the previous one</td>
+</tr>
+<tr>
+<td><code>debounceTime</code></td>
+<td>Wait for a pause; the classic search-box fix</td>
+</tr>
+<tr>
+<td><code>takeUntil</code></td>
+<td>Complete the stream on a signal; used for cleanup</td>
+</tr>
+</tbody>
+</table>
+<p><code>debounceTime(300)</code> then <code>switchMap</code> is <em>the</em> pattern for a search box: wait for
+the user to stop typing, then cancel any in-flight request when a new one
+starts.</p>
+<p><strong>Memory leaks:</strong> a subscription that is never cleaned up keeps running after
+the component is destroyed. Modern Angular uses <code>takeUntilDestroyed()</code>, or the
+<code>async</code> pipe in the template which subscribes and unsubscribes for you. Being
+able to name that risk is a senior signal.</p>
+<h3 id="lifecycle-hooks">Lifecycle hooks</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">TrackListComponent</span><span class="w"> </span><span class="k">implements</span><span class="w"> </span><span class="nx">OnInit</span><span class="p">,</span><span class="w"> </span><span class="nx">OnDestroy</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">ngOnInit</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* after the component is created: start loading */</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="nx">ngOnDestroy</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="cm">/* before it is destroyed: clean up */</span><span class="w"> </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>ngOnInit</code> and <code>ngOnDestroy</code> are the two that matter. Do not fetch data in the
+constructor; the constructor is for dependency injection, <code>ngOnInit</code> is for
+initialisation.</p>
+<h3 id="routing-briefly">Routing, briefly</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">export</span><span class="w"> </span><span class="kd">const</span><span class="w"> </span><span class="nx">routes</span><span class="o">:</span><span class="w"> </span><span class="kt">Routes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">''</span><span class="p">,</span><span class="w"> </span><span class="nx">component</span><span class="o">:</span><span class="w"> </span><span class="kt">TrackListComponent</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'tracks/:id'</span><span class="p">,</span><span class="w"> </span><span class="nx">component</span><span class="o">:</span><span class="w"> </span><span class="kt">TrackDetailComponent</span><span class="w"> </span><span class="p">},</span>
+<span class="w">  </span><span class="p">{</span><span class="w"> </span><span class="nx">path</span><span class="o">:</span><span class="w"> </span><span class="s1">'**'</span><span class="p">,</span><span class="w"> </span><span class="nx">component</span><span class="o">:</span><span class="w"> </span><span class="kt">NotFoundComponent</span><span class="w"> </span><span class="p">},</span>
+<span class="p">];</span>
+</code></pre></div>
+
+<p>The router swaps components in and out based on the URL without a page reload.
+<code>:id</code> is a parameter, <code>**</code> is the catch-all. Enough for now.</p>
+<h3 id="the-cli">The CLI</h3>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@angular/cli
+ng<span class="w"> </span>new<span class="w"> </span>track-picture<span class="w">            </span><span class="c1"># scaffold a project</span>
+ng<span class="w"> </span>serve<span class="w">                        </span><span class="c1"># dev server with live reload</span>
+ng<span class="w"> </span>generate<span class="w"> </span>component<span class="w"> </span>track-list
+ng<span class="w"> </span>generate<span class="w"> </span>service<span class="w"> </span>track
+ng<span class="w"> </span>build<span class="w"> </span>--configuration<span class="w"> </span>production
+ng<span class="w"> </span><span class="nb">test</span><span class="w">                         </span><span class="c1"># unit tests</span>
+ng<span class="w"> </span>lint
+</code></pre></div>
+
+<p><code>ng generate</code> creating the files, the test file and the registration in one
+command is a large part of why teams standardise on Angular.</p>
+<h2 id="8-testing-the-frontend">8. Testing the frontend</h2>
+<p>The posting lists <strong>UI/UX test frameworks (Cypress, Selenium, Playwright,
+Jest)</strong> under desired skills. Know what each is for.</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Layer</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Jest</strong> / <strong>Vitest</strong> / <strong>Karma+Jasmine</strong></td>
+<td>Unit</td>
+<td>Runs functions and components in isolation, no browser</td>
+</tr>
+<tr>
+<td><strong>Angular TestBed</strong></td>
+<td>Unit / component</td>
+<td>Builds a component with fake dependencies</td>
+</tr>
+<tr>
+<td><strong>Cypress</strong></td>
+<td>End to end</td>
+<td>Drives a real browser; excellent debugging, runs in-browser</td>
+</tr>
+<tr>
+<td><strong>Playwright</strong></td>
+<td>End to end</td>
+<td>Drives real Chromium, Firefox and WebKit; fast, parallel, good CI story</td>
+</tr>
+<tr>
+<td><strong>Selenium</strong></td>
+<td>End to end</td>
+<td>The long-established one; WebDriver standard, every language</td>
+</tr>
+</tbody>
+</table>
+<p>The pyramid from <a href="testing-ci.html">lesson 14</a> applies unchanged: <strong>many unit
+tests, some component tests, few end-to-end tests.</strong> End-to-end tests are slow
+and brittle, so use them for a handful of critical journeys, not for coverage.</p>
+<h3 id="unit-testing-the-logic">Unit-testing the logic</h3>
+<p>The most valuable structural advice in frontend work:</p>
+<blockquote>
+<p><strong>Push logic out of components into plain functions and services.</strong></p>
+</blockquote>
+<p>A component is hard to test because it needs a rendering environment. A plain
+function is trivial to test. So filtering, sorting, formatting and validation
+should live outside the component, and the component becomes a thin shell.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">describe</span><span class="p">,</span><span class="w"> </span><span class="nx">expect</span><span class="p">,</span><span class="w"> </span><span class="nx">it</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'vitest'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">filterTracks</span><span class="p">,</span><span class="w"> </span><span class="nx">sortForDisplay</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'./tracks'</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'sortForDisplay'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'puts hostile first and friend last'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">sorted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sortForDisplay</span><span class="p">([</span>
+<span class="w">      </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'friend'</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">      </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">affiliation</span><span class="o">:</span><span class="w"> </span><span class="s1">'hostile'</span><span class="w"> </span><span class="p">}),</span>
+<span class="w">    </span><span class="p">]);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">sorted</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">affiliation</span><span class="p">)).</span><span class="nx">toEqual</span><span class="p">([</span><span class="s1">'hostile'</span><span class="p">,</span><span class="w"> </span><span class="s1">'friend'</span><span class="p">]);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'breaks ties by track id, so the order is stable'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">sorted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">sortForDisplay</span><span class="p">([</span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-B'</span><span class="w"> </span><span class="p">}),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-A'</span><span class="w"> </span><span class="p">})]);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">sorted</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">t</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">t</span><span class="p">.</span><span class="nx">trackId</span><span class="p">)).</span><span class="nx">toEqual</span><span class="p">([</span><span class="s1">'T-A'</span><span class="p">,</span><span class="w"> </span><span class="s1">'T-B'</span><span class="p">]);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>There is a full working version of this, 32 passing tests, in the
+<a href="../practice/README.html">practice repo</a> under <code>practice/frontend</code>.</p>
+<h3 id="component-testing-with-testbed">Component testing with TestBed</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">ComponentFixture</span><span class="p">,</span><span class="w"> </span><span class="nx">TestBed</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@angular/core/testing'</span><span class="p">;</span>
+
+<span class="nx">describe</span><span class="p">(</span><span class="s1">'TrackListComponent'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">fixture</span><span class="o">:</span><span class="w"> </span><span class="kt">ComponentFixture</span><span class="o">&lt;</span><span class="nx">TrackListComponent</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">  </span><span class="nx">beforeEach</span><span class="p">(</span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">TestBed</span><span class="p">.</span><span class="nx">configureTestingModule</span><span class="p">({</span>
+<span class="w">      </span><span class="nx">imports</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">TrackListComponent</span><span class="p">],</span>
+<span class="w">      </span><span class="nx">providers</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">provide</span><span class="o">:</span><span class="w"> </span><span class="kt">TrackService</span><span class="p">,</span><span class="w"> </span><span class="nx">useValue</span><span class="o">:</span><span class="w"> </span><span class="kt">fakeTrackService</span><span class="w"> </span><span class="p">}],</span>
+<span class="w">    </span><span class="p">}).</span><span class="nx">compileComponents</span><span class="p">();</span>
+
+<span class="w">    </span><span class="nx">fixture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">TestBed</span><span class="p">.</span><span class="nx">createComponent</span><span class="p">(</span><span class="nx">TrackListComponent</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+
+<span class="w">  </span><span class="nx">it</span><span class="p">(</span><span class="s1">'shows a row per track'</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">fixture</span><span class="p">.</span><span class="nx">componentInstance</span><span class="p">.</span><span class="nx">tracks</span><span class="p">.</span><span class="nx">set</span><span class="p">([</span><span class="nx">track</span><span class="p">(),</span><span class="w"> </span><span class="nx">track</span><span class="p">({</span><span class="w"> </span><span class="nx">trackId</span><span class="o">:</span><span class="w"> </span><span class="s1">'T-002'</span><span class="w"> </span><span class="p">})]);</span>
+<span class="w">    </span><span class="nx">fixture</span><span class="p">.</span><span class="nx">detectChanges</span><span class="p">();</span>
+
+<span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">rows</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">fixture</span><span class="p">.</span><span class="nx">nativeElement</span><span class="p">.</span><span class="nx">querySelectorAll</span><span class="p">(</span><span class="s1">'tbody tr'</span><span class="p">);</span>
+<span class="w">    </span><span class="nx">expect</span><span class="p">(</span><span class="nx">rows</span><span class="p">.</span><span class="nx">length</span><span class="p">).</span><span class="nx">toBe</span><span class="p">(</span><span class="mf">2</span><span class="p">);</span>
+<span class="w">  </span><span class="p">});</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Note <code>useValue: fakeTrackService</code>: the real service is replaced with a fake, so
+no HTTP happens. <code>fixture.detectChanges()</code> triggers rendering; forgetting it is
+the classic reason an Angular test sees an empty template.</p>
+<h3 id="end-to-end-testing">End-to-end testing</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">// Playwright</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">expect</span><span class="p">,</span><span class="w"> </span><span class="nx">test</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'@playwright/test'</span><span class="p">;</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">'filtering to hostile hides friendly tracks'</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="kr">goto</span><span class="p">(</span><span class="s1">'/'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">page</span><span class="p">.</span><span class="nx">getByLabel</span><span class="p">(</span><span class="s1">'Show'</span><span class="p">).</span><span class="nx">selectOption</span><span class="p">(</span><span class="s1">'hostile'</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">getByRole</span><span class="p">(</span><span class="s1">'row'</span><span class="p">)).</span><span class="nx">toHaveCount</span><span class="p">(</span><span class="mf">3</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">expect</span><span class="p">(</span><span class="nx">page</span><span class="p">.</span><span class="nx">getByText</span><span class="p">(</span><span class="s1">'T-002'</span><span class="p">)).</span><span class="nx">toBeHidden</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+
+<p>Two practices worth stating:</p>
+<p><strong>Select by role and accessible name</strong>, as above, not by CSS class. Class-based
+selectors break on every restyle; role-based ones express what the user sees,
+and they double as an accessibility check.</p>
+<p><strong>End-to-end tests are where flakiness breeds.</strong> Never wait with a fixed sleep;
+wait for a condition. The guidance in <a href="testing-ci.html">lesson 14</a> about flaky
+tests applies with double force here.</p>
+<h2 id="9-design-tools">9. Design tools</h2>
+<p>The posting names <strong>MockFlow, UXPin and Axure</strong> under desired skills. These are
+wireframing and prototyping tools: you mock up a screen and click through it
+before anyone writes code. Figma is the common commercial equivalent.</p>
+<p>You are not expected to be a designer. What is expected is that you can work
+from a wireframe, and that you understand why one exists: <strong>agreeing a screen
+with the customer on a mock-up costs hours, and discovering the disagreement
+after it is built costs weeks.</strong> On an FMS programme where the customer
+reviews capability formally, that is not a small saving. If asked, say that,
+and say you are comfortable building from a prototype and feeding problems back.</p>
+<h2 id="10-practice">10. Practice</h2>
+<p>Do these in order. The <a href="../practice/README.html">practice repo</a> has a
+TypeScript module with 32 passing tests you can work against.</p>
+<p><strong>F1.</strong> Write a static HTML page with a semantic heading, a table of five
+tracks with a caption and proper <code>thead</code>/<code>th scope</code>, and a labelled filter
+input. No CSS, no JavaScript. Check every input has a matching label.</p>
+<p><strong>F2.</strong> Style it: <code>box-sizing: border-box</code> globally, a flexbox toolbar, colour
+hostile rows, alternate row shading, and a media query that stacks the layout
+under 860 pixels.</p>
+<p><strong>F3.</strong> In plain JavaScript, fetch a JSON list, handle both a network failure
+and a non-OK status, and render the rows into the table.</p>
+<p><strong>F4.</strong> Convert it to TypeScript. Define a <code>Track</code> interface and an
+<code>Affiliation</code> union. Turn on <code>strict</code>. Parse the payload from <code>unknown</code> with a
+validating function rather than casting with <code>as</code>.</p>
+<p><strong>F5.</strong> Write unit tests for the filtering and sorting logic, including the
+empty case and the tie-break.</p>
+<p><strong>F6.</strong> Scaffold an Angular app with <code>ng new</code>, create a <code>TrackService</code> and a
+<code>TrackListComponent</code>, and wire them with dependency injection and signals.</p>
+<p><strong>F7.</strong> Write a TestBed test that supplies a fake service and asserts the right
+number of rows renders.</p>
+<p>F4 and F5 are the highest value if you are short of time: they are what the
+interview will probe.</p>
+<h2 id="11-questions-to-be-ready-for">11. Questions to be ready for</h2>
+<ol>
+<li><strong>What is the DOM?</strong> The browser's object tree representing the page.
+   JavaScript changes it, the browser re-renders.</li>
+<li><strong>Why a framework rather than plain JavaScript?</strong> You describe the desired
+   state and the framework computes the DOM changes, instead of you hand-writing
+   imperative updates that drift out of sync.</li>
+<li><strong>Component versus service?</strong> Components display; services hold data access
+   and logic. It keeps components thin and the logic testable.</li>
+<li><strong>What is dependency injection and what does it buy?</strong> Angular supplies
+   dependencies rather than the class constructing them, so a test can supply a
+   fake. Testability first, decoupling second.</li>
+<li><strong>Observable versus Promise?</strong> One future value versus a cancellable stream
+   of many. HTTP returns an Observable; nothing runs until you subscribe.</li>
+<li><strong><code>any</code> versus <code>unknown</code>?</strong> <code>any</code> disables checking; <code>unknown</code> forces you to
+   prove the type. External data should be <code>unknown</code>.</li>
+<li><strong>What does <code>trackBy</code> do?</strong> Identifies list items across renders so Angular
+   reuses DOM nodes instead of rebuilding them. A performance fix for large
+   lists.</li>
+<li><strong>How do you avoid a memory leak in a component?</strong> Unsubscribe on destroy,
+   via <code>takeUntilDestroyed</code>, the <code>async</code> pipe, or <code>ngOnDestroy</code>.</li>
+<li><strong>How do you test a component that calls an API?</strong> Replace the service with a
+   fake through the testing module. Never hit the network in a unit test.</li>
+<li><strong>Unit versus end-to-end, and how many of each?</strong> Many unit, few end to end.
+    End-to-end tests are slow and flaky, so reserve them for critical journeys.</li>
+<li><strong>How do you make a UI accessible?</strong> Semantic elements, labels tied to
+    inputs, keyboard operability, sufficient colour contrast, and never colour
+    as the only signal. On a government programme this is a legal requirement.</li>
+<li><strong>What is specificity?</strong> The rule deciding which CSS wins. Do not resolve
+    conflicts with <code>!important</code>.</li>
+</ol>
+<h2 id="12-being-honest-about-your-level">12. Being honest about your level</h2>
+<p>If Angular is new to you, do not pretend otherwise. The framing that works:</p>
+<blockquote>
+<p>"I have not shipped an Angular application. I have built [what you actually
+did from the practice section], so I am comfortable with components,
+services, dependency injection and signals, and I understand the testing
+story. What I would want is a ramp on the existing component structure and
+your conventions before I touch operator-facing screens."</p>
+</blockquote>
+<p>Then be ready to discuss what you built. A candidate who has genuinely written
+a typed, tested track list and says so plainly is in much better shape than one
+who claims three years of Angular and cannot explain what <code>trackBy</code> does.</p>
+<nav class="pager"><a class="prev" href="../lessons/python-practice.html">&larr; 6. Python in Practice</a><a class="next" href="../lessons/apis.html">8. APIs: REST, SOAP, gRPC &amp; Flask &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

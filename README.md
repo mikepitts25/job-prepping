@@ -4,10 +4,15 @@ A GitHub Pages study site for the **Senior Software Engineer &ndash; EADGE-T Tec
 Refresh &ndash; EXPAT UAE** role at Lockheed Martin, plus a runnable practice
 repo.
 
-Twenty lessons covering every skill named in the job posting, roughly ninety
-worked code examples, a 132-question mock interview bank, sixteen worked
-scenario answers, and 106 passing tests across Python and Java practice
-modules.
+Twenty-two lessons covering every skill named in the job posting, roughly one
+hundred and ten worked code examples, a 146-question mock interview bank,
+sixteen worked scenario answers, and 138 passing tests across Python, Java and
+TypeScript practice modules.
+
+Built against the **Senior Software Engineer, EADGE-T Tech Refresh, EXPAT UAE**
+requisition specifically. Lockheed has several EADGE-T software reqs open with
+different qualification lists; this one is full-stack, with Angular as a basic
+qualification alongside Java and/or Python.
 
 Three Python lessons, all assuming no prior knowledge. Lesson 4 is a timed
 four-hour intensive that builds one real command-line tool with a test suite.
@@ -50,20 +55,22 @@ python3 -m http.server 8000
 | 4 | The four-hour Python sprint: build a tested command-line tool from nothing |
 | 5 | Python foundations: the language from zero, and why each piece exists |
 | 6 | Python in practice: standard library, generators, decorators, testing |
-| 7 | Java refresher |
-| 8 | Data structures, algorithms, and 24 practice problems |
-| 9 | Object-oriented design, SOLID, and a live design exercise |
-| 10 | Linux / RHEL and production troubleshooting |
-| 11 | Git, GitLab, baseline merges, Scrum and Kanban |
-| 12 | Testing and CI/CD |
-| 13 | Docker, Kubernetes and Helm |
-| 14 | Architecture and the Software Factory |
-| 15 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
-| 16 | Turning the Qatar ADOC product owner role into credible answers |
-| 17 | Behavioral questions and the expat conversation |
-| 18 | Sixteen worked scenario answers, with the follow-ups |
-| 19 | Mock interview bank, 132 questions |
-| 20 | Cheat sheets for the morning of |
+| 7 | Frontend: Angular, TypeScript, HTML and CSS, from nothing to tested components |
+| 8 | APIs: REST, SOAP, gRPC and a working Flask service |
+| 9 | Java refresher |
+| 10 | Data structures, algorithms, and 24 practice problems |
+| 11 | Object-oriented design, SOLID, and a live design exercise |
+| 12 | Linux / RHEL and production troubleshooting |
+| 13 | Git, GitLab, baseline merges, Scrum and Kanban |
+| 14 | Testing and CI/CD |
+| 15 | Docker, Kubernetes and Helm |
+| 16 | Architecture and the Software Factory |
+| 17 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
+| 18 | Turning the Qatar ADOC product owner role into credible answers |
+| 19 | Behavioral questions and the expat conversation |
+| 20 | Sixteen worked scenario answers, with the follow-ups |
+| 21 | Mock interview bank, 146 questions |
+| 22 | Cheat sheets for the morning of |
 
 ## Practice
 
@@ -76,6 +83,11 @@ PREP_TARGET=exercises pytest -q    # grade your own attempts
 
 cd ../java
 mvn -B test                        # 22 tests, all passing
+
+cd ../frontend
+npm install
+npm test                           # 32 tests, all passing
+npm run typecheck                  # strict TypeScript, no errors
 ```
 
 See [practice/README.md](practice/README.md) for the suggested order.

@@ -1,4 +1,4 @@
-# 8. Data structures and algorithms
+# 10. Data structures and algorithms
 
 The posting asks for a "comprehensive understanding of data structures,
 algorithms, and object-oriented design principles." On a sustainment program
