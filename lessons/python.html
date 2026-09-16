@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4. Python foundations &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<title>5. Python foundations &middot; Lockheed Martin EADGE-T Interview Prep</title>
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
@@ -15,15 +15,15 @@
   <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
 </header>
 <div class="layout">
-<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li class="active"><a href="../lessons/python.html">4. Python Foundations</a></li><li><a href="../lessons/python-practice.html">5. Python in Practice</a></li><li><a href="../lessons/java.html">6. Java Refresher</a></li><li><a href="../lessons/dsa.html">7. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">8. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">9. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">10. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">11. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">12. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">13. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">14. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">15. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">16. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">17. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">18. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">19. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. The Four-Hour Python Sprint</a></li><li class="active"><a href="../lessons/python.html">5. Python Foundations</a></li><li><a href="../lessons/python-practice.html">6. Python in Practice</a></li><li><a href="../lessons/java.html">7. Java Refresher</a></li><li><a href="../lessons/dsa.html">8. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">9. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">10. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">11. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">12. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">13. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">14. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">15. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">16. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">17. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">18. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">19. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">20. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
 <main id="main">
-<h1 id="4-python-foundations">4. Python foundations</h1>
+<h1 id="5-python-foundations">5. Python foundations</h1>
 <p>This lesson assumes you know nothing about Python. It builds the language from
 the ground up and explains <em>why</em> each piece exists, not just what to type. If
 you have written code before in another language, read it anyway: several of
 Python's core ideas differ from C, Java and C# in ways that cause real bugs
 when you assume they are the same.</p>
-<p><a href="python-practice.html">Lesson 5</a> covers the standard library, testing and the
+<p><a href="python-practice.html">Lesson 6</a> covers the standard library, testing and the
 tooling. Do this one first.</p>
 <h2 id="1-what-python-actually-is">1. What Python actually is</h2>
 <p><strong>Python is an interpreted, dynamically typed, garbage-collected language.</strong>
@@ -274,7 +274,7 @@ tolerance instead, meaning "close enough":</p>
 
 <p>Read that as "the difference between the two is smaller than a billionth, so
 call them equal." <code>1e-9</code> is scientific notation for 0.000000001.</p>
-<p>When you get to writing tests in <a href="python-practice.html">lesson 5</a>, the testing
+<p>When you get to writing tests in <a href="python-practice.html">lesson 6</a>, the testing
 library provides a tidier way to say the same thing. You do not need it yet, but
 so that it is not a surprise later:</p>
 <div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>                       <span class="c1"># a library you install; not built in</span>
@@ -543,7 +543,7 @@ absent fields are normal, <code>.get</code> is usually what you want.</p>
 
 <p><code>setdefault(key, default)</code> returns the existing value if the key is present,
 otherwise inserts the default and returns that. It saves an <code>if</code> on every
-iteration. <a href="python-practice.html">Lesson 5</a> shows the cleaner
+iteration. <a href="python-practice.html">Lesson 6</a> shows the cleaner
 <code>collections.defaultdict</code> version, but understand this form first because it
 shows what is actually happening.</p>
 <p><strong>Keys must be hashable</strong>, which in practice means immutable: strings, numbers
@@ -683,7 +683,7 @@ loading it into memory:</p>
 </code></pre></div>
 
 <p>For a 40 GB log on a machine with 8 GB of RAM, that distinction is the whole
-ballgame. <a href="python-practice.html">Lesson 5</a> develops this into generators.</p>
+ballgame. <a href="python-practice.html">Lesson 6</a> develops this into generators.</p>
 <h3 id="comprehensions">Comprehensions</h3>
 <p>A comprehension is compact syntax for building a list, dict or set from an
 existing iterable. Build up to it from the loop you already understand:</p>
@@ -1175,7 +1175,7 @@ new class, not editing existing logic.</p>
 <p><strong>Use inheritance sparingly.</strong> It is the tightest coupling available, because a
 subclass depends on the parent's implementation. Prefer <strong>composition</strong>, where
 an object holds another object and delegates to it. The rule of thumb:
-inheritance for "is a," composition for "has a." <a href="ood.html">Lesson 8</a> develops
+inheritance for "is a," composition for "has a." <a href="ood.html">Lesson 9</a> develops
 this.</p>
 <h2 id="13-virtual-environments">13. Virtual environments</h2>
 <p>Python installs packages system-wide by default. Two projects needing different
@@ -1223,10 +1223,10 @@ source built two different sites on two machines.</p>
    Then add <code>__eq__</code> and <code>__hash__</code> and see that you get one.</li>
 </ol>
 <p>Number six is the one that teaches the most per minute.</p>
-<p>Then go to <a href="python-practice.html">lesson 5</a> for the standard library, testing
+<p>Then go to <a href="python-practice.html">lesson 6</a> for the standard library, testing
 and the tooling, and to the <a href="../practice/README.html">practice repo</a> for
 problems to solve.</p>
-<nav class="pager"><a class="prev" href="../lessons/interview-map.html">&larr; 3. Interview Map &amp; 14-Day Plan</a><a class="next" href="../lessons/python-practice.html">5. Python in Practice &rarr;</a></nav>
+<nav class="pager"><a class="prev" href="../lessons/python-sprint.html">&larr; 4. The Four-Hour Python Sprint</a><a class="next" href="../lessons/python-practice.html">6. Python in Practice &rarr;</a></nav>
 </main>
 </div>
 <script src="../assets/site.js"></script>

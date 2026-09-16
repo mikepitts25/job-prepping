@@ -4,14 +4,15 @@ A GitHub Pages study site for the **Senior Software Engineer &ndash; EADGE-T Tec
 Refresh &ndash; EXPAT UAE** role at Lockheed Martin, plus a runnable practice
 repo.
 
-Nineteen lessons covering every skill named in the job posting, roughly eighty
+Twenty lessons covering every skill named in the job posting, roughly ninety
 worked code examples, a 132-question mock interview bank, sixteen worked
 scenario answers, and 106 passing tests across Python and Java practice
 modules.
 
-The two Python lessons assume no prior knowledge and build the language from
-first principles, explaining why each construct exists rather than only how to
-type it.
+Three Python lessons, all assuming no prior knowledge. Lesson 4 is a timed
+four-hour intensive that builds one real command-line tool with a test suite.
+Lessons 5 and 6 are the thorough treatment, explaining why each construct exists
+rather than only how to type it.
 
 ## Read it
 
@@ -46,22 +47,23 @@ python3 -m http.server 8000
 | 1 | Program and role brief: what EADGE-T is and what the job actually does |
 | 2 | Track data, standards and fusion: plots, tracks, Link 16, ASTERIX, data reduction |
 | 3 | Interview map and a 14-day study plan |
-| 4 | Python foundations: the language from zero, and why each piece exists |
-| 5 | Python in practice: standard library, generators, decorators, testing |
-| 6 | Java refresher |
-| 7 | Data structures, algorithms, and 24 practice problems |
-| 8 | Object-oriented design, SOLID, and a live design exercise |
-| 9 | Linux / RHEL and production troubleshooting |
-| 10 | Git, GitLab, baseline merges, Scrum and Kanban |
-| 11 | Testing and CI/CD |
-| 12 | Docker, Kubernetes and Helm |
-| 13 | Architecture and the Software Factory |
-| 14 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
-| 15 | Turning the Qatar ADOC product owner role into credible answers |
-| 16 | Behavioral questions and the expat conversation |
-| 17 | Sixteen worked scenario answers, with the follow-ups |
-| 18 | Mock interview bank, 132 questions |
-| 19 | Cheat sheets for the morning of |
+| 4 | The four-hour Python sprint: build a tested command-line tool from nothing |
+| 5 | Python foundations: the language from zero, and why each piece exists |
+| 6 | Python in practice: standard library, generators, decorators, testing |
+| 7 | Java refresher |
+| 8 | Data structures, algorithms, and 24 practice problems |
+| 9 | Object-oriented design, SOLID, and a live design exercise |
+| 10 | Linux / RHEL and production troubleshooting |
+| 11 | Git, GitLab, baseline merges, Scrum and Kanban |
+| 12 | Testing and CI/CD |
+| 13 | Docker, Kubernetes and Helm |
+| 14 | Architecture and the Software Factory |
+| 15 | Cybersecurity, STIGs, and COTS/FOSS upgrades |
+| 16 | Turning the Qatar ADOC product owner role into credible answers |
+| 17 | Behavioral questions and the expat conversation |
+| 18 | Sixteen worked scenario answers, with the follow-ups |
+| 19 | Mock interview bank, 132 questions |
+| 20 | Cheat sheets for the morning of |
 
 ## Practice
 

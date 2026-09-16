@@ -1,4 +1,4 @@
-# 16. Behavioral and expat questions
+# 17. Behavioral and expat questions
 
 For this role, the behavioral rounds carry at least as much weight as the
 technical ones. A dispersed team on a foreign assignment cannot absorb someone

@@ -1,0 +1,1108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. The four-hour Python sprint &middot; Lockheed Martin EADGE-T Interview Prep</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">EADGE-T Interview Prep</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li class="active"><a href="../lessons/python-sprint.html">4. The Four-Hour Python Sprint</a></li><li><a href="../lessons/python.html">5. Python Foundations</a></li><li><a href="../lessons/python-practice.html">6. Python in Practice</a></li><li><a href="../lessons/java.html">7. Java Refresher</a></li><li><a href="../lessons/dsa.html">8. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">9. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">10. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">11. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">12. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">13. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">14. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">15. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">16. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">17. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">18. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">19. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">20. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="4-the-four-hour-python-sprint">4. The four-hour Python sprint</h1>
+<p>Read this first, before the clock starts.</p>
+<p><strong>You cannot become a Python engineer in four hours.</strong> Anyone who tells you
+otherwise is selling something. What you can do in four hours, if you spend
+them well, is become a Python engineer who has only been doing it for four
+hours. That is a genuinely different thing from where you are now, and it is
+enough to write a working tool, pass a screening exercise, and hold a technical
+conversation without bluffing.</p>
+<p>The way we are going to do it is not by covering the language. It is by
+<strong>building one real program</strong>, in six stages, and learning each piece of Python
+at the moment the program needs it. Knowledge you reach for sticks. Knowledge
+you read slides off does not.</p>
+<p>The program is a log analyser: it reads sensor detection records, survives
+corrupt input, aggregates per sensor, ranks them, and ships as a proper
+command-line tool with a test suite. That is not a toy. It is a smaller version
+of what the job actually is.</p>
+<p><a href="python.html">Lesson 5</a> and <a href="python-practice.html">lesson 6</a> are the thorough
+treatment. This lesson is the sprint. Do the sprint first if time is short; do
+it first anyway if you learn better by building than by reading.</p>
+<h2 id="the-rules">The rules</h2>
+<p>I am going to be strict about these because they are what makes four hours
+work rather than feel like work.</p>
+<ol>
+<li><strong>Type everything. Never paste.</strong> Typing is how motor memory forms. Pasting
+   produces the feeling of learning with none of it.</li>
+<li><strong>Run everything.</strong> After every block, run the program. If it breaks, fix it
+   before moving on. A broken program at minute 40 becomes an unfixable program
+   at minute 90.</li>
+<li><strong>Break things on purpose.</strong> Where I say "now break it," do it. Seeing the
+   error is worth more than avoiding it.</li>
+<li><strong>Keep a REPL open in a second window</strong> the entire four hours. Any time you
+   are unsure what something does, try it there rather than wondering.</li>
+<li><strong>Respect the clock.</strong> If a block runs over, move on anyway. You can come
+   back. Falling behind on hour one and abandoning at hour three is the
+   failure mode.</li>
+<li><strong>Do not look things up.</strong> Everything you need is in this lesson. Searching
+   breaks the flow and costs ten minutes each time.</li>
+</ol>
+<p>Take a five minute break at the end of each hour. Actually take it.</p>
+<h2 id="what-i-am-deliberately-cutting-and-why">What I am deliberately cutting, and why</h2>
+<p>A good instructor tells you what you are not learning, so you stop worrying
+about it.</p>
+<table>
+<thead>
+<tr>
+<th>Cut</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inheritance and class hierarchies</td>
+<td>You will read them more than write them. Composition covers the first year.</td>
+</tr>
+<tr>
+<td><code>async</code> / <code>await</code></td>
+<td>A large topic that earns nothing in four hours.</td>
+</tr>
+<tr>
+<td>Metaclasses, descriptors, <code>__slots__</code></td>
+<td>Real, rare, and never asked of a new engineer.</td>
+</tr>
+<tr>
+<td>Comprehension gymnastics</td>
+<td>One loop and one filter is all that is readable anyway.</td>
+</tr>
+<tr>
+<td>Most of the standard library</td>
+<td>You will learn modules when you need them.</td>
+</tr>
+<tr>
+<td>Type checking with <code>mypy</code></td>
+<td>Worth doing on day three, not today.</td>
+</tr>
+<tr>
+<td>Virtual environment theory</td>
+<td>We use one. We do not study it.</td>
+</tr>
+</tbody>
+</table>
+<p>If it is not in this lesson, it is not needed today. That is the deal.</p>
+<h2 id="setup-ten-minutes-before-the-clock-starts">Setup: ten minutes, before the clock starts</h2>
+<p>Do this now. Do not start the four hours until it works.</p>
+<div class="codehilite"><pre><span></span><code>mkdir<span class="w"> </span>sprint<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>sprint
+python3<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
+<span class="nb">source</span><span class="w"> </span>.venv/bin/activate<span class="w">         </span><span class="c1"># Windows: .venv\Scripts\activate</span>
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pytest
+python<span class="w"> </span>-V<span class="w">                         </span><span class="c1"># want 3.10 or newer</span>
+</code></pre></div>
+
+<p>Then create the data file you will work with all session. Type it, or save it
+from any editor as <code>detections.csv</code>:</p>
+<div class="codehilite"><pre><span></span><code># sensor_id,timestamp,confidence
+RDR-1,1000,0.92
+RDR-1,1001,0.88
+RDR-2,1002,0.41
+RDR-1,1003,0.95
+RDR-2,1004,0.38
+RDR-3,1005,0.77
+RDR-2,1006,notanumber
+RDR-3,1007,0.81
+BADLINE
+RDR-1,1008,0.90
+RDR-3,1009,0.79
+RDR-2,1010,0.44
+</code></pre></div>
+
+<p>Note that it contains deliberate garbage: a line with a non-numeric confidence
+and a line with no commas at all. <strong>Real data is always like this.</strong> A parser
+that only handles clean input is a parser that will fail in the lab.</p>
+<p>Now start the clock.</p>
+<hr />
+<h2 id="hour-1-data-in-answer-out">Hour 1: data in, answer out</h2>
+<p>The single most valuable thing a Python engineer does is turn messy input into
+a useful answer. Everything else is decoration. We are going to do exactly that
+in the first hour, and pick up the language on the way.</p>
+<h3 id="000-to-010-the-repl-is-your-instrument">0:00 to 0:10 — The REPL is your instrument</h3>
+<div class="codehilite"><pre><span></span><code>python3
+</code></pre></div>
+
+<p>You get <code>&gt;&gt;&gt;</code>. That is Python's prompt, waiting. Type an expression; it answers.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s2">"radar"</span> <span class="o">+</span> <span class="s2">"-1"</span>
+<span class="s1">'radar-1'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="s2">"radar-1"</span><span class="p">)</span>
+<span class="mi">7</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="s2">"radar-1"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">name</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+<span class="s1">'RADAR-1'</span>
+</code></pre></div>
+
+<p>Three things just happened that matter.</p>
+<p><strong><code>=</code> binds a name to a value.</strong> <code>name = "radar-1"</code> does not declare a type and
+does not reserve a box. It attaches the label <code>name</code> to a string object.</p>
+<p><strong><code>.upper()</code> is a method</strong>: a function that belongs to a value. Every value in
+Python carries its own methods, and the dot is how you reach them.</p>
+<p><strong>The REPL printed the result.</strong> In a script, results are not printed unless you
+say <code>print(...)</code>. This trips everyone up once.</p>
+<p>Now the two commands that replace a search engine for the rest of your career:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="err">'</span><span class="nc">str</span><span class="s1">'&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="s1">'split'</span><span class="p">,</span> <span class="s1">'startswith'</span><span class="p">,</span> <span class="s1">'strip'</span><span class="p">,</span> <span class="s1">'title'</span><span class="p">,</span> <span class="s1">'upper'</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
+</code></pre></div>
+
+<p><code>type</code> tells you what something is. <code>dir</code> lists everything it can do. When you
+are stuck, ask the object.</p>
+<p><strong>Do now, two minutes:</strong> in the REPL, make a string, and find three methods on
+it with <code>dir</code> that you have never used. Try one.</p>
+<h3 id="010-to-030-the-five-things-that-carry-eighty-percent">0:10 to 0:30 — The five things that carry eighty percent</h3>
+<p>Almost all working Python is these five, combined. Type every line.</p>
+<h4 id="strings-and-turning-text-into-fields">Strings, and turning text into fields</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">line</span> <span class="o">=</span> <span class="s2">"RDR-1,1000,0.92"</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">'RDR-1'</span><span class="p">,</span> <span class="s1">'1000'</span><span class="p">,</span> <span class="s1">'0.92'</span><span class="p">]</span>
+</code></pre></div>
+
+<p><code>split</code> is the single most important method in log processing. It turns one
+line of text into a <strong>list</strong> of pieces.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s1">'RDR-1'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="s1">'0.92'</span>
+</code></pre></div>
+
+<p>Positions start at <strong>zero</strong>. <code>parts[0]</code> is the first. This is universal and
+worth burning in now.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">"  messy  "</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+<span class="s1">'messy'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"0.92"</span><span class="p">)</span>
+<span class="mf">0.92</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">int</span><span class="p">(</span><span class="s2">"1000"</span><span class="p">)</span>
+<span class="mi">1000</span>
+</code></pre></div>
+
+<p><strong>Everything read from a file is text.</strong> <code>"0.92"</code> is a string, not a number. You
+must convert it before doing arithmetic, and <code>float()</code> and <code>int()</code> are how.
+Forgetting this is the most common beginner bug there is.</p>
+<h4 id="lists-ordered-things">Lists: ordered things</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sensors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"RDR-1"</span><span class="p">,</span> <span class="s2">"RDR-2"</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sensors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"RDR-3"</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sensors</span>
+<span class="p">[</span><span class="s1">'RDR-1'</span><span class="p">,</span> <span class="s1">'RDR-2'</span><span class="p">,</span> <span class="s1">'RDR-3'</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">sensors</span><span class="p">)</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sensors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s1">'RDR-1'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">sensors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>        <span class="c1"># negative counts from the end</span>
+<span class="s1">'RDR-3'</span>
+</code></pre></div>
+
+<h4 id="dicts-things-looked-up-by-name">Dicts: things looked up by name</h4>
+<p>This is the one that unlocks real work.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-1"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-2"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span>
+<span class="p">{</span><span class="s1">'RDR-1'</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s1">'RDR-2'</span><span class="p">:</span> <span class="mi">3</span><span class="p">}</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-1"</span><span class="p">]</span>
+<span class="mi">4</span>
+</code></pre></div>
+
+<p>A <strong>dict</strong> maps keys to values. Think of it as a lookup table. The critical
+method:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"RDR-9"</span><span class="p">)</span>          <span class="c1"># absent: returns None, no error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"RDR-9"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>       <span class="c1"># absent: returns the default you gave</span>
+<span class="mi">0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-9"</span><span class="p">]</span>              <span class="c1"># absent: this CRASHES</span>
+<span class="ne">KeyError</span><span class="p">:</span> <span class="s1">'RDR-9'</span>
+</code></pre></div>
+
+<p><strong><code>.get(key, default)</code> is how you count things you have not seen before</strong>, and
+you will use it in ten minutes:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-9"</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"RDR-9"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">counts</span><span class="p">[</span><span class="s2">"RDR-9"</span><span class="p">]</span>
+<span class="mi">1</span>
+</code></pre></div>
+
+<p>Read that line until it is obvious: take the current count or zero if there
+isn't one, add one, store it back.</p>
+<h4 id="loops">Loops</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">sensor</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">sensor</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">RDR</span><span class="o">-</span><span class="mi">1</span>
+<span class="n">RDR</span><span class="o">-</span><span class="mi">2</span>
+<span class="n">RDR</span><span class="o">-</span><span class="mi">3</span>
+</code></pre></div>
+
+<p>In the REPL, the <code>...</code> means Python is waiting for the indented block; press
+Enter on a blank line to finish it.</p>
+<p>A <code>for</code> loop walks the <strong>items</strong>, not the indices. There is no counter to
+manage. Note the colon and the indentation: <strong>indentation is the syntax in
+Python</strong>, not a style choice. Four spaces.</p>
+<h4 id="conditionals">Conditionals</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">confidence</span> <span class="o">=</span> <span class="mf">0.41</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="n">confidence</span> <span class="o">&gt;=</span> <span class="mf">0.8</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">"high"</span><span class="p">)</span>
+<span class="o">...</span> <span class="k">elif</span> <span class="n">confidence</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">"medium"</span><span class="p">)</span>
+<span class="o">...</span> <span class="k">else</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">"low"</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="n">low</span>
+</code></pre></div>
+
+<p><code>elif</code> is "else if." And one enormously useful Python habit:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">sensors</span><span class="p">:</span>        <span class="c1"># "if the list is empty"</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">"nothing to do"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>An empty list, empty string, empty dict, zero and <code>None</code> all count as false.
+That is called truthiness and it makes conditions read like English.</p>
+<p><strong>Checkpoint, 0:30.</strong> Without looking back, in the REPL: split
+<code>"A,10,0.5"</code> on commas, convert the third field to a float, and add it to a
+dict under the key from the first field, using <code>.get</code>. If that took more than
+two minutes, redo the dict block above before continuing.</p>
+<h3 id="030-to-050-version-1-a-real-program">0:30 to 0:50 — Version 1: a real program</h3>
+<p>Leave the REPL (<code>exit()</code>). Make a file called <code>v2.py</code> and type this. All of it.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">totals</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">counts</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">skipped</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">"detections.csv"</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+
+        <span class="n">sensor_id</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">confidence</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">continue</span>
+
+        <span class="n">totals</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">totals</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">confidence</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="k">for</span> <span class="n">sensor_id</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">totals</span><span class="p">):</span>
+    <span class="n">average</span> <span class="o">=</span> <span class="n">totals</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">/</span> <span class="n">counts</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sensor_id</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">counts</span><span class="p">[</span><span class="n">sensor_id</span><span class="p">]</span><span class="si">:</span><span class="s2">&gt;3</span><span class="si">}</span><span class="s2"> readings   avg </span><span class="si">{</span><span class="n">average</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">skipped </span><span class="si">{</span><span class="n">skipped</span><span class="si">}</span><span class="s2"> bad lines"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run it:</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>v2.py
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>RDR-1      4 readings   avg 0.912
+RDR-2      3 readings   avg 0.410
+RDR-3      3 readings   avg 0.790
+
+skipped 2 bad lines
+</code></pre></div>
+
+<p><strong>You have written a working data processing tool in twenty-five lines.</strong> Now
+let us go through what is new, because five important things just appeared.</p>
+<p><strong><code>with open(...) as f:</code></strong> opens the file and guarantees it gets closed, even if
+the code inside raises. Always open files this way. Always pass
+<code>encoding="utf-8"</code>, or the same code reads differently on Linux and Windows,
+which is a genuine integration bug and not a hypothetical one.</p>
+<p><strong><code>for line in f:</code></strong> reads the file <strong>one line at a time</strong>, not all at once.
+That means this program handles a 40 GB log on a laptop. Say that sentence in
+an interview; it is the difference between a script and an engineer's script.</p>
+<p><strong><code>continue</code></strong> skips to the next iteration. It is how you filter while you
+parse, and it keeps the code flat instead of nesting three <code>if</code>s deep.</p>
+<p><strong><code>try</code> / <code>except ValueError</code></strong> catches a failure and keeps going.
+<code>float("notanumber")</code> raises <code>ValueError</code>. Without the <code>try</code>, one corrupt line
+kills the whole run. With it, we count the line and continue. That is the right
+behaviour for ingest code, and the counting is not optional: <strong>a program that
+silently discards data is worse than one that crashes</strong>, because the crash gets
+investigated.</p>
+<p><strong>f-strings</strong> build text from values. The <code>f</code> prefix means "evaluate what is in
+the braces." The bits after the colons are formatting: <code>:&lt;8</code> means left-align in
+eight characters, <code>:&gt;3</code> right-align in three, <code>:.3f</code> means three decimal
+places. That is how you get columns that line up.</p>
+<p><strong>Do now, five minutes.</strong> Break it deliberately and read each error:</p>
+<ol>
+<li>Delete the <code>try</code>/<code>except</code> (keep the <code>float</code> line, unindent it). Run it. Read
+   the <code>ValueError</code> traceback bottom-up: the last line is the error, the lines
+   above are how you got there.</li>
+<li>Put it back. Now change <code>detections.csv</code> to <code>nope.csv</code>. Run it. That is
+   <code>FileNotFoundError</code>.</li>
+<li>Put it back. Change <code>parts[2]</code> to <code>parts[5]</code>. Run it. That is <code>IndexError</code>.</li>
+</ol>
+<p>Those three errors are most of what you will ever see. Meeting them on purpose
+now means recognising them instantly later.</p>
+<h3 id="050-to-100-checkpoint-and-rest">0:50 to 1:00 — Checkpoint and rest</h3>
+<p>Close the file. On a blank page, from memory, write the six lines that: open a
+file, loop its lines, strip whitespace, skip blanks, split on commas, and add
+to a dict with <code>.get</code>.</p>
+<p>Check against the program. Whatever you got wrong, retype that part twice.</p>
+<p><strong>Take five minutes off.</strong> Stand up.</p>
+<hr />
+<h2 id="hour-2-turning-a-script-into-code">Hour 2: turning a script into code</h2>
+<p>What you have is a script. It works and it is unmaintainable: one long block,
+nothing reusable, nothing testable. This hour turns it into code.</p>
+<h3 id="100-to-125-functions">1:00 to 1:25 — Functions</h3>
+<p>A <strong>function</strong> is a named piece of logic that takes inputs and returns a result.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">average</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Return the mean of a list of numbers, or None if empty."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">values</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">values</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+</code></pre></div>
+
+<p><code>def</code>, the name, the parameters in parentheses, a colon, the indented body. The
+string on the first line is a <strong>docstring</strong>: documentation that travels with the
+function. <code>return</code> sends a value back and exits immediately.</p>
+<p>Try it in the REPL:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">average</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="mf">2.0</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">average</span><span class="p">([])</span> <span class="ow">is</span> <span class="kc">None</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+<p><strong>Why functions matter more than reuse.</strong> Three reasons, in order of
+importance:</p>
+<ol>
+<li><strong>A function is the unit you can test.</strong> Logic that is not in a function is
+   logic you cannot write a test for. Given what this job is, that is the whole
+   argument.</li>
+<li><strong>A name is documentation.</strong> <code>rank(stats)</code> tells a reader what a block does
+   in a way that eight lines of loop never will.</li>
+<li><strong>Isolation.</strong> A bug lives inside one function instead of anywhere in a
+   hundred-line script.</li>
+</ol>
+<p>Arguments with defaults:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rank</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p><code>top</code> and <code>min_confidence</code> are optional. Callers can say <code>rank(stats)</code> or
+<code>rank(stats, top=3)</code>. <strong>Pass numbers and booleans by keyword</strong> at the call site:
+<code>rank(stats, 3)</code> tells a reader nothing, <code>rank(stats, top=3)</code> tells them
+everything.</p>
+<p>One trap, because it is asked in interviews and it does bite:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="p">[]):</span>      <span class="c1"># WRONG. The default list is created ONCE</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bucket</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">bucket</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>    <span class="c1"># RIGHT</span>
+    <span class="k">if</span> <span class="n">bucket</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bucket</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">bucket</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bucket</span>
+</code></pre></div>
+
+<p><strong>Never use a mutable default argument.</strong> Use <code>None</code> and build it inside.</p>
+<p><strong>Do now, ten minutes.</strong> Rewrite your program with three functions:
+<code>load(lines)</code> returning detections and a skip count, <code>summarise(detections)</code>
+returning a dict, and a loop that prints. Do not look at the final version
+below. Struggle with it; that is the point. Run it and confirm the output is
+unchanged.</p>
+<h3 id="125-to-145-errors-properly">1:25 to 1:45 — Errors, properly</h3>
+<p>You have used <code>try</code>/<code>except</code>. Now the engineering around it.</p>
+<p><strong>Raise your own errors at the boundary.</strong> When a function is handed something
+invalid, say so immediately:</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"expected 3 fields, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p><strong>Validate where data enters, and fail loudly.</strong> A bad value rejected at the
+boundary produces an error naming the real problem. The same value accepted and
+passed along produces a baffling failure somewhere else, ten minutes later, in
+code that is not at fault. This single habit separates code that is debuggable
+from code that is not.</p>
+<p><strong>Catch narrowly.</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+<span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>          <span class="c1"># 'as err' captures the exception object</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"skipping </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+    <span class="n">skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div>
+
+<p>Catch the exception you expect, not everything. A bare <code>except:</code> swallows
+genuine programming errors and Ctrl-C, and turns a visible bug into silently
+wrong output. An empty <code>except: pass</code> is the worst two lines in Python. <strong>If you
+catch something, do something</strong>: count it, log it, convert it, or re-raise it.</p>
+<p><strong>Reading a traceback.</strong> Bottom-up, always. The last line is the error type and
+message. The line above it is where it happened. Above that is the chain of
+calls that got you there. Beginners read from the top and get lost.</p>
+<p>The errors you will actually meet:</p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NameError</code></td>
+<td>You used a name that does not exist. Usually a typo, or an import you forgot.</td>
+</tr>
+<tr>
+<td><code>TypeError</code></td>
+<td>Wrong type for the operation. <code>"5" + 3</code>.</td>
+</tr>
+<tr>
+<td><code>ValueError</code></td>
+<td>Right type, unusable value. <code>int("abc")</code>.</td>
+</tr>
+<tr>
+<td><code>KeyError</code></td>
+<td>Dict key not present. Use <code>.get</code>.</td>
+</tr>
+<tr>
+<td><code>IndexError</code></td>
+<td>List index out of range.</td>
+</tr>
+<tr>
+<td><code>AttributeError</code></td>
+<td>No such method or attribute. On <code>NoneType</code>, it almost always means a function returned <code>None</code> when you expected an object.</td>
+</tr>
+<tr>
+<td><code>IndentationError</code></td>
+<td>Your indentation is inconsistent. Never mix tabs and spaces.</td>
+</tr>
+<tr>
+<td><code>FileNotFoundError</code></td>
+<td>The path is wrong, or you are in the wrong directory.</td>
+</tr>
+<tr>
+<td><code>ModuleNotFoundError</code></td>
+<td>Not installed, or the virtual environment is not active.</td>
+</tr>
+<tr>
+<td><code>ZeroDivisionError</code></td>
+<td>Usually an empty collection you did not check for.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="145-to-200-checkpoint-and-rest">1:45 to 2:00 — Checkpoint and rest</h3>
+<p>Add validation to your <code>parse_line</code>: reject an empty sensor id, and reject a
+confidence outside zero to one. Run the program. The bad-line count should go
+up if you add a bad row to the CSV to prove it.</p>
+<p><strong>Break it:</strong> make <code>parse_line</code> raise a <code>ValueError</code> on a <em>good</em> line and watch
+your skip counter climb. Fix it. That is the debugging loop in miniature.</p>
+<p><strong>Five minutes off.</strong></p>
+<hr />
+<h2 id="hour-3-the-part-that-makes-you-an-engineer">Hour 3: the part that makes you an engineer</h2>
+<p>Anyone can write a script that works today. An engineer writes one you can
+change in six months without fear. That is what this hour is.</p>
+<h3 id="200-to-235-tests">2:00 to 2:35 — Tests</h3>
+<p>This is the highest-value thirty-five minutes in the sprint, and it is the part
+of the job description this program is actually about.</p>
+<p><strong>Why.</strong> Python is interpreted, so a typo on an error path is not found until
+that path runs. On a fielded system, the alternative discovery mechanism is the
+integration lab, which is the scarcest resource on the programme. <strong>Every defect
+a unit test catches is a lab slot you did not consume.</strong> That is the argument.
+It is much stronger than "tests are good practice," and it is the one to make in
+an interview.</p>
+<p><strong>A test is a function whose name starts with <code>test_</code>, containing an <code>assert</code>.</strong></p>
+<p><code>assert</code> means "this had better be true." If it is, nothing happens at all. If
+it is not, it raises <code>AssertionError</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">2</span>        <span class="c1"># true: silence</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">assert</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">==</span> <span class="mi">3</span>        <span class="c1"># false</span>
+<span class="ne">AssertionError</span>
+</code></pre></div>
+
+<p>Silence means pass. That is why a passing test suite is quiet.</p>
+<p>Make a file <code>test_sensorstat.py</code> next to your program:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensorstat</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_line</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">summarise</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_parses_a_good_line</span><span class="p">():</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">parse_line</span><span class="p">(</span><span class="s2">"RDR-1,1000,0.92"</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span> <span class="o">==</span> <span class="s2">"RDR-1"</span>
+    <span class="k">assert</span> <span class="n">d</span><span class="o">.</span><span class="n">confidence</span> <span class="o">==</span> <span class="mf">0.92</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_a_line_with_too_few_fields</span><span class="p">():</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">parse_line</span><span class="p">(</span><span class="s2">"RDR-1,1000"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_load_counts_bad_lines_and_keeps_going</span><span class="p">():</span>
+    <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">([</span><span class="s2">"RDR-1,1,0.5"</span><span class="p">,</span> <span class="s2">"GARBAGE"</span><span class="p">,</span> <span class="s2">"RDR-2,2,0.6"</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">skipped</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_load_handles_empty_input</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">load</span><span class="p">([])</span> <span class="o">==</span> <span class="p">([],</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Run it:</p>
+<div class="codehilite"><pre><span></span><code>pytest<span class="w"> </span>-q
+</code></pre></div>
+
+<p><code>pytest</code> finds files named <code>test_*.py</code>, finds functions named <code>test_*</code>, runs
+them, and reports. When an assertion fails it prints the actual values, which is
+why plain <code>assert</code> is enough.</p>
+<p><strong><code>with pytest.raises(ValueError):</code></strong> passes only if the block raises that
+error. It is how you test that bad input is rejected. If the code wrongly
+accepts it, the test fails.</p>
+<h4 id="what-to-test-which-is-the-actual-skill">What to test, which is the actual skill</h4>
+<p>Given any function, ask for these. <strong>Say this list out loud in an interview even
+when you are not asked</strong>, because it is what separates a senior answer from a
+correct one:</p>
+<ul>
+<li>the normal case</li>
+<li>empty input</li>
+<li>a single item</li>
+<li>duplicates and ties</li>
+<li>malformed input</li>
+<li>boundaries: zero, one, and either side of a threshold</li>
+<li>the error path: does it raise what it should?</li>
+</ul>
+<h4 id="table-driven-tests">Table-driven tests</h4>
+<p>When the same logic needs many cases, do not write ten near-identical
+functions:</p>
+<div class="codehilite"><pre><span></span><code><span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"bad"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s2">"RDR-1,1000"</span><span class="p">,</span>             <span class="c1"># too few fields</span>
+    <span class="s2">"RDR-1,1000,0.9,extra"</span><span class="p">,</span>   <span class="c1"># too many</span>
+    <span class="s2">",1000,0.9"</span><span class="p">,</span>              <span class="c1"># empty sensor id</span>
+    <span class="s2">"RDR-1,notanint,0.9"</span><span class="p">,</span>     <span class="c1"># bad timestamp</span>
+    <span class="s2">"RDR-1,1000,notafloat"</span><span class="p">,</span>   <span class="c1"># bad confidence</span>
+    <span class="s2">"RDR-1,1000,1.5"</span><span class="p">,</span>         <span class="c1"># out of range</span>
+<span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_bad_lines</span><span class="p">(</span><span class="n">bad</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">parse_line</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+</code></pre></div>
+
+<p>That is six tests from one function, each named by its input so a failure tells
+you which case broke.</p>
+<h4 id="the-check-that-matters-most">The check that matters most</h4>
+<p><strong>Break your code on purpose and confirm a test goes red.</strong> A test that passes
+against broken code is worse than no test, because it buys false confidence. Do
+this now: change <code>!= 3</code> to <code>!= 4</code> in <code>parse_line</code> and run <code>pytest</code>. Watch it
+fail. Put it back.</p>
+<p><strong>Do now, fifteen minutes.</strong> Write tests for <code>summarise</code>: that it averages
+correctly, and that summarising nothing gives an empty result. Then one for your
+ranking that proves ties break by sensor id. That last one matters because a
+non-deterministic result is untestable, and making output deterministic is a
+design decision you should be able to defend.</p>
+<h3 id="235-to-255-dataclasses">2:35 to 2:55 — Dataclasses</h3>
+<p>Right now a detection is three loose variables, or a list of strings. That is
+fragile: nothing stops a typo, and nothing validates anything.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Detection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One reading from one sensor."""</span>
+
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+</code></pre></div>
+
+<p>That is the whole definition. You now get:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">=</span> <span class="n">Detection</span><span class="p">(</span><span class="s2">"RDR-1"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span>
+<span class="s1">'RDR-1'</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span>
+<span class="n">Detection</span><span class="p">(</span><span class="n">sensor_id</span><span class="o">=</span><span class="s1">'RDR-1'</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.92</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">d</span> <span class="o">==</span> <span class="n">Detection</span><span class="p">(</span><span class="s2">"RDR-1"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">)</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+<p><code>@dataclass</code> writes the constructor, a readable <code>repr</code>, and value equality from
+the field declarations. <code>frozen=True</code> makes it unchangeable after creation,
+which means it is safe to pass anywhere without worrying that someone modifies
+it behind your back.</p>
+<p><strong>Why this beats a dict.</strong> <code>d.sensor_id</code> is checked; <code>d["sensr_id"]</code> in a dict
+silently gives you a <code>KeyError</code> at best and a wrong answer at worst. The
+<code>repr</code> means a failing test shows you the actual object instead of
+<code>&lt;object at 0x7f3a...&gt;</code>. And equality makes tests read directly:
+<code>assert d == Detection("RDR-1", 1000, 0.92)</code>.</p>
+<p><strong>Use a dataclass for things that are mostly data</strong>, which is most of what flows
+through a system like this. Write a full class only when behaviour dominates.</p>
+<p><strong>Do now, ten minutes.</strong> Convert <code>parse_line</code> to return a <code>Detection</code>. Update
+your tests to compare whole objects. Run everything.</p>
+<h3 id="255-to-300-rest">2:55 to 3:00 — Rest</h3>
+<p>Five minutes. You are through the hard part.</p>
+<hr />
+<h2 id="hour-4-shippable">Hour 4: shippable</h2>
+<h3 id="300-to-320-the-idiom-pack">3:00 to 3:20 — The idiom pack</h3>
+<p>These twelve lines are most of the difference between code that reads as
+Python and code that reads as C written in Python. Type each one, and use at
+least three in your program.</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Sort by a computed key. The workhorse.</span>
+<span class="n">sensors</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span><span class="p">)</span>
+
+<span class="c1"># 2. Sort by two things: first ascending, second descending.</span>
+<span class="n">sensors</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">))</span>
+
+<span class="c1"># 3. Pick the extreme without sorting.</span>
+<span class="n">worst</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">sensors</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span><span class="p">)</span>
+
+<span class="c1"># 4. Build a new list from an old one: a comprehension.</span>
+<span class="n">ids</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span><span class="p">]</span>
+
+<span class="c1"># 5. Filter while building.</span>
+<span class="n">poor</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">sensors</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">]</span>
+
+<span class="c1"># 6. Count things, without the .get dance.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">Counter</span>
+<span class="n">Counter</span><span class="p">(</span><span class="n">sensor_ids</span><span class="p">)</span><span class="o">.</span><span class="n">most_common</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># 7. Group things, without the "is the key there yet" check.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="n">groups</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">:</span>
+    <span class="n">groups</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<span class="c1"># 8. Index and item together.</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sensor</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sensors</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="n">sensor</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># 9. Walk two sequences at once.</span>
+<span class="k">for</span> <span class="n">sensor</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sensors</span><span class="p">,</span> <span class="n">counts</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="c1"># 10. Unpack a tuple into names.</span>
+<span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+<span class="c1"># 11. Deduplicate.</span>
+<span class="n">unique</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">sensor_ids</span><span class="p">)</span>
+
+<span class="c1"># 12. Test membership fast. A set, not a list.</span>
+<span class="k">if</span> <span class="n">sensor_id</span> <span class="ow">in</span> <span class="n">known_sensors</span><span class="p">:</span>      <span class="c1"># set: instant. list: scans the whole thing.</span>
+    <span class="o">...</span>
+</code></pre></div>
+
+<p>Number twelve deserves a note. Replacing an <code>in list</code> check inside a loop with
+an <code>in set</code> check turns a slow program into a fast one, and it is the single
+most common real performance fix in Python. Interviewers notice when you know
+it.</p>
+<p>Number one deserves a note too. <code>key=lambda s: ...</code> means "sort by this
+computed value." The two-element tuple in number two sorts by the first, then
+breaks ties with the second. Those two lines answer a large share of "sort by X
+then Y" problems.</p>
+<h3 id="320-to-345-a-real-command-line-tool">3:20 to 3:45 — A real command-line tool</h3>
+<p>A script with a hard-coded filename is a script. A tool takes arguments.</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"sensorstat"</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Summarise sensor detection logs."</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"CSV file of detections"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--min-confidence"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">"only report sensors at or above this average"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--top"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"only show this many sensors"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-v"</span><span class="p">,</span> <span class="s2">"--verbose"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">"log each skipped line"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"no such file: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">summarise</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">format_report</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">min_confidence</span><span class="p">),</span> <span class="n">skipped</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Four new things, each earning its place.</p>
+<p><strong><code>argparse</code></strong> builds a command-line interface from declarations. You get
+<code>--help</code> for free, type conversion for free, and errors on bad input for free.</p>
+<div class="codehilite"><pre><span></span><code>python3<span class="w"> </span>sensorstat.py<span class="w"> </span>--help
+python3<span class="w"> </span>sensorstat.py<span class="w"> </span>detections.csv<span class="w"> </span>--min-confidence<span class="w"> </span><span class="m">0</span>.5<span class="w"> </span>--top<span class="w"> </span><span class="m">2</span>
+</code></pre></div>
+
+<p><strong><code>logging</code> instead of <code>print</code>.</strong> <code>print</code> is for the answer, which is what the
+user asked for. <code>logging</code> is for everything else: diagnostics, warnings,
+failures. Levels mean you can turn detail up when investigating and down in
+normal use, without editing code. Note <code>log.debug("skipping %r: %s", line, err)</code>
+uses <code>%s</code> placeholders rather than an f-string, so the formatting work is
+skipped entirely when the level is off.</p>
+<p><strong><code>if __name__ == "__main__":</code></strong> means "only run this when executed as a
+program, not when imported." Without it, your test file importing the module
+would run the whole tool as a side effect. <strong>This line is what makes your code
+both a runnable program and an importable, testable library</strong>, which is exactly
+why every one of your functions was testable in hour three.</p>
+<p><strong>Exit codes.</strong> <code>return 0</code> for success, non-zero for failure, handed to
+<code>sys.exit</code>. That is how a shell script or a CI pipeline knows whether your tool
+worked. Scripts that always exit zero cannot be automated around.</p>
+<p><strong>Do now, fifteen minutes.</strong> Wire your program up this way. Run it with
+<code>--help</code>, with a real file, with a missing file, and check the exit code with
+<code>echo $?</code>.</p>
+<h3 id="345-to-355-debugging">3:45 to 3:55 — Debugging</h3>
+<p>Three tools, in the order you should reach for them.</p>
+<p><strong>Read the traceback.</strong> Bottom-up. You have done this three times already.</p>
+<p><strong>Print the values, with names:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sensor_id</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="n">confidence</span><span class="si">=}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The <code>=</code> inside the braces prints both the expression and its value. It costs
+nothing and it answers most questions.</p>
+<p><strong>Stop the program and look around:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nb">breakpoint</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Execution halts there and gives you a prompt inside the running program. <code>p
+expr</code> prints an expression, <code>n</code> runs the next line, <code>c</code> continues, <code>q</code> quits.
+Ten minutes learning those four commands saves many hours of adding and
+removing print statements.</p>
+<p><strong>Do now:</strong> put a <code>breakpoint()</code> inside your parsing loop, run the program, and
+print <code>line</code> and <code>parts</code> at the prompt. Then <code>c</code> a few times to watch it move
+through the file. Remove it.</p>
+<h3 id="355-to-400-self-test">3:55 to 4:00 — Self-test</h3>
+<p>Close everything. On a blank page, from memory, write:</p>
+<ol>
+<li>Open a file and loop over its lines, skipping blanks and comments.</li>
+<li>Split a line and convert a field to a float inside a <code>try</code>, counting
+   failures.</li>
+<li>Add to a dict using <code>.get</code> with a default.</li>
+<li>Sort a list of objects by a computed value, descending.</li>
+<li>A function with a docstring and a default argument.</li>
+<li>A test that asserts a function raises <code>ValueError</code> on bad input.</li>
+</ol>
+<p>If you can write all six unaided, you have got what the four hours were for.
+Anything you cannot write, retype that section twice tomorrow.</p>
+<hr />
+<h2 id="the-finished-program">The finished program</h2>
+<p>This is where you should have arrived. Every line of it has been run and every
+test passes.</p>
+<div class="codehilite"><pre><span></span><code><span class="sd">"""Summarise sensor detection logs.</span>
+
+<span class="sd">Usage:</span>
+<span class="sd">    python3 sensorstat.py detections.csv</span>
+<span class="sd">    python3 sensorstat.py detections.csv --min-confidence 0.5 --top 2</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"sensorstat"</span><span class="p">)</span>
+
+
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Detection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""One reading from one sensor."""</span>
+
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">timestamp</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span>
+
+
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SensorStats</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""What we know about one sensor after reading the whole file."""</span>
+
+    <span class="n">sensor_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">count</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">total_confidence</span><span class="p">:</span> <span class="nb">float</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">average_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_confidence</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Detection</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Turn one CSV line into a Detection.</span>
+
+<span class="sd">    Raises ValueError if the line is not a valid record.</span>
+<span class="sd">    """</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">","</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"expected 3 fields, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">sensor_id</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sensor_id</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"empty sensor id"</span><span class="p">)</span>
+
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">confidence</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">parts</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="mf">0.0</span> <span class="o">&lt;=</span> <span class="n">confidence</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"confidence out of range: </span><span class="si">{</span><span class="n">confidence</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Detection</span><span class="p">(</span><span class="n">sensor_id</span><span class="p">,</span> <span class="n">timestamp</span><span class="p">,</span> <span class="n">confidence</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">load</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="n">Detection</span><span class="p">],</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Parse every line, skipping blanks, comments and bad records.</span>
+
+<span class="sd">    Returns the good detections and how many lines were skipped as bad. One</span>
+<span class="sd">    corrupt record must not stop the run, but silence about it is worse than</span>
+<span class="sd">    the corruption, so we count.</span>
+<span class="sd">    """</span>
+    <span class="n">detections</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">skipped</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"#"</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">detections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">parse_line</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"skipping </span><span class="si">%r</span><span class="s2">: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">err</span><span class="p">)</span>
+            <span class="n">skipped</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">summarise</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SensorStats</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Aggregate detections per sensor."""</span>
+    <span class="n">stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SensorStats</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stats</span><span class="p">:</span>
+            <span class="n">stats</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">SensorStats</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">stats</span><span class="p">[</span><span class="n">d</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">]</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">total_confidence</span> <span class="o">+=</span> <span class="n">d</span><span class="o">.</span><span class="n">confidence</span>
+
+    <span class="k">return</span> <span class="n">stats</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rank</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">min_confidence</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">SensorStats</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Sensors worst-first by average confidence, filtered and limited."""</span>
+    <span class="n">eligible</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">stats</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span><span class="p">]</span>
+    <span class="n">eligible</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="p">(</span><span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span><span class="p">,</span> <span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">eligible</span><span class="p">[:</span><span class="n">top</span><span class="p">]</span> <span class="k">if</span> <span class="n">top</span> <span class="k">else</span> <span class="n">eligible</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">format_report</span><span class="p">(</span><span class="n">ranked</span><span class="p">,</span> <span class="n">skipped</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Build the printable report. Returns a string so it can be tested."""</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">ranked</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"no sensors matched"</span>
+
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'sensor'</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'count'</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'avg'</span><span class="si">:</span><span class="s2">&gt;8</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">26</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">:</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span><span class="si">:</span><span class="s2">&lt;10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">count</span><span class="si">:</span><span class="s2">&gt;6</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="o">.</span><span class="n">average_confidence</span><span class="si">:</span><span class="s2">&gt;8.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+    <span class="n">plural</span> <span class="o">=</span> <span class="s2">""</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ranked</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="s2">"s"</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">ranked</span><span class="p">)</span><span class="si">}</span><span class="s2"> sensor</span><span class="si">{</span><span class="n">plural</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">skipped</span><span class="si">}</span><span class="s2"> bad lines skipped"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">"Summarise sensor detection logs."</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"path"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"CSV file of detections"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--min-confidence"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">"only report sensors at or above this average"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"--top"</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">"only show this many sensors"</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">"-v"</span><span class="p">,</span> <span class="s2">"--verbose"</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">"store_true"</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s2">"log each skipped line"</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span> <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span> <span class="k">else</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">"</span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">"</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">"no such file: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span>
+
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">summarise</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">format_report</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">top</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">min_confidence</span><span class="p">),</span> <span class="n">skipped</span><span class="p">))</span>
+    <span class="k">return</span> <span class="mi">0</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Two details in there worth naming because they are deliberate.</p>
+<p><strong><code>format_report</code> returns a string rather than printing.</strong> That one decision is
+what makes the report testable. A function that prints can only be tested by
+capturing stdout, which is awkward; a function that returns text can be
+asserted on directly. <strong>Push side effects to the edges and keep the middle
+pure</strong> is a design rule you can state in an interview, and this is it in two
+lines.</p>
+<p><strong><code>@property</code> on <code>average_confidence</code></strong> lets you write <code>s.average_confidence</code>
+rather than <code>s.average_confidence()</code>. It is a computed value that reads like a
+stored one. Use it for cheap derived values.</p>
+<h2 id="the-test-suite">The test suite</h2>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensorstat</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">Detection</span><span class="p">,</span> <span class="n">SensorStats</span><span class="p">,</span> <span class="n">format_report</span><span class="p">,</span> <span class="n">load</span><span class="p">,</span> <span class="n">parse_line</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">summarise</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_parses_a_good_line</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">parse_line</span><span class="p">(</span><span class="s2">"RDR-1,1000,0.92"</span><span class="p">)</span> <span class="o">==</span> <span class="n">Detection</span><span class="p">(</span><span class="s2">"RDR-1"</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">0.92</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_tolerates_surrounding_whitespace</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">parse_line</span><span class="p">(</span><span class="s2">" RDR-1 ,1000,0.92"</span><span class="p">)</span><span class="o">.</span><span class="n">sensor_id</span> <span class="o">==</span> <span class="s2">"RDR-1"</span>
+
+
+<span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">parametrize</span><span class="p">(</span><span class="s2">"bad"</span><span class="p">,</span> <span class="p">[</span>
+    <span class="s2">"RDR-1,1000"</span><span class="p">,</span>             <span class="c1"># too few fields</span>
+    <span class="s2">"RDR-1,1000,0.9,extra"</span><span class="p">,</span>   <span class="c1"># too many</span>
+    <span class="s2">",1000,0.9"</span><span class="p">,</span>              <span class="c1"># empty sensor id</span>
+    <span class="s2">"RDR-1,notanint,0.9"</span><span class="p">,</span>     <span class="c1"># bad timestamp</span>
+    <span class="s2">"RDR-1,1000,notafloat"</span><span class="p">,</span>   <span class="c1"># bad confidence</span>
+    <span class="s2">"RDR-1,1000,1.5"</span><span class="p">,</span>         <span class="c1"># out of range</span>
+    <span class="s2">"RDR-1,1000,-0.1"</span><span class="p">,</span>        <span class="c1"># out of range</span>
+<span class="p">])</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rejects_bad_lines</span><span class="p">(</span><span class="n">bad</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">parse_line</span><span class="p">(</span><span class="n">bad</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_load_skips_blanks_and_comments_without_counting_them</span><span class="p">():</span>
+    <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">([</span><span class="s2">""</span><span class="p">,</span> <span class="s2">"   "</span><span class="p">,</span> <span class="s2">"# header"</span><span class="p">,</span> <span class="s2">"RDR-1,1,0.5"</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+    <span class="k">assert</span> <span class="n">skipped</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"comments are not errors"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_load_counts_bad_lines_and_keeps_going</span><span class="p">():</span>
+    <span class="n">detections</span><span class="p">,</span> <span class="n">skipped</span> <span class="o">=</span> <span class="n">load</span><span class="p">([</span><span class="s2">"RDR-1,1,0.5"</span><span class="p">,</span> <span class="s2">"GARBAGE"</span><span class="p">,</span> <span class="s2">"RDR-2,2,0.6"</span><span class="p">])</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">detections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">skipped</span> <span class="o">==</span> <span class="mi">1</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_load_handles_empty_input</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">load</span><span class="p">([])</span> <span class="o">==</span> <span class="p">([],</span> <span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_summarise_averages_per_sensor</span><span class="p">():</span>
+    <span class="n">stats</span> <span class="o">=</span> <span class="n">summarise</span><span class="p">([</span>
+        <span class="n">Detection</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="n">Detection</span><span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span> <span class="n">Detection</span><span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span>
+    <span class="p">])</span>
+    <span class="k">assert</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">stats</span><span class="p">[</span><span class="s2">"A"</span><span class="p">]</span><span class="o">.</span><span class="n">average_confidence</span> <span class="o">==</span> <span class="n">pytest</span><span class="o">.</span><span class="n">approx</span><span class="p">(</span><span class="mf">0.3</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_summarise_of_nothing_is_empty</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">summarise</span><span class="p">([])</span> <span class="o">==</span> <span class="p">{}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_stats</span><span class="p">(</span><span class="o">*</span><span class="n">pairs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">sid</span><span class="p">:</span> <span class="n">SensorStats</span><span class="p">(</span><span class="n">sid</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">conf</span><span class="p">)</span> <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rank_puts_the_worst_first</span><span class="p">():</span>
+    <span class="n">ranked</span> <span class="o">=</span> <span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="s2">"C"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)))</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">,</span> <span class="s2">"A"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rank_breaks_ties_by_sensor_id_for_determinism</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"B"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="p">(</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)))]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">,</span> <span class="s2">"B"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rank_applies_the_minimum</span><span class="p">():</span>
+    <span class="n">ranked</span> <span class="o">=</span> <span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)),</span> <span class="n">min_confidence</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"A"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_rank_limits_to_top_n</span><span class="p">():</span>
+    <span class="n">ranked</span> <span class="o">=</span> <span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">),</span> <span class="p">(</span><span class="s2">"B"</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">),</span> <span class="p">(</span><span class="s2">"C"</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)),</span> <span class="n">top</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">sensor_id</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ranked</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="s2">"B"</span><span class="p">,</span> <span class="s2">"C"</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_report_says_so_when_nothing_matched</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="n">format_report</span><span class="p">([],</span> <span class="n">skipped</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"no sensors matched"</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_report_uses_the_singular_for_one_sensor</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="s2">"1 sensor,"</span> <span class="ow">in</span> <span class="n">format_report</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))),</span> <span class="n">skipped</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">test_report_mentions_the_skipped_count</span><span class="p">():</span>
+    <span class="k">assert</span> <span class="s2">"7 bad lines skipped"</span> <span class="ow">in</span> <span class="n">format_report</span><span class="p">(</span><span class="n">rank</span><span class="p">(</span><span class="n">_stats</span><span class="p">((</span><span class="s2">"A"</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">))),</span> <span class="n">skipped</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>pytest<span class="w"> </span>-q
+.....................<span class="w">                                        </span><span class="o">[</span><span class="m">100</span>%<span class="o">]</span>
+<span class="m">21</span><span class="w"> </span>passed<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="m">0</span>.03s
+</code></pre></div>
+
+<p><strong>Twenty-one tests from six functions and two dataclasses.</strong> That ratio is
+normal and healthy: most of the tests are cheap edge cases, and the cheap edge
+cases are the ones that catch real defects.</p>
+<h2 id="what-you-can-now-honestly-claim">What you can now honestly claim</h2>
+<p>Be precise about this, because overclaiming in an interview is fatal and
+underclaiming costs you the job.</p>
+<p><strong>You can say:</strong> you write Python, you parse and aggregate real data, you handle
+malformed input deliberately, you structure code into tested functions, you use
+pytest including parametrised tests and exception tests, you build command-line
+tools with argparse and logging, and you understand why testable code is
+structured the way it is.</p>
+<p><strong>Do not say:</strong> that you are experienced. If asked directly how long you have
+been writing Python, answer honestly and immediately pivot to what you built:
+<em>"Not long, and I have been deliberate about it. I built a log ingest tool with
+a proper test suite, and what I took from it is that the design decisions that
+make code testable are the same ones that make it maintainable."</em> That answer is
+respected. A bluffed one unravels on the second follow-up.</p>
+<h2 id="if-you-get-another-four-hours">If you get another four hours</h2>
+<p>In this order, because this is the order of return:</p>
+<ol>
+<li><strong><a href="python.html">Lesson 5</a>, sections 3 and 12.</strong> Names and objects, and
+   classes. The two things the sprint skipped the theory of.</li>
+<li><strong>The <a href="../practice/README.html">practice repo</a>.</strong> Solve the problems in
+   <code>exercises.py</code> and check yourself with <code>PREP_TARGET=exercises pytest -q</code>.</li>
+<li><strong><a href="python-practice.html">Lesson 6</a>, section 7.</strong> Testing in depth: fixtures,
+   fakes versus mocks, injecting the clock.</li>
+<li><strong><a href="python-practice.html">Lesson 6</a>, section 2.</strong> Generators. The idea that
+   lets you process a file bigger than memory.</li>
+<li><strong>Rewrite <code>sensorstat</code> from an empty file</strong>, without looking. That is worth
+   more than reading anything.</li>
+</ol>
+<p>Number five is the real answer. Building the same thing a second time from
+nothing is where the knowledge moves from recognised to owned.</p>
+<nav class="pager"><a class="prev" href="../lessons/interview-map.html">&larr; 3. Interview Map &amp; 14-Day Plan</a><a class="next" href="../lessons/python.html">5. Python Foundations &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
