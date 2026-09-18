@@ -32,7 +32,9 @@ to follow up twice on each.
 ### Recruiter screen
 
 Have crisp answers to: are you a US citizen; what is your current clearance
-status; are you genuinely willing to relocate to the UAE for two to three years;
+status; whether you can take a two to three year assignment in the UAE, and if
+you are already based overseas, say so immediately because it removes the
+biggest risk they are screening for;
 what is your compensation expectation; when could you start. Do not improvise
 the comp number. Decide it beforehand and give a range with a rationale
 (see [lesson 24](behavioral.html)).

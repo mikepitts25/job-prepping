@@ -19,8 +19,11 @@ holding one is not a disqualifier. Say plainly that you are eligible and
 willing to be sponsored.
 
 **3. Are you genuinely willing to relocate to the UAE for two to three years?**
-Yes, plus one specific sentence about why and one about having discussed it with
-family. See [lesson 24](behavioral.html).
+Yes, plus one specific sentence about why. If you are already living overseas,
+lead with that: it removes the relocation risk they are actually screening for.
+Then ask immediately whether any part of onboarding or clearance processing
+requires you to be in the United States. See [lesson 24](behavioral.html)
+section 6, which is written for the already-overseas case.
 
 **4. Why are you looking to leave your current role?**
 Toward something, never away from someone. Never criticize a current employer.
