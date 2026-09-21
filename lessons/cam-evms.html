@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1. Control Account Manager: EVMS from Zero &middot; Prep Library</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">Prep Library</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><p class="navsection">PMP certification</p><ul><li><a href="../lessons/pmp-overview.html">P1. PMP: What You Are Signing Up For</a></li><li><a href="../lessons/pmp-eco.html">P2. The 2026 Exam Content Outline</a></li><li><a href="../lessons/pmp-mindset.html">P3. The PMI Mindset</a></li><li><a href="../lessons/pmp-predictive.html">P4. Predictive Mechanics</a></li><li><a href="../lessons/pmp-agile.html">P5. Agile &amp; Hybrid</a></li><li><a href="../lessons/pmp-drills.html">P6. Drill Set</a></li><li><a href="../lessons/pmp-plan.html">P7. Ten-Week Plan &amp; Free Resources</a></li></ul><p class="navsection">CAM / EVMS certification</p><ul><li class="active"><a href="../lessons/cam-evms.html">C1. Control Account Manager: EVMS</a></li><li><a href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill</a></li></ul><p class="navsection">EADGE-T interview prep</p><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="c1-control-account-manager-evms-from-zero">C1. Control Account Manager: EVMS from Zero</h1>
+<p>The Control Account Manager is the person who owns a slice of a defence
+programme's scope, schedule, and budget, and who has to explain it when the
+government asks. It is the single most scrutinised role in earned value
+management, because the CAM is who a DCMA reviewer sits down with.</p>
+<p>"CAM certification" means one of two different things, and it is worth being
+clear about which you want before spending money. Both are covered here; the
+knowledge underneath is the same.</p>
+<h2 id="first-which-credential">First: which credential?</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>What it is</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Employer CAM certification</strong></td>
+<td>Most primes — Lockheed, Boeing, GD, Raytheon — run their own internal CAM certification, because a validated EVMS requires documented CAM training. This is the one most people mean, and it is usually free to employees.</td>
+<td>Internal</td>
+</tr>
+<tr>
+<td><strong>CCAM</strong> (Certified Control Account Manager, from the Earned Value Management Institute)</td>
+<td>A commercial credential: ~40 hours of training plus a CAM notebook build, 60 PDUs on completion. Recognised across the A&amp;D primes.</td>
+<td>~$5,499</td>
+</tr>
+<tr>
+<td><em>Adjacent:</em> <strong>EVP</strong> (AACE Earned Value Professional) or <strong>PSP</strong></td>
+<td>Broader project-controls credentials, not CAM-specific</td>
+<td>Several hundred dollars</td>
+</tr>
+</tbody>
+</table>
+<p>Two practical notes. The employer path is by far the most common and costs
+nothing, so if you land a role at a prime, that is your route — and the material
+below is what it will teach you. The CCAM's price tag is aimed at corporate
+training budgets rather than individuals; it is a poor personal purchase unless
+an employer is paying.</p>
+<p>Either way, <strong>do the free DAU and DOE training first</strong> (listed at the end). It is
+genuinely good, it costs nothing, and it is the same content.</p>
+<h2 id="how-this-relates-to-your-pmp">How this relates to your PMP</h2>
+<p>Substantial overlap, different emphasis:</p>
+<ul>
+<li>Everything in <a href="pmp-predictive.html">P4's earned value section</a> is the
+  foundation. The formulas are identical.</li>
+<li>PMP treats EVM as one technique among many, tested lightly. <strong>EVMS treats it as
+  the entire management system</strong>, with 27 compliance guidelines and government
+  audit behind it.</li>
+<li>PMP asks "what is the EAC". A CAM review asks "why is your CPI 0.87, what is
+  the root cause, what is your corrective action, and why should I believe your
+  EAC".</li>
+</ul>
+<p>Do PMP first. The CAM material sits on top of it comfortably; the reverse is
+harder.</p>
+<h2 id="the-structural-chain">The structural chain</h2>
+<p>This hierarchy is the thing to internalise. Everything else follows from it.</p>
+<div class="codehilite"><pre><span></span><code>Contract / Program
+  └── WBS (work breakdown structure)   ──┐
+        └── Control Account (CA)          │ intersection of
+              ├── Work Package (WP)       │ WBS element and
+              └── Planning Package (PP)  ──┘ OBS element
+                    └── Activities / tasks
+</code></pre></div>
+
+<ul>
+<li><strong>WBS</strong> — the product-oriented decomposition of all contract scope. Same
+  100% rule you learned for PMP. Defence programmes use MIL-STD-881 as the
+  standard WBS template.</li>
+<li><strong>OBS</strong> — organisation breakdown structure. Who performs the work.</li>
+<li><strong>Control account</strong> — where the WBS and OBS intersect. <strong>This is the CAM's
+  unit of ownership, and the point at which cost and schedule performance is
+  measured and reported.</strong> One CAM per control account.</li>
+<li><strong>Work package</strong> — near-term, detail-planned work inside a control account,
+  with a specific scope, budget, schedule, and earned value method.</li>
+<li><strong>Planning package</strong> — far-term work inside the control account, budgeted but
+  not yet detail-planned. Converted to work packages through <strong>rolling wave
+  planning</strong> before the work starts.</li>
+<li><strong>RAM</strong> — responsibility assignment matrix. The grid of WBS against OBS,
+  showing who owns which control account.</li>
+</ul>
+<p>Two facts a reviewer will check: <strong>every control account has exactly one CAM</strong>,
+and <strong>the sum of control account budgets, plus undistributed budget and
+management reserve, reconciles to the contract budget base.</strong></p>
+<h2 id="the-budget-stack">The budget stack</h2>
+<p>Learn this vocabulary precisely — the exam-and-audit questions live in the
+distinctions.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NCC</strong> — negotiated contract cost</td>
+<td>Contract price less profit or fee</td>
+</tr>
+<tr>
+<td><strong>AUW</strong> — authorised unpriced work</td>
+<td>Work directed but not yet negotiated</td>
+</tr>
+<tr>
+<td><strong>CBB</strong> — contract budget base</td>
+<td>NCC + AUW. Everything authorised.</td>
+</tr>
+<tr>
+<td><strong>MR</strong> — management reserve</td>
+<td>Budget held by the programme manager for in-scope unknowns. <strong>Outside the PMB, inside the CBB.</strong> Never used to cover an overrun.</td>
+</tr>
+<tr>
+<td><strong>UB</strong> — undistributed budget</td>
+<td>Authorised budget not yet allocated to control accounts. Temporary by nature.</td>
+</tr>
+<tr>
+<td><strong>PMB</strong> — performance measurement baseline</td>
+<td>CBB − MR. The time-phased plan against which performance is measured.</td>
+</tr>
+<tr>
+<td><strong>TAB</strong> — total allocated budget</td>
+<td>Sum of all budgets. Equals CBB normally; <strong>exceeds CBB in an over-target baseline.</strong></td>
+</tr>
+</tbody>
+</table>
+<p><code>CBB = PMB + MR</code> and <code>PMB = distributed budget (control accounts) + UB</code>.</p>
+<p><strong>Management reserve is not a contingency slush fund and it is not schedule
+margin.</strong> It is applied to in-scope work that was not anticipated, it is
+documented when applied, and applying it to paper over a cost variance is exactly
+the finding a surveillance review looks for.</p>
+<h2 id="the-measurements-again">The measurements, again</h2>
+<p>Same three as PMP, with the defence names:</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Also called</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PV</strong></td>
+<td>BCWS — budgeted cost of work scheduled</td>
+<td>Budget for the work planned by now</td>
+</tr>
+<tr>
+<td><strong>EV</strong></td>
+<td>BCWP — budgeted cost of work performed</td>
+<td>Budget for the work actually done</td>
+</tr>
+<tr>
+<td><strong>AC</strong></td>
+<td>ACWP — actual cost of work performed</td>
+<td>What was actually spent</td>
+</tr>
+</tbody>
+</table>
+<p>The BCWS/BCWP/ACWP names are still everywhere in defence documentation and in
+older tools. Know both sets; the acronyms make the meaning clearer, if anything —
+every one of them is "cost of work" qualified by <em>scheduled</em>, <em>performed</em>, or
+<em>actual</em>.</p>
+<h3 id="the-formula-set">The formula set</h3>
+<table>
+<thead>
+<tr>
+<th>Formula</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CV = EV − AC</code></td>
+<td>Cost variance. Negative = overrun.</td>
+</tr>
+<tr>
+<td><code>SV = EV − PV</code></td>
+<td>Schedule variance, in dollars.</td>
+</tr>
+<tr>
+<td><code>CPI = EV / AC</code></td>
+<td>Cost efficiency.</td>
+</tr>
+<tr>
+<td><code>SPI = EV / PV</code></td>
+<td>Schedule efficiency.</td>
+</tr>
+<tr>
+<td><code>CV% = CV / EV</code></td>
+<td>Percent cost variance — what variance thresholds are set on.</td>
+</tr>
+<tr>
+<td><code>SV% = SV / PV</code></td>
+<td>Percent schedule variance.</td>
+</tr>
+<tr>
+<td><code>EAC = AC + ETC</code></td>
+<td>The general form. Everything else is a way of estimating ETC.</td>
+</tr>
+<tr>
+<td><code>EAC = BAC / CPI</code></td>
+<td>Statistical / independent EAC. The reviewer's sanity check.</td>
+</tr>
+<tr>
+<td><code>EAC = AC + (BAC − EV) / (CPI × SPI)</code></td>
+<td>Composite, when schedule pressure is driving cost.</td>
+</tr>
+<tr>
+<td><code>VAC = BAC − EAC</code></td>
+<td>Variance at completion.</td>
+</tr>
+<tr>
+<td><code>TCPI = (BAC − EV) / (BAC − AC)</code></td>
+<td>Efficiency required to finish at BAC.</td>
+</tr>
+<tr>
+<td><code>%complete = EV / BAC</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>%spent = AC / BAC</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Schedule variance in dollars is not time.</strong> SV tells you the budget value of
+the work you are behind on, not how many weeks late you are. It also converges to
+zero at completion, regardless of how late you finished — which is precisely why
+the integrated master schedule, and not SV, is the authority on schedule status.</p>
+<h2 id="earned-value-methods">Earned value methods</h2>
+<p>Each work package is assigned an EV method up front. Picking the wrong one is a
+common finding.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How EV is taken</th>
+<th>Use for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0/100</strong></td>
+<td>Nothing until complete, then all</td>
+<td>Short work packages (one accounting period)</td>
+</tr>
+<tr>
+<td><strong>50/50</strong></td>
+<td>Half at start, half at completion</td>
+<td>Short packages spanning two periods</td>
+</tr>
+<tr>
+<td><strong>Milestone / weighted milestone</strong></td>
+<td>At defined milestones with pre-assigned budget values</td>
+<td>Longer discrete work with objective checkpoints</td>
+</tr>
+<tr>
+<td><strong>Percent complete</strong></td>
+<td>CAM's assessment each period</td>
+<td>Discrete work without natural milestones. The most subjective, so the most scrutinised.</td>
+</tr>
+<tr>
+<td><strong>Units complete</strong></td>
+<td>Physical count × unit budget</td>
+<td>Repetitive production</td>
+</tr>
+<tr>
+<td><strong>Apportioned effort</strong></td>
+<td>Proportional to a related discrete base</td>
+<td>Work that tracks another task, e.g. inspection against manufacturing</td>
+</tr>
+<tr>
+<td><strong>LOE — level of effort</strong></td>
+<td>EV = PV automatically, by passage of time</td>
+<td>Sustaining, management, support. <strong>Never generates a schedule variance.</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>LOE is the one to be careful about.</strong> Because EV always equals PV, LOE work can
+never show schedule variance, so over-classifying discrete work as LOE hides
+problems. Reviewers check the LOE percentage of a control account and ask why.
+Keep it low, keep it genuinely non-discrete.</p>
+<p>Prefer <strong>objective, discrete</strong> methods wherever the work allows. "We use percent
+complete for everything" is not a defensible answer.</p>
+<h2 id="the-eia-748-guidelines">The EIA-748 guidelines</h2>
+<p>EIA-748 is the standard that defines what an EVMS must do. <strong>Revision E reduced
+the guideline count from 32 to 27</strong>, reorganised for clarity, keeping the same
+five process categories:</p>
+<table>
+<thead>
+<tr>
+<th>Process category</th>
+<th>Roughly covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Organization</strong></td>
+<td>Define the work with a WBS, define the organisation with an OBS, integrate them into control accounts, assign responsibility, integrate the subsystems</td>
+</tr>
+<tr>
+<td><strong>Planning, Scheduling and Budgeting</strong></td>
+<td>Schedule the work, set measurable milestones, budget it, establish the PMB, hold MR and UB identifiably, reconcile to the CBB</td>
+</tr>
+<tr>
+<td><strong>Accounting Considerations</strong></td>
+<td>Record direct costs consistently with budgets, summarise them through the WBS and OBS, track material and indirects properly</td>
+</tr>
+<tr>
+<td><strong>Analysis and Management Reports</strong></td>
+<td>Calculate variances monthly at the control account level, explain significant ones, sum them up the structure, maintain EACs, act on the data</td>
+</tr>
+<tr>
+<td><strong>Revisions and Data Maintenance</strong></td>
+<td>Incorporate authorised changes promptly, control retroactive changes, maintain baseline integrity, document over-target baselines</td>
+</tr>
+</tbody>
+</table>
+<p>Revision E's notable changes: the previous Guideline 27 was split to separate
+control account EACs from programme-level EACs, and the Revisions category was
+restructured to distinguish three change types cleanly — <strong>customer-directed</strong>,
+<strong>internal replanning</strong>, and <strong>over-target baseline / over-target schedule</strong>.</p>
+<p>The <strong>NDIA IPMD Intent Guide</strong> is the document that explains, for each guideline,
+what it is for, what attributes demonstrate it, and what objective evidence
+satisfies it. It is free and it is what compliance reviewers work from. Linked at
+the end.</p>
+<h3 id="where-the-guidelines-land-on-you-as-a-cam">Where the guidelines land on you as a CAM</h3>
+<p>You do not implement the system. You <em>comply</em> with it, and roughly ten of the 27
+touch your daily work: owning your control account's scope and budget, keeping
+your schedule logic valid, taking EV honestly and on the agreed method,
+explaining variances above threshold with real root cause, maintaining a
+defensible EAC, and processing changes through the proper route rather than by
+adjusting history.</p>
+<h2 id="baseline-changes-the-rules-that-get-people-fired">Baseline changes — the rules that get people fired</h2>
+<table>
+<thead>
+<tr>
+<th>Allowed</th>
+<th>Not allowed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customer-directed changes, incorporated promptly</td>
+<td>Changing budget or schedule for work already performed <strong>to eliminate a variance</strong></td>
+</tr>
+<tr>
+<td>Internal replanning of <strong>future</strong> work</td>
+<td>Moving budget between control accounts without documented authorisation</td>
+</tr>
+<tr>
+<td>Applying MR to in-scope unanticipated work, documented</td>
+<td>Using MR to offset an overrun</td>
+</tr>
+<tr>
+<td>Rolling wave conversion of planning packages to work packages</td>
+<td>Retroactive adjustment of EV or actuals outside a documented correction</td>
+</tr>
+<tr>
+<td>A formal over-target baseline, with customer approval</td>
+<td>Informally "rebaselining" a control account that is running badly</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Retroactive change is the cardinal sin.</strong> If the baseline is genuinely
+unachievable, the honest instrument is an <strong>over-target baseline</strong> (OTB) or
+<strong>over-target schedule</strong> (OTS): a formal, customer-approved reset where TAB
+deliberately exceeds CBB. It is a serious step and it is visible, which is the
+point.</p>
+<h2 id="the-ibr">The IBR</h2>
+<p>The <strong>Integrated Baseline Review</strong> is a joint government-contractor review,
+usually within about six months of contract award or a major change. It is not a
+compliance audit of the system — it asks whether the <em>baseline is realistic</em>:
+does the PMB capture all the scope, is the schedule executable, are the resources
+adequate, and are the risks understood?</p>
+<p><strong>The IBR is conducted largely through CAM interviews.</strong> You sit with a
+government counterpart and walk through your control account. That interview is
+what <a href="cam-drills.html">C2</a> prepares you for.</p>
+<p>Distinguish it from:</p>
+<ul>
+<li><strong>EVMS validation / compliance review</strong> — does the <em>system</em> meet EIA-748? Done
+  by DCMA when the contract crosses the threshold.</li>
+<li><strong>Surveillance</strong> — ongoing checking that the validated system is still being
+  used properly.</li>
+</ul>
+<h2 id="when-evms-applies">When EVMS applies</h2>
+<p>DoD thresholds moved recently. Under the FY25 NDAA §823 and DFARS class
+deviation 2026-O0011, effective 1 February 2026:</p>
+<table>
+<thead>
+<tr>
+<th>Contract value</th>
+<th>Requirement</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Below $20M</td>
+<td>EVM optional, applied on a risk basis</td>
+</tr>
+<tr>
+<td>$20M–$50M</td>
+<td>EVMS compliant with EIA-748 required for reporting</td>
+</tr>
+<tr>
+<td><strong>$50M and above</strong></td>
+<td>EIA-748 compliance required; DCMA determines compliance</td>
+</tr>
+<tr>
+<td><strong>$100M and above</strong></td>
+<td>Subject to EVMS compliance review / validation</td>
+</tr>
+</tbody>
+</table>
+<p>These numbers changed in 2026 and may change again — the trend has been upward.
+Verify against current DFARS before relying on them. The reporting deliverable is
+the <strong>IPMDAR</strong> (Integrated Program Management Data and Analysis Report), which
+replaced the older IPMR and CPR formats.</p>
+<h2 id="the-cam-notebook">The CAM notebook</h2>
+<p>The artefact you maintain and the thing you bring to an interview. Typical
+contents:</p>
+<ol>
+<li>Control account scope — the statement of work extract, and the WBS dictionary
+   entry</li>
+<li>Work authorisation document, signed</li>
+<li>The responsibility assignment matrix showing your control account</li>
+<li>Time-phased budget, by element of cost, reconciling to the PMB</li>
+<li>The integrated master schedule extract for your work, with logic and float</li>
+<li>EV methods assigned per work package, with justification</li>
+<li>Current period and cumulative performance data</li>
+<li>Variance analysis reports for anything over threshold</li>
+<li>EAC, with the basis of estimate</li>
+<li>Change history — every baseline change, with its authorisation</li>
+<li>Risks and opportunities affecting the control account</li>
+</ol>
+<p>If you can produce each of these on request and explain it without hedging, you
+will pass a CAM interview. If you cannot, no amount of EVM theory will save the
+conversation.</p>
+<h2 id="free-official-training-ranked">Free official training, ranked</h2>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>What it gives you</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://icatalog.dau.edu/mobile/CourseDetails.aspx?id=1907">DAU EVM 101 — Fundamentals of Earned Value Management</a></td>
+<td>Free online DoD course. EVM policy, the PMB, measuring performance, and using EVM data for risk. Start here.</td>
+</tr>
+<tr>
+<td><a href="https://www.dau.edu/">DAU EVM 0020 — Performing Variance Analysis</a></td>
+<td>Short, targeted, and the exact skill a CAM interview tests.</td>
+</tr>
+<tr>
+<td><a href="https://www.energy.gov/projectmanagement/evms-training">DOE EVMS training</a></td>
+<td>A free 8-module EVM tutorial plus ~34 short topic videos. Excellent for non-DoD-specific fundamentals.</td>
+</tr>
+<tr>
+<td><a href="https://www.ndia.org/divisions/ipmd/division-guides-and-resources">NDIA IPMD guides and resources</a></td>
+<td>The <strong>EIA-748 Intent Guide</strong> (Rev E, May 2026), the <strong>EVMS Acceptance Guide</strong>, the IBR guide, and the surveillance guide. All free. The Intent Guide is the single most useful document here.</td>
+</tr>
+<tr>
+<td><a href="https://www.acquisition.gov/dfars/subpart-234.2-earned-value-management-system">DFARS Subpart 234.2 — EVMS</a></td>
+<td>The actual regulation and current thresholds.</td>
+</tr>
+<tr>
+<td><a href="https://www.acq.osd.mil/asda/dpc/api/ipm/policy-guidance.html">DoD Integrated Program Management policy and guidance</a></td>
+<td>The EVMS Interpretation Guide, IPMDAR data item description, and implementation guidance.</td>
+</tr>
+</tbody>
+</table>
+<p>The one document to read if you read only one: the <strong>NDIA IPMD EIA-748 Intent
+Guide</strong>. It is written to explain intent rather than to state rules, which makes
+it the most useful thing in the field for someone learning the system.</p>
+<p>Note that EIA-748 itself is a paid SAE standard. You do not need to buy it — the
+Intent Guide covers every guideline with more explanation than the standard
+provides.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.ndia.org/divisions/ipmd/division-guides-and-resources">NDIA IPMD EIA-748 EVMS Intent Guide (Rev E, May 2026)</a></li>
+<li><a href="https://www.acquisition.gov/dfars/subpart-234.2-earned-value-management-system">DFARS Subpart 234.2, Earned Value Management System</a></li>
+<li><a href="https://icatalog.dau.edu/mobile/CourseDetails.aspx?id=1907">DAU EVM 101</a></li>
+<li><a href="https://www.energy.gov/projectmanagement/evms-training">DOE EVMS training</a></li>
+<li><a href="https://www.evmi.com/ccam/">CCAM, Earned Value Management Institute</a></li>
+</ul>
+<p>Thresholds, guideline counts, and revision levels in this field change. The 27
+guidelines above are EIA-748 Revision E; the thresholds are the February 2026
+class deviation. Check both against current sources before quoting them in a
+review.</p>
+<nav class="pager"><a class="prev" href="../lessons/pmp-plan.html">&larr; P7. Ten-Week Plan &amp; Free Resources</a><a class="next" href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

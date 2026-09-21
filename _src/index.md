@@ -1,4 +1,30 @@
-# Interview prep: Senior Software Engineer, EADGE-T Tech Refresh (Expat UAE)
+# Prep Library
+
+Two tracks live here.
+
+**[PMP certification](lessons/pmp-overview.html)** is the current focus: the
+exam that launched in its new form on 9 July 2026, decoded into seven lessons —
+what you are signing up for, the exam content outline, the PMI mindset that
+decides most questions, the mechanics and formulas, agile and hybrid, forty
+drill questions with reasoning, and a ten-week plan built around free official
+material. It assumes you hold a CISSP and skips what that already taught you.
+
+**[CAM / EVMS](lessons/cam-evms.html)** is the second track: what a Control
+Account Manager owns, EIA-748-E, the WBS-to-control-account chain, every earned
+value formula, and the twenty questions a DCMA reviewer will ask you across a
+table.
+
+**[EADGE-T interview prep](lessons/program-brief.html)** is the original
+twenty-seven-lesson body of work, kept intact and still complete: the Lockheed
+Martin Senior Software Engineer role, six timed four-hour engineering sprints, a
+runnable practice repo, and a 146-question mock interview bank. That role is
+closed, but the material stands on its own as a software engineering refresher.
+
+<!--CARDS-->
+
+---
+
+## Track 3 in full: Senior Software Engineer, EADGE-T Tech Refresh (Expat UAE)
 
 You have not written much code lately. That is a solvable problem, and it is not
 the thing that decides this interview. What decides it is whether you can talk
@@ -8,7 +34,7 @@ program, and then not fumble a straightforward coding exercise.
 This site is built for that. Twenty-seven lessons, roughly 150 worked code examples, a
 runnable practice repo, a 146-question mock bank and 16 worked scenario answers.
 
-## The short version of what you are walking into
+### The short version of what you are walking into
 
 EADGE-T is Lockheed Martin's integrated air and missile defense and air battle
 management system for the United Arab Emirates. It ties existing sensors and
@@ -30,7 +56,7 @@ build-a-distributed-system-from-scratch role. It is a **sustainment and
 modernization** role on a mission-critical baseline, and the interview will
 weight accordingly.
 
-## What the posting asks for
+### What the posting asks for
 
 This is the **Senior Software Engineer, EADGE-T Tech Refresh, EXPAT UAE**
 requisition specifically. Lockheed has several EADGE-T software reqs open and
@@ -63,7 +89,7 @@ already. If you are not currently cleared, that is not a disqualifier here.
 
 Every one of those rows has a lesson below.
 
-## How to use this
+### How to use this
 
 If your interview is more than two weeks out, work the lessons in order and do
 the practice repo alongside.
@@ -88,9 +114,9 @@ Type the code. Do not read it. The gap between "I recognize this" and "I can
 produce this while someone watches" is the entire problem you are solving in the
 next two weeks.
 
-<!--CARDS-->
 
-## A word about the nerves
+
+### A word about the nerves
 
 Being rusty is a real handicap, but it is a narrow one. It affects the 45
 minutes of live coding, and nothing else. Rust comes off fast: a dozen hours of
@@ -100,7 +126,7 @@ standard library, which is all that a screening exercise actually tests.
 What does not come off fast is judgment, and you already have that. Lead with
 it.
 
-## Sources
+### Sources
 
 Program and role details drawn from the public posting and program coverage:
 
