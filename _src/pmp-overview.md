@@ -129,7 +129,8 @@ The other changes worth knowing:
   the ethics of it.
 - The exam now leans on the **PMBOK Guide 8th edition**, which consolidated the
   7th edition's 12 principles into 6 and its 8 performance domains into 7, with
-  40 processes embedded in them.
+  40 processes embedded in them, and added a chapter on **artificial
+  intelligence**. [P4](pmp-pmbok8.html) is the map of it.
 
 You do not sit the exam on the *PMBOK Guide*. You sit it on the Exam Content
 Outline. PMBOK is a reference, not a syllabus — a distinction PMI has made
@@ -142,7 +143,7 @@ professional exam, **8 to 12 weeks at 6 to 8 hours a week** is realistic. Faster
 is possible and usually means worse retention of the situational judgment, which
 is the part you cannot cram.
 
-[P7](pmp-plan.html) lays that out week by week.
+[P10](pmp-plan.html) lays that out week by week.
 
 ## The order to do things in
 

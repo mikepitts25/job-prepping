@@ -1,0 +1,753 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P9. Matching and Drag-and-Drop Drills &middot; Prep Library</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">Prep Library</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><p class="navsection">PMP certification</p><ul><li><a href="../lessons/pmp-overview.html">P1. PMP: What You Are Signing Up For</a></li><li><a href="../lessons/pmp-eco.html">P2. The 2026 Exam Content Outline</a></li><li><a href="../lessons/pmp-mindset.html">P3. The PMI Mindset</a></li><li><a href="../lessons/pmp-pmbok8.html">P4. PMBOK 8 &amp; the AI Chapter</a></li><li><a href="../lessons/pmp-predictive.html">P5. Predictive Mechanics</a></li><li><a href="../lessons/pmp-people.html">P6. People, Teams &amp; Conflict</a></li><li><a href="../lessons/pmp-agile.html">P7. Agile &amp; Hybrid</a></li><li><a href="../lessons/pmp-drills.html">P8. Drill Set</a></li><li class="active"><a href="../lessons/pmp-matching.html">P9. Matching &amp; Drag-Drop Drills</a></li><li><a href="../lessons/pmp-plan.html">P10. Ten-Week Plan &amp; Free Resources</a></li></ul><p class="navsection">CAM / EVMS certification</p><ul><li><a href="../lessons/cam-evms.html">C1. Control Account Manager: EVMS</a></li><li><a href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill</a></li></ul><p class="navsection">EADGE-T interview prep</p><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="p9-matching-and-drag-and-drop-drills">P9. Matching and Drag-and-Drop Drills</h1>
+<p>Alongside the scenario questions, the exam uses <strong>matching</strong>, <strong>drag-and-drop</strong>,
+and <strong>point-and-click</strong> items. These test recall of named things rather than
+judgment, which makes them the most reliably winnable questions on the paper —
+and the ones you lose purely by not having learned a list.</p>
+<p>Sixty pairs below, grouped by topic. Cover the right-hand column, work down the
+left, then check. Anything you miss twice goes on a flashcard.</p>
+<h2 id="1-estimating-techniques">1. Estimating techniques</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Technique</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Add together the smallest pieces of the WBS to get a total</td>
+<td><strong>Bottom-up</strong></td>
+</tr>
+<tr>
+<td>Use a rate — $55 per metre, $100 per hour</td>
+<td><strong>Parametric</strong></td>
+</tr>
+<tr>
+<td>Use a similar past project or product as the basis</td>
+<td><strong>Analogous</strong></td>
+</tr>
+<tr>
+<td>Average optimistic, most likely and pessimistic equally</td>
+<td><strong>Three-point (triangular)</strong></td>
+</tr>
+<tr>
+<td>Weight the most likely estimate four times</td>
+<td><strong>PERT / beta</strong></td>
+</tr>
+<tr>
+<td>Estimators discuss the high and low outliers, then re-estimate until consensus</td>
+<td><strong>Wideband Delphi / planning poker</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Speed and accuracy run opposite: analogous is fastest and least accurate,
+bottom-up is slowest and most accurate, parametric sits in the middle.</p>
+<h2 id="2-charts-and-visual-tools">2. Charts and visual tools</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Show planned work remaining against actual, over an iteration</td>
+<td><strong>Burndown chart</strong></td>
+</tr>
+<tr>
+<td>Show work completed against total scope, so scope growth is visible</td>
+<td><strong>Burnup chart</strong></td>
+</tr>
+<tr>
+<td>Count items completed per day or per period</td>
+<td><strong>Throughput chart</strong></td>
+</tr>
+<tr>
+<td>See project activities on a calendar as bars</td>
+<td><strong>Gantt chart</strong></td>
+</tr>
+<tr>
+<td>Show work in each state over time; widening bands reveal bottlenecks</td>
+<td><strong>Cumulative flow diagram</strong></td>
+</tr>
+<tr>
+<td>Trace customer requirements through to completed deliverables and tests</td>
+<td><strong>Requirements traceability matrix</strong></td>
+</tr>
+<tr>
+<td>Show which risks have the largest impact on an outcome, ranked</td>
+<td><strong>Tornado diagram (sensitivity analysis)</strong></td>
+</tr>
+<tr>
+<td>Show decision paths with costs, benefits and probabilities</td>
+<td><strong>Decision tree</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-earned-value-and-variance">3. Earned value and variance</h2>
+<table>
+<thead>
+<tr>
+<th>Equation</th>
+<th>Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EV − AC</td>
+<td><strong>Cost variance (CV)</strong></td>
+</tr>
+<tr>
+<td>EV − PV</td>
+<td><strong>Schedule variance (SV)</strong></td>
+</tr>
+<tr>
+<td>EV / AC</td>
+<td><strong>Cost performance index (CPI)</strong></td>
+</tr>
+<tr>
+<td>EV / PV</td>
+<td><strong>Schedule performance index (SPI)</strong></td>
+</tr>
+<tr>
+<td>BAC / CPI</td>
+<td><strong>EAC</strong>, assuming current performance continues</td>
+</tr>
+<tr>
+<td>BAC − EAC</td>
+<td><strong>Variance at completion (VAC)</strong></td>
+</tr>
+<tr>
+<td>(BAC − EV) / (BAC − AC)</td>
+<td><strong>TCPI</strong> to the original budget</td>
+</tr>
+<tr>
+<td>EAC − AC</td>
+<td><strong>Estimate to complete (ETC)</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The shape to remember: <strong>EV comes first in every formula.</strong> Subtraction gives a
+variance in currency; division gives an index. Compare to AC for cost, PV for
+schedule. Negative variance and index below 1.0 are both bad.</p>
+<h2 id="4-risk-responses">4. Risk responses</h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Threat response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Remove the scope that causes it</td>
+<td><strong>Avoid</strong></td>
+</tr>
+<tr>
+<td>Buy insurance, or contract it to a third party</td>
+<td><strong>Transfer</strong></td>
+</tr>
+<tr>
+<td>Take action to reduce probability or impact</td>
+<td><strong>Mitigate</strong></td>
+</tr>
+<tr>
+<td>Acknowledge it, take no action, carry on</td>
+<td><strong>Accept</strong></td>
+</tr>
+<tr>
+<td>It is outside your authority to address</td>
+<td><strong>Escalate</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Opportunity response</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Make certain it happens — assign resources, prioritise it</td>
+<td><strong>Exploit</strong></td>
+</tr>
+<tr>
+<td>Give a third party ownership so the benefit is realised</td>
+<td><strong>Share</strong></td>
+</tr>
+<tr>
+<td>Increase the probability or the benefit</td>
+<td><strong>Enhance</strong></td>
+</tr>
+<tr>
+<td>Acknowledge it, take no action</td>
+<td><strong>Accept</strong></td>
+</tr>
+<tr>
+<td>It is outside the project's scope</td>
+<td><strong>Escalate</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Avoid/exploit are the mirrored pair at the aggressive end; accept and escalate
+appear on both lists unchanged.</p>
+<h2 id="5-risks-issues-and-changes">5. Risks, issues and changes</h2>
+<table>
+<thead>
+<tr>
+<th>It is…</th>
+<th>Record it in the…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Something that might happen in future</td>
+<td><strong>Risk register</strong></td>
+</tr>
+<tr>
+<td>Something that has already happened</td>
+<td><strong>Issue log</strong></td>
+</tr>
+<tr>
+<td>A requested change to a baselined item</td>
+<td><strong>Change log</strong></td>
+</tr>
+<tr>
+<td>A dependency or belief behind an estimate</td>
+<td><strong>Assumption log</strong></td>
+</tr>
+<tr>
+<td>Knowledge captured for the benefit of later work</td>
+<td><strong>Lessons learned register</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>If it has already happened it is an issue, not a risk.</strong> If a response was
+already planned for it, execute that response first.</p>
+<h2 id="6-procurement">6. Procurement</h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Document</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Find out what a seller can provide</td>
+<td><strong>RFI</strong> — request for information</td>
+</tr>
+<tr>
+<td>Get a price against defined requirements</td>
+<td><strong>RFQ</strong> — request for quote</td>
+</tr>
+<tr>
+<td>Ask sellers to propose a solution to a problem</td>
+<td><strong>RFP</strong> — request for proposal</td>
+</tr>
+<tr>
+<td>Define what the vendor must deliver</td>
+<td><strong>Statement of work</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Contract type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scope is clear, stable and well defined</td>
+<td><strong>Fixed price</strong></td>
+</tr>
+<tr>
+<td>Scope is expected to change; developmental work</td>
+<td><strong>Cost reimbursable</strong></td>
+</tr>
+<tr>
+<td>No precise statement of work; staff augmentation or experts</td>
+<td><strong>Time and materials</strong></td>
+</tr>
+<tr>
+<td>Share savings and overruns against an agreed target</td>
+<td><strong>Target-cost</strong></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Dispute route</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Buyer and seller cannot agree a change has occurred</td>
+<td><strong>Claim</strong></td>
+</tr>
+<tr>
+<td>Talk it out directly</td>
+<td><strong>Negotiation</strong></td>
+</tr>
+<tr>
+<td>A neutral third party helps them agree</td>
+<td><strong>Mediation</strong></td>
+</tr>
+<tr>
+<td>A panel hears both sides and issues a binding decision</td>
+<td><strong>Arbitration</strong></td>
+</tr>
+<tr>
+<td>Neutral experts appointed at project start to head off disputes</td>
+<td><strong>Dispute review board</strong></td>
+</tr>
+<tr>
+<td>An independent expert decides one technical issue</td>
+<td><strong>Expert determination</strong></td>
+</tr>
+<tr>
+<td>Court</td>
+<td><strong>Litigation</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The claims process and the dispute route are both defined <strong>in the contract</strong> —
+which is the answer to "where do you look first" on any vendor disagreement.</p>
+<h2 id="7-quality">7. Quality</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of desirable features</td>
+<td><strong>Grade</strong></td>
+</tr>
+<tr>
+<td>Degree to which features meet requirements</td>
+<td><strong>Quality</strong></td>
+</tr>
+<tr>
+<td>Training, prototypes, good design — stopping defects arising</td>
+<td><strong>Prevention cost</strong></td>
+</tr>
+<tr>
+<td>Testing, inspections, audits — finding defects</td>
+<td><strong>Appraisal cost</strong></td>
+</tr>
+<tr>
+<td>Defects found before the customer sees them</td>
+<td><strong>Internal failure cost</strong></td>
+</tr>
+<tr>
+<td>Defects, complaints and returns after delivery</td>
+<td><strong>External failure cost</strong></td>
+</tr>
+<tr>
+<td>Plan, do, check, act</td>
+<td><strong>Deming / Shewhart cycle (PDCA)</strong></td>
+</tr>
+<tr>
+<td>Define, measure, analyse, improve, control</td>
+<td><strong>Six Sigma (DMAIC)</strong></td>
+</tr>
+<tr>
+<td>Fishbone diagram grouping causes into categories</td>
+<td><strong>Ishikawa / cause-and-effect</strong></td>
+</tr>
+<tr>
+<td>Ask "why" repeatedly until the true cause emerges</td>
+<td><strong>Five whys</strong></td>
+</tr>
+<tr>
+<td>Sort defect categories most to least frequent</td>
+<td><strong>Pareto analysis</strong></td>
+</tr>
+<tr>
+<td>Count how often each thing occurs, as tallies</td>
+<td><strong>Check sheet</strong></td>
+</tr>
+<tr>
+<td>A list of items to be considered, used as a reminder</td>
+<td><strong>Checklist</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="8-schedule">8. Schedule</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The longest path through the network; the shortest possible duration</td>
+<td><strong>Critical path</strong></td>
+</tr>
+<tr>
+<td>Delay available before the project end date moves</td>
+<td><strong>Total float</strong></td>
+</tr>
+<tr>
+<td>Delay available before the successor's early start moves</td>
+<td><strong>Free float</strong></td>
+</tr>
+<tr>
+<td>Overlap sequential activities to compress the schedule</td>
+<td><strong>Fast-tracking</strong> — adds risk</td>
+</tr>
+<tr>
+<td>Add resources or overtime to compress the schedule</td>
+<td><strong>Crashing</strong> — adds cost</td>
+</tr>
+<tr>
+<td>Fix over-allocated resources, accepting that the critical path may move</td>
+<td><strong>Resource levelling</strong></td>
+</tr>
+<tr>
+<td>Adjust activities within their float only, leaving the critical path alone</td>
+<td><strong>Resource smoothing</strong></td>
+</tr>
+<tr>
+<td>Plan near-term work in detail, far-term at a high level</td>
+<td><strong>Rolling wave planning</strong></td>
+</tr>
+<tr>
+<td>Bring an activity forward to overlap its predecessor</td>
+<td><strong>Lead</strong></td>
+</tr>
+<tr>
+<td>Enforce a wait between two activities</td>
+<td><strong>Lag</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Levelling versus smoothing</strong> is a near-guaranteed matching pair: levelling can
+change the critical path, smoothing cannot.</p>
+<h2 id="9-agile-roles-events-and-artefacts">9. Agile roles, events and artefacts</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Owns and orders the product backlog; decides <em>what</em></td>
+<td><strong>Product owner</strong></td>
+</tr>
+<tr>
+<td>Removes impediments, coaches, facilitates; owns the process</td>
+<td><strong>Scrum master</strong></td>
+</tr>
+<tr>
+<td>Decides <em>how</em> the work gets done; self-managing</td>
+<td><strong>Developers</strong></td>
+</tr>
+<tr>
+<td>The team break epics into user stories and add acceptance criteria</td>
+<td><strong>Backlog refinement</strong></td>
+</tr>
+<tr>
+<td>The team plan the coming iteration's work</td>
+<td><strong>Iteration / sprint planning</strong></td>
+</tr>
+<tr>
+<td>Fifteen minutes; the team re-plan the day and raise impediments</td>
+<td><strong>Daily scrum / stand-up</strong></td>
+</tr>
+<tr>
+<td>The team demonstrate the working increment to the customer</td>
+<td><strong>Sprint review / demonstration</strong></td>
+</tr>
+<tr>
+<td>The team inspect their own way of working and commit to an improvement</td>
+<td><strong>Retrospective</strong></td>
+</tr>
+<tr>
+<td>Criteria that must be met before work can start</td>
+<td><strong>Definition of ready</strong></td>
+</tr>
+<tr>
+<td>Criteria that make an increment complete and shippable</td>
+<td><strong>Definition of done</strong></td>
+</tr>
+<tr>
+<td>The smallest release that delivers value and generates learning</td>
+<td><strong>MVP</strong></td>
+</tr>
+<tr>
+<td>A timeboxed investigation to reduce uncertainty</td>
+<td><strong>Spike</strong></td>
+</tr>
+<tr>
+<td>Project information visible on the team's wall</td>
+<td><strong>Information radiator</strong></td>
+</tr>
+<tr>
+<td>Risks prioritised in the backlog alongside value-delivering work</td>
+<td><strong>Risk-adjusted backlog</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="10-agile-measurement-and-flow">10. Agile measurement and flow</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Story points completed per iteration, averaged</td>
+<td><strong>Velocity</strong></td>
+</tr>
+<tr>
+<td>Work in progress ÷ throughput</td>
+<td><strong>Little's Law</strong> (gives cycle time)</td>
+</tr>
+<tr>
+<td>From request to delivery — the customer's experience</td>
+<td><strong>Lead time</strong></td>
+</tr>
+<tr>
+<td>From work started to delivered</td>
+<td><strong>Cycle time</strong></td>
+</tr>
+<tr>
+<td>Cap the number of items in a workflow state</td>
+<td><strong>WIP limit</strong></td>
+</tr>
+<tr>
+<td>The constraint sets the pace of the whole system</td>
+<td><strong>Theory of constraints</strong></td>
+</tr>
+</tbody>
+</table>
+<p>To reduce cycle time, reduce work in progress. That single relationship answers
+most "the team feels slow" questions.</p>
+<h2 id="11-development-approaches">11. Development approaches</h2>
+<table>
+<thead>
+<tr>
+<th>Characteristic</th>
+<th>Approach</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Fixed requirements, one delivery, goal is cost control</td>
+<td><strong>Predictive</strong></td>
+</tr>
+<tr>
+<td>Dynamic requirements, repeated until correct, one delivery</td>
+<td><strong>Iterative</strong></td>
+</tr>
+<tr>
+<td>Dynamic requirements, frequent smaller deliveries, goal is speed</td>
+<td><strong>Incremental</strong></td>
+</tr>
+<tr>
+<td>Dynamic requirements, repeated <em>and</em> frequent delivery, goal is customer value</td>
+<td><strong>Adaptive / agile</strong></td>
+</tr>
+<tr>
+<td>Any combination of the above</td>
+<td><strong>Hybrid</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="12-organisational-structures-and-pmo">12. Organisational structures and PMO</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PM has little authority; functional managers control resources</td>
+<td><strong>Functional / weak matrix</strong></td>
+</tr>
+<tr>
+<td>PM and functional manager share authority</td>
+<td><strong>Balanced matrix</strong></td>
+</tr>
+<tr>
+<td>PM has most of the authority</td>
+<td><strong>Strong matrix</strong></td>
+</tr>
+<tr>
+<td>PM has full authority; the team reports to the PM</td>
+<td><strong>Projectized</strong></td>
+</tr>
+<tr>
+<td>Consultative; supplies templates, training, a repository</td>
+<td><strong>Supportive PMO</strong></td>
+</tr>
+<tr>
+<td>Requires compliance with methods and templates</td>
+<td><strong>Controlling PMO</strong></td>
+</tr>
+<tr>
+<td>Directly manages projects; PMs report to it</td>
+<td><strong>Directive PMO</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="13-teams-and-people">13. Teams and people</h2>
+<table>
+<thead>
+<tr>
+<th>Description</th>
+<th>Term</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forming, storming, norming, performing, adjourning</td>
+<td><strong>Tuckman's ladder</strong></td>
+</tr>
+<tr>
+<td>Hygiene factors prevent dissatisfaction; motivators create satisfaction</td>
+<td><strong>Herzberg</strong></td>
+</tr>
+<tr>
+<td>Needs met bottom to top before the next level is reachable</td>
+<td><strong>Maslow</strong></td>
+</tr>
+<tr>
+<td>People avoid work and need directing / people take pride and need trusting</td>
+<td><strong>Theory X / Theory Y</strong></td>
+</tr>
+<tr>
+<td>Work expands to fill the time available</td>
+<td><strong>Parkinson's Law</strong></td>
+</tr>
+<tr>
+<td>Win/win; incorporate all viewpoints</td>
+<td><strong>Collaborate / problem solve</strong></td>
+</tr>
+<tr>
+<td>Lose/lose; everyone gives up something</td>
+<td><strong>Compromise</strong></td>
+</tr>
+<tr>
+<td>Lose/win; concede to keep the relationship</td>
+<td><strong>Accommodate / smooth</strong></td>
+</tr>
+<tr>
+<td>Win/lose; impose your position</td>
+<td><strong>Force / direct</strong></td>
+</tr>
+<tr>
+<td>Senior management and the sponsor</td>
+<td><strong>Upward influence</strong></td>
+</tr>
+<tr>
+<td>Suppliers, users, government</td>
+<td><strong>Outward influence</strong></td>
+</tr>
+<tr>
+<td>Focuses on the team's growth, autonomy and wellbeing</td>
+<td><strong>Servant leadership</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="14-documents">14. Documents</h2>
+<table>
+<thead>
+<tr>
+<th>Purpose</th>
+<th>Document</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Asks whether the project is needed at all</td>
+<td><strong>Business case</strong></td>
+</tr>
+<tr>
+<td>Formally authorises the project and empowers the PM</td>
+<td><strong>Project charter</strong></td>
+</tr>
+<tr>
+<td>Team values, agreements and ground rules</td>
+<td><strong>Team charter</strong></td>
+</tr>
+<tr>
+<td>How and when benefits arrive, and how they are measured</td>
+<td><strong>Benefits management plan</strong></td>
+</tr>
+<tr>
+<td>Which items are baselined and at what version</td>
+<td><strong>Configuration management plan</strong></td>
+</tr>
+<tr>
+<td>The process for raising and approving changes</td>
+<td><strong>Change management plan</strong></td>
+</tr>
+<tr>
+<td>Current versus desired engagement for each stakeholder</td>
+<td><strong>Stakeholder engagement assessment matrix</strong></td>
+</tr>
+</tbody>
+</table>
+<h2 id="how-to-use-this-page">How to use this page</h2>
+<p>Three passes, spread out:</p>
+<ol>
+<li><strong>First pass, early.</strong> Read it through; expect to know perhaps half.</li>
+<li><strong>Second pass, a week later.</strong> Cover the right column. Mark misses.</li>
+<li><strong>Third pass, the week of the exam.</strong> Only your marked misses.</li>
+</ol>
+<p>Spacing matters more than duration here. Three fifteen-minute passes across three
+weeks beats one ninety-minute session, by a wide margin, for exactly the kind of
+paired recall these questions test.</p>
+<h2 id="sources">Sources</h2>
+<p>Pairs are original, written against the published outline and the standard
+bodies of knowledge. The topic coverage is modelled on the areas PMI uses for
+matching-format items.</p>
+<ul>
+<li><a href="https://www.pmi.org/-/media/pmi/documents/public/pdf/certifications/new-pmp-examination-content-outline-2026.pdf">PMP Examination Content Outline, July 2026 (PMI, PDF)</a></li>
+<li><em>PMBOK Guide</em> 8th edition and <em>Agile Practice Guide</em> — free to PMI members</li>
+</ul>
+<nav class="pager"><a class="prev" href="../lessons/pmp-drills.html">&larr; P8. Drill Set</a><a class="next" href="../lessons/pmp-plan.html">P10. Ten-Week Plan &amp; Free Resources &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

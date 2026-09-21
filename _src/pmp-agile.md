@@ -1,10 +1,36 @@
-# P5. Agile and Hybrid
+# P7. Agile and Hybrid
 
 Roughly half the exam is set in agile or hybrid environments. You have run a
 backlog as a product owner, so much of this is familiar; the risk for you is the
 opposite of the usual one. You know how agile works *in a real organisation*,
 with its compromises. The exam tests how agile works *as PMI describes it*. Where
 those differ, answer PMI's version.
+
+## The Agile Manifesto
+
+Four value statements, agreed by seventeen practitioners in 2001. The exam uses
+them as a tiebreaker, so know which side of each pair wins.
+
+> **Individuals and interactions** over processes and tools
+> **Working software** over comprehensive documentation
+> **Customer collaboration** over contract negotiation
+> **Responding to change** over following a plan
+
+The right-hand items still have value — the left-hand items have *more*. An exam
+answer that abandons documentation or contracts entirely is overshooting; one
+that prioritises a process or a document over a conversation is undershooting.
+
+The twelve principles behind it are worth one read. The four that carry the most
+exam weight:
+
+- Satisfy the customer through **early and continuous delivery** of value.
+- **Welcome changing requirements, even late** in development.
+- **Face-to-face conversation** is the most efficient way to convey information.
+- **Working software is the primary measure of progress** — not reports, not
+  percentage complete.
+
+That last one decides a recurring question type: when the options include
+producing a status report and demonstrating working output, demonstrate.
 
 ## Telling which world a question is in
 
@@ -49,7 +75,14 @@ something the team should decide, it is wrong.
 backlog → sprint goal; increment → **definition of done**.
 
 The definition of done is the quality bar for "shippable". Acceptance criteria
-are per-story. Confusing the two is a tested distinction.
+are per-story. Confusing the two is a tested distinction. A third term rounds it
+out: the **definition of ready** is the criteria a backlog item must meet before
+the team will start it. Ready gates work *in*, done gates work *out*.
+
+**Backlog refinement** is where the customer, developers and testers break epics
+down into user stories and add acceptance criteria. Aim small enough to fit
+inside one iteration. The product backlog and product roadmap are high level;
+**user stories are the detailed level**.
 
 **Sprint rules that get tested**
 
@@ -103,6 +136,30 @@ on-site customer. XP contributes the engineering discipline that Scrum leaves
 unspecified — which is why hybrid answers often pair "Scrum for cadence" with
 "XP practices for quality".
 
+## Other frameworks worth recognising
+
+You will not be asked to run these, only to recognise them.
+
+| Framework | Known for |
+| --- | --- |
+| **Scrum** | Fixed-length sprints, three accountabilities, five events |
+| **Kanban** | Continuous flow, WIP limits, no fixed iterations |
+| **Scrumban** | Kanban's WIP limits and flow on Scrum's cadence |
+| **XP** | Engineering practices — TDD, pair programming, CI, refactoring |
+| **FDD** (feature-driven development) | Model first, then a feature list, then design and build by feature |
+| **Crystal** | A family of methods tailored by team size and criticality |
+| **DSDM** | Fixes time and cost, varies scope; strong on governance and business case |
+
+**Scaling frameworks**, for multiple teams on one product: **SAFe**, **LeSS**,
+**Nexus**, **Disciplined Agile**, and **Scrum of Scrums** (a representative from
+each team meets to coordinate and surface cross-team impediments). Recognition
+level is enough.
+
+**Theory of constraints**: the slowest step sets the pace of the whole system, so
+improving anything other than the constraint changes nothing. This is the
+reasoning behind fixing the bottleneck in a cumulative flow diagram rather than
+adding people upstream.
+
 ## Servant leadership
 
 The People domain's agile face. The servant leader:
@@ -154,6 +211,7 @@ predictive answer.
 | Change control board | Product owner reprioritising the backlog |
 | Verify scope | Sprint review with stakeholders |
 | Lessons learned | Retrospective, every sprint |
+| Risk register | Risk-adjusted backlog — risks prioritised alongside value work |
 | Quality plan | Definition of done |
 | Progress by % complete | Working increments delivered |
 

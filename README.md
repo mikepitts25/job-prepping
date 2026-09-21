@@ -6,11 +6,12 @@ kept intact.
 
 ## PMP and CAM tracks
 
-Seven PMP lessons built against the **Exam Content Outline that took effect on
+Ten PMP lessons built against the **Exam Content Outline that took effect on
 9 July 2026** — the version that reweighted the domains to People 33%, Process
-41%, Business Environment 26% and consolidated 35 tasks down to 26. Plus two
-Control Account Manager lessons covering EIA-748-E, the WBS-to-control-account
-chain, every earned value formula, and the questions asked in a CAM interview.
+41%, Business Environment 26% and consolidated 35 tasks down to 26. Task titles
+and enablers follow PMI's own wording. Plus two Control Account Manager lessons
+covering EIA-748-E, the WBS-to-control-account chain, every earned value
+formula, and the questions asked in a CAM interview.
 
 The material assumes the reader holds a CISSP and deliberately skips ground the CISSP
 already covers — governance, compliance, risk, and change control are treated as
@@ -21,10 +22,13 @@ vocabulary translation rather than new content.
 | P1 | PMP: the 2026 exam, eligibility, cost, application, audit |
 | P2 | The Exam Content Outline decoded, task by task |
 | P3 | The PMI mindset: the seven rules and the four-step answer routine |
-| P4 | Predictive mechanics: WBS, critical path, EVM, quality, risk, procurement |
-| P5 | Agile and hybrid: Scrum, Kanban, XP, servant leadership, tailoring |
-| P6 | Forty drill questions with the reasoning, not just the key |
-| P7 | Ten-week plan and the free official material, ranked |
+| P4 | PMBOK 8's structure, development approaches, PMO types, and the AI chapter |
+| P5 | Predictive mechanics: WBS, critical path, EVM, quality, risk, procurement |
+| P6 | People: conflict modes, Tuckman, motivation theory, leadership, communication |
+| P7 | Agile and hybrid: the Manifesto, Scrum, Kanban, XP, tailoring |
+| P8 | Forty drill questions with the reasoning, not just the key |
+| P9 | Sixty matching pairs for the drag-and-drop format |
+| P10 | Ten-week plan, exam-day tactics, and the free official material |
 | C1 | Control Account Manager: EVMS, EIA-748-E, the budget stack, EV methods |
 | C2 | CAM interview and IBR drill, with worked variance analysis |
 

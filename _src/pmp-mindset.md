@@ -31,11 +31,13 @@ over your functional manager. No informal approval. No "just implement it, it's
 small." Changes go through change control; issues go in the issue log; risks go
 in the risk register.
 
-**3. Talk to the person involved, at the lowest level that works.** Conflict
+**3. Talk to the person involved, at the lowest level that works.** Problem-solve
+before you escalate. Conflict
 between two team members: you facilitate a conversation between them. You do not
 reassign either of them, you do not tell the sponsor, and you certainly do not
 decide who is right. Escalation comes only after the direct route fails, or when
-the matter is genuinely above your authority.
+the matter is genuinely above your authority. The five conflict modes, and which
+one PMI wants, are in [P6](pmp-people.html).
 
 **4. The project manager is proactive, not reactive.** The credited answer often
 prevents the *next* occurrence rather than only fixing this one. A defect escaped
@@ -89,6 +91,30 @@ change, or is passive when action is available.
 
 Most questions come down to two survivors. Between two survivors, pick the one
 that is more consultative, more proactive, and more value-delivering.
+
+## The root-cause routine
+
+A large share of questions are problem-solving questions wearing a scenario. The
+sequence PMI expects:
+
+> Define the problem → find the **root cause** → brainstorm solutions →
+> prioritise and choose → implement → **verify it worked**
+
+Two consequences worth internalising:
+
+**Find the root cause before spending any money.** An option that throws budget,
+people, or schedule at a symptom loses to one that diagnoses first. This is why
+"add resources" and "extend the deadline" are so rarely credited.
+
+**Check you are solving the right problem.** The question's keywords tell you
+whether this is a team problem, a supplier problem, a stakeholder problem, or a
+process problem — and each has a different owner. A vendor's late deliverable is
+the vendor's to fix; your job is to work the contract and help them, not to
+absorb it.
+
+If a question uses a term you have never encountered, do not let it derail you.
+Unfamiliar vocabulary is frequently the distractor. Go back to the keywords and
+pick the answer that addresses the root cause.
 
 ## Trap answers, and how they read
 
@@ -153,7 +179,7 @@ Notice how little vendor-management knowledge that required.
 
 ## Practising the mindset
 
-When you do practice questions — and [P6](pmp-drills.html) is forty of them —
+When you do practice questions — and [P8](pmp-drills.html) is forty of them —
 grade yourself on *reasoning*, not just on right or wrong. For every question you
 get wrong, write one line: which rule did I violate, or which stem verb did I
 misread? After fifty questions that list will be about four items long, and those

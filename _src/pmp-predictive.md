@@ -1,4 +1,4 @@
-# P4. Predictive Mechanics You Need Cold
+# P5. Predictive Mechanics You Need Cold
 
 This is the reference page for the Process domain: the arithmetic and the
 artefacts. It is the only part of PMP that has right answers independent of
@@ -87,6 +87,35 @@ Both apply only to the critical path — shortening a non-critical activity chan
 nothing. If a question asks to shorten the schedule without increasing cost, the
 answer is fast-tracking; without increasing risk, crashing. Reducing scope is a
 change request, not compression.
+
+Remember the **law of diminishing returns**: adding resources improves the
+schedule only up to a point, and beyond it the effect shrinks. That is the
+reasoning behind rejecting "add more people" as a reflex answer.
+
+### Resource optimisation
+
+Two techniques that get confused, and therefore get tested:
+
+| Technique | What it does | Effect on the critical path |
+| --- | --- | --- |
+| **Resource levelling** | Resolves over-allocation — a resource assigned to two activities at once | **Can change it.** Start and finish dates may move. |
+| **Resource smoothing** | Adjusts activities **within their existing float** only | **Never changes it.** |
+
+If the question says the critical path must not move, the answer is smoothing.
+If a resource is double-booked and something has to give, it is levelling.
+
+### Forward and backward pass
+
+To find float by hand: enter durations, run a **forward pass** for early start
+and early finish, then a **backward pass** for late start and late finish. Float
+is then `LS − ES` (equivalently `LF − EF`). The critical path is the path with
+zero float.
+
+One warning on arithmetic conventions. Some materials number days from 1 and use
+`EF = ES + duration − 1`; others start from time zero and use
+`EF = ES + duration`. Both give the same float and the same critical path — what
+changes is the absolute day numbers. Pick one convention, use it consistently,
+and read the question to see which it is using.
 
 ### Estimating
 
@@ -184,6 +213,24 @@ questions. Building quality in beats finding defects later.
 - Tools: cause-and-effect (Ishikawa/fishbone) for root cause, Pareto for the
   vital few, control charts for whether a process is in control, histograms,
   scatter diagrams, check sheets.
+- **Checklist versus check sheet**: a checklist is a list of items to consider,
+  used as a reminder (also called a prompt list). A **check sheet** is a tally
+  sheet, counting how often each thing occurs. Tested more than it should be.
+- **Flowcharts** show process flow including decision points.
+
+### Structured improvement methods
+
+Named methods that appear as matching pairs and as "which approach" questions:
+
+| Method | Steps |
+| --- | --- |
+| **PDCA** (Deming / Shewhart cycle) | **Plan** — see the problem directly, find root cause, prioritise solutions with the team. **Do** — pilot it small. **Check** — measure the results. **Act** — adjust. |
+| **DMAIC** (Six Sigma) | **Define** the gap, **Measure** with real data, **Analyse** for root cause, **Improve** and measure, **Control** so the new process holds. |
+| **Five whys** | Ask why repeatedly. The first answer is usually a symptom. |
+| **Ishikawa / fishbone** | Problem at the head; brainstorm causes into categories — people, information, process, systems. |
+
+Both PDCA and DMAIC put **measurement before solution**, which is the same
+instinct as [P3's](pmp-mindset.html) first rule.
 - Control chart rule: seven consecutive points on one side of the mean is the
   **rule of seven** — a non-random trend needing investigation, even if every
   point is inside the control limits. Points outside the control limits are
@@ -237,9 +284,51 @@ a seller forced to will either pad heavily or claim relentlessly.
 **Point of total assumption** applies only to FPIF: the cost above which the
 seller absorbs every further dollar. Rarely calculated, occasionally named.
 
+A fourth type appears in the 8th edition: **target-cost**, where buyer and seller
+agree a target and share the savings or the overruns. Common on large
+infrastructure and complex manufacturing.
+
 Process flow: plan procurement → conduct (bids, source selection) → control
 (administer) → close. Procurement documents you should recognise: RFI (information),
 RFQ (price), RFP (solution). The **statement of work** defines what is bought.
+
+**Bidder conferences** (also vendor or pre-bid conferences) are meetings with all
+prospective sellers before proposals are submitted, so everyone has the same
+understanding. Two source-selection variants worth naming: **single source**,
+where only one supplier can meet the requirement because of unique expertise or
+exclusive rights, and **fixed budget**, where the available budget is disclosed
+and the best technical proposal within it wins.
+
+You can have an **agreement without a contract** — a project charter authorising
+internal resources is one — but never a contract without an agreement.
+
+### Claims and dispute resolution
+
+A **claim** arises when buyer and seller cannot agree that a change has occurred
+or what it is worth. Like change requests, claims can happen at any point. The
+escalation ladder, which is a matching-question favourite:
+
+| Route | What happens |
+| --- | --- |
+| **Negotiation** | Directly between the parties. Always tried first. |
+| **Mediation** | A neutral mediator helps them reach agreement. Non-binding. |
+| **Arbitration** | A panel hears both sides and issues a **binding** decision. |
+| **Dispute review board** | Neutral experts appointed at project start to prevent and resolve disputes as they arise. |
+| **Expert determination** | An independent expert decides one specific technical question. |
+| **Litigation** | Court. The last resort. |
+
+**Both the claims process and the dispute route are defined in the contract.**
+That is the answer to "where do you look first" on any vendor disagreement — and
+it is also why "check the contract" beats "escalate to legal" as a first move.
+
+### Emerging contract trends
+
+The 8th edition names five, and they turn up as recognition questions rather than
+anything deeper: **agile contracting** (flexibility and iterative delivery),
+**smart contracts** (blockchain-automated execution), **outcome-based
+contracts** (paying for results rather than inputs), **sustainable contracting**
+(ESG criteria written into the agreement), and **collaborative contracting**
+(risk and reward sharing with joint problem-solving).
 
 ## Stakeholders
 
@@ -274,7 +363,17 @@ The chain from [P3](pmp-mindset.html):
 > implement
 
 **Configuration control** is about the product's specifications; **change
-control** is about the baselines. An approved change request is an input to
+control** is about the baselines. The corresponding plans split the same way: the
+**configuration management plan** says *which* items are baselined and at what
+version, while the **change management plan** defines the *process* for changing
+them.
+
+The full change sequence, as the 8th edition states it: any stakeholder may raise
+a change → record it in the **change log** → analyse the impact on cost and
+schedule → take it to the approvers (the CCB) → **communicate the outcome**
+(approved, rejected, or deferred) → record the outcome in the log and proceed.
+Note that communicating a *rejection* is part of the process — an answer that
+stops at the CCB decision is incomplete. An approved change request is an input to
 execution, and a *corrective action*, *preventive action*, or *defect repair* is
 implemented through the same route.
 

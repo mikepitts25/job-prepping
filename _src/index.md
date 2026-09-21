@@ -3,11 +3,13 @@
 Two tracks live here.
 
 **[PMP certification](lessons/pmp-overview.html)** is the current focus: the
-exam that launched in its new form on 9 July 2026, decoded into seven lessons —
-what you are signing up for, the exam content outline, the PMI mindset that
-decides most questions, the mechanics and formulas, agile and hybrid, forty
-drill questions with reasoning, and a ten-week plan built around free official
-material. It assumes you hold a CISSP and skips what that already taught you.
+exam that launched in its new form on 9 July 2026, decoded into ten lessons —
+what you are signing up for, the exam content outline task by task, the PMI
+mindset that decides most questions, the PMBOK 8 map including its new AI
+chapter, the predictive mechanics and formulas, the People domain that is a
+third of the paper, agile and hybrid, forty drill questions with reasoning,
+sixty matching pairs, and a ten-week plan built around free official material.
+It assumes you hold a CISSP and skips what that already taught you.
 
 **[CAM / EVMS](lessons/cam-evms.html)** is the second track: what a Control
 Account Manager owns, EIA-748-E, the WBS-to-control-account chain, every earned
