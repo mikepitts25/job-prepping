@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P4. Predictive Mechanics You Need Cold &middot; Prep Library</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">Prep Library</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><p class="navsection">PMP certification</p><ul><li><a href="../lessons/pmp-overview.html">P1. PMP: What You Are Signing Up For</a></li><li><a href="../lessons/pmp-eco.html">P2. The 2026 Exam Content Outline</a></li><li><a href="../lessons/pmp-mindset.html">P3. The PMI Mindset</a></li><li class="active"><a href="../lessons/pmp-predictive.html">P4. Predictive Mechanics</a></li><li><a href="../lessons/pmp-agile.html">P5. Agile &amp; Hybrid</a></li><li><a href="../lessons/pmp-drills.html">P6. Drill Set</a></li><li><a href="../lessons/pmp-plan.html">P7. Ten-Week Plan &amp; Free Resources</a></li></ul><p class="navsection">CAM / EVMS certification</p><ul><li><a href="../lessons/cam-evms.html">C1. Control Account Manager: EVMS</a></li><li><a href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill</a></li></ul><p class="navsection">EADGE-T interview prep</p><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="p4-predictive-mechanics-you-need-cold">P4. Predictive Mechanics You Need Cold</h1>
+<p>This is the reference page for the Process domain: the arithmetic and the
+artefacts. It is the only part of PMP that has right answers independent of
+judgment, so it is the cheapest set of marks on the paper. Everything here is
+worth knowing to the point of automaticity.</p>
+<p>Where a topic overlaps something you already hold from CISSP, the heading says
+so and the section stays short.</p>
+<h2 id="the-spine-charter-to-closure">The spine: charter to closure</h2>
+<table>
+<thead>
+<tr>
+<th>Artefact</th>
+<th>Who authorises it</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Business case</td>
+<td>Sponsor / organisation</td>
+<td>Justifies the project. Exists <em>before</em> the project.</td>
+</tr>
+<tr>
+<td><strong>Project charter</strong></td>
+<td>Sponsor (never the PM)</td>
+<td>Authorises the project and names the PM. Without it, no project.</td>
+</tr>
+<tr>
+<td>Project management plan</td>
+<td>PM, approved by stakeholders</td>
+<td>Integrates all subsidiary plans and the three baselines.</td>
+</tr>
+<tr>
+<td><strong>Baselines</strong> (scope, schedule, cost)</td>
+<td>Approved, then frozen</td>
+<td>Changed only through change control.</td>
+</tr>
+<tr>
+<td>Performance measurement baseline</td>
+<td>Scope + schedule + cost, integrated</td>
+<td>What you measure against.</td>
+</tr>
+<tr>
+<td>Deliverables</td>
+<td>Produced in execution</td>
+<td>Verified (quality), then validated (customer accepts).</td>
+</tr>
+<tr>
+<td>Final report + lessons</td>
+<td>PM</td>
+<td>Closure.</td>
+</tr>
+</tbody>
+</table>
+<p>Two exam-reliable facts: <strong>the sponsor signs the charter, not the PM</strong>, and
+<strong>verify scope is quality control's downstream cousin</strong> — control quality checks
+correctness internally, validate scope gets customer acceptance. Questions
+exploit the difference constantly.</p>
+<h2 id="scope-and-the-wbs">Scope and the WBS</h2>
+<p>The <strong>work breakdown structure</strong> decomposes the total scope hierarchically. Rules
+that get tested:</p>
+<ul>
+<li>The WBS contains <strong>100% of the scope and nothing else</strong> (the 100% rule). If it
+  is not in the WBS, it is not in the project.</li>
+<li>The lowest level is a <strong>work package</strong>. Below that, in scheduling, sit
+  activities. The WBS does not contain activities.</li>
+<li>Each work package gets a <strong>WBS dictionary</strong> entry: description, acceptance
+  criteria, owner, resources, estimates.</li>
+<li>The WBS is deliverable-oriented, not phase- or function-oriented, though it can
+  be organised by phase at the top level.</li>
+</ul>
+<p><strong>Scope creep</strong> is uncontrolled change. <strong>Gold plating</strong> is the team adding
+unrequested extras. Both are bad; the exam wants you to name which one is
+happening.</p>
+<h2 id="schedule">Schedule</h2>
+<h3 id="network-diagrams-and-the-critical-path">Network diagrams and the critical path</h3>
+<p>Activities with dependencies. The <strong>critical path</strong> is the longest path through
+the network, and therefore the shortest possible project duration. Activities on
+it have <strong>zero float</strong>.</p>
+<ul>
+<li><strong>Total float</strong> — how long an activity can slip without delaying the project
+  end.</li>
+<li><strong>Free float</strong> — how long it can slip without delaying its immediate successor.</li>
+<li>Total float = LS − ES = LF − EF.</li>
+</ul>
+<p>Forward pass gives early start and early finish; backward pass gives late start
+and late finish. If a question shows a network with durations, add the durations
+along each path; the longest is critical.</p>
+<p>There can be more than one critical path. More critical paths means more risk,
+because more of the project has no slack.</p>
+<h3 id="dependency-types">Dependency types</h3>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Finish-to-start (FS)</td>
+<td>B cannot start until A finishes. The default and the common one.</td>
+</tr>
+<tr>
+<td>Start-to-start (SS)</td>
+<td>B cannot start until A starts.</td>
+</tr>
+<tr>
+<td>Finish-to-finish (FF)</td>
+<td>B cannot finish until A finishes.</td>
+</tr>
+<tr>
+<td>Start-to-finish (SF)</td>
+<td>Rare. Almost always a distractor.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lead</strong> = an overlap, a successor starting early. <strong>Lag</strong> = an enforced wait.
+Mandatory dependencies are hard logic; discretionary are preferred practice;
+external come from outside the project; internal are within the team's control.</p>
+<h3 id="compressing-a-schedule">Compressing a schedule</h3>
+<table>
+<thead>
+<tr>
+<th>Technique</th>
+<th>What you do</th>
+<th>What it costs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Crashing</strong></td>
+<td>Add resources to critical path activities</td>
+<td>Cost. Often disproportionate.</td>
+</tr>
+<tr>
+<td><strong>Fast-tracking</strong></td>
+<td>Run sequential activities in parallel</td>
+<td><strong>Risk and rework.</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Both apply only to the critical path — shortening a non-critical activity changes
+nothing. If a question asks to shorten the schedule without increasing cost, the
+answer is fast-tracking; without increasing risk, crashing. Reducing scope is a
+change request, not compression.</p>
+<h3 id="estimating">Estimating</h3>
+<p><strong>Three-point estimating</strong>, given optimistic (O), most likely (M), pessimistic (P):</p>
+<ul>
+<li>Triangular: <code>(O + M + P) / 3</code></li>
+<li><strong>PERT / beta</strong>: <code>(O + 4M + P) / 6</code></li>
+<li>Standard deviation: <code>(P − O) / 6</code></li>
+</ul>
+<p>PERT is the one they mean unless they say otherwise. Learn both formulas; questions
+occasionally specify triangular to catch people running on autopilot.</p>
+<p>Other terms: <strong>analogous</strong> estimating is top-down from a similar past project
+(fast, least accurate); <strong>parametric</strong> uses a rate (units × cost per unit);
+<strong>bottom-up</strong> sums the work packages (slowest, most accurate).</p>
+<h2 id="cost-and-earned-value">Cost and earned value</h2>
+<p>This is the highest-density formula area on the exam, and it is the same
+machinery you will need for the CAM track in <a href="cam-evms.html">C1</a>. Learn it once,
+use it twice.</p>
+<h3 id="the-three-measurements">The three measurements</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>PV</strong> — planned value</td>
+<td>Budgeted cost of the work <em>scheduled</em> by now</td>
+</tr>
+<tr>
+<td><strong>EV</strong> — earned value</td>
+<td>Budgeted cost of the work <em>actually completed</em></td>
+</tr>
+<tr>
+<td><strong>AC</strong> — actual cost</td>
+<td>What you actually spent to do that work</td>
+</tr>
+<tr>
+<td><strong>BAC</strong> — budget at completion</td>
+<td>Total budget for the whole project</td>
+</tr>
+</tbody>
+</table>
+<p>EV is the pivot. It is always <em>budgeted</em> cost of completed work — never actual.
+<code>EV = BAC × % complete</code>.</p>
+<h3 id="variances-and-indices">Variances and indices</h3>
+<table>
+<thead>
+<tr>
+<th>Formula</th>
+<th>Reads as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CV = EV − AC</code></td>
+<td>Cost variance. Negative = over budget.</td>
+</tr>
+<tr>
+<td><code>SV = EV − PV</code></td>
+<td>Schedule variance. Negative = behind schedule.</td>
+</tr>
+<tr>
+<td><code>CPI = EV / AC</code></td>
+<td>Cost performance index. Below 1.0 = over budget.</td>
+</tr>
+<tr>
+<td><code>SPI = EV / PV</code></td>
+<td>Schedule performance index. Below 1.0 = behind schedule.</td>
+</tr>
+</tbody>
+</table>
+<p>Memorise the shape, not the four formulas: <strong>EV comes first in every one</strong>.
+Subtraction gives a variance in currency; division gives an index. Compare against
+AC for cost, PV for schedule. Negative variance and index below 1.0 are both bad.</p>
+<h3 id="forecasting">Forecasting</h3>
+<table>
+<thead>
+<tr>
+<th>Formula</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>EAC = BAC / CPI</code></td>
+<td>Current cost performance will continue. <strong>The default.</strong></td>
+</tr>
+<tr>
+<td><code>EAC = AC + (BAC − EV)</code></td>
+<td>The overrun was a one-off; remaining work goes to plan.</td>
+</tr>
+<tr>
+<td><code>EAC = AC + (BAC − EV) / (CPI × SPI)</code></td>
+<td>Both cost and schedule performance will continue.</td>
+</tr>
+<tr>
+<td><code>EAC = AC + bottom-up ETC</code></td>
+<td>The original estimate is no longer credible.</td>
+</tr>
+<tr>
+<td><code>ETC = EAC − AC</code></td>
+<td>Estimate to complete: what is left to spend.</td>
+</tr>
+<tr>
+<td><code>VAC = BAC − EAC</code></td>
+<td>Variance at completion. Negative = forecast overrun.</td>
+</tr>
+<tr>
+<td><code>TCPI = (BAC − EV) / (BAC − AC)</code></td>
+<td>Efficiency needed on remaining work to hit the original budget.</td>
+</tr>
+<tr>
+<td><code>TCPI = (BAC − EV) / (EAC − AC)</code></td>
+<td>Same, but to hit the revised (EAC) budget.</td>
+</tr>
+</tbody>
+</table>
+<p>TCPI above 1.0 means you must perform better than planned from here — harder than
+what you have been doing. That is the interpretation they test.</p>
+<h3 id="a-worked-example">A worked example</h3>
+<blockquote>
+<p>BAC = $500,000. The project is 40% complete. AC = $250,000. PV = $225,000.</p>
+</blockquote>
+<ul>
+<li><code>EV = 500,000 × 0.40 = $200,000</code></li>
+<li><code>CV = 200,000 − 250,000 = −$50,000</code> → over budget</li>
+<li><code>SV = 200,000 − 225,000 = −$25,000</code> → behind schedule</li>
+<li><code>CPI = 200,000 / 250,000 = 0.80</code> → getting 80 cents of value per dollar</li>
+<li><code>SPI = 200,000 / 225,000 = 0.89</code> → running at 89% of planned pace</li>
+<li><code>EAC = 500,000 / 0.80 = $625,000</code></li>
+<li><code>VAC = 500,000 − 625,000 = −$125,000</code> → forecast $125k overrun</li>
+<li><code>TCPI (to BAC) = (500,000 − 200,000) / (500,000 − 250,000) = 300,000 / 250,000 = 1.20</code></li>
+</ul>
+<p>Read that last number out loud: to still finish on the original budget you must
+run at 1.20 efficiency having so far managed 0.80. That is not a recovery plan,
+that is a conversation with the sponsor.</p>
+<h2 id="quality">Quality</h2>
+<p><strong>Prevention over inspection</strong> is the doctrine, and it decides most quality
+questions. Building quality in beats finding defects later.</p>
+<ul>
+<li><strong>Quality</strong> is fitness for requirements. <strong>Grade</strong> is a category of features.
+  Low quality is always a problem; low grade may be perfectly acceptable.</li>
+<li><strong>Plan quality</strong> → <strong>manage quality</strong> (process, audits, are we doing the right
+  things) → <strong>control quality</strong> (inspection, measurement, is this deliverable
+  correct).</li>
+<li><strong>Cost of quality</strong>: prevention + appraisal (conformance) versus internal and
+  external failure (non-conformance). Prevention is always the cheapest money.</li>
+<li><strong>Accuracy</strong> is closeness to the true value; <strong>precision</strong> is repeatability.
+  Tested more often than it deserves.</li>
+<li>Tools: cause-and-effect (Ishikawa/fishbone) for root cause, Pareto for the
+  vital few, control charts for whether a process is in control, histograms,
+  scatter diagrams, check sheets.</li>
+<li>Control chart rule: seven consecutive points on one side of the mean is the
+  <strong>rule of seven</strong> — a non-random trend needing investigation, even if every
+  point is inside the control limits. Points outside the control limits are
+  out of control. Specification limits come from the customer; control limits
+  come from the process.</li>
+</ul>
+<h2 id="risk-mostly-a-translation-job">Risk — mostly a translation job</h2>
+<p><em>You know this domain.</em> The ideas map almost one for one onto CISSP risk
+management. What differs is vocabulary and the treatment of upside.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>PMI's word</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Risk appetite / tolerance / threshold</td>
+<td>Same terms, same meanings</td>
+</tr>
+<tr>
+<td>Qualitative analysis</td>
+<td>Probability × impact matrix → prioritised list</td>
+</tr>
+<tr>
+<td>Quantitative analysis</td>
+<td>Monte Carlo, decision trees, EMV. Only for high-priority risks, and often skipped</td>
+</tr>
+<tr>
+<td>Expected monetary value</td>
+<td><code>EMV = probability × impact</code>, summed across risks</td>
+</tr>
+<tr>
+<td>Threat responses</td>
+<td><strong>Avoid, transfer, mitigate, accept, escalate</strong></td>
+</tr>
+<tr>
+<td>Opportunity responses</td>
+<td><strong>Exploit, share, enhance, accept, escalate</strong></td>
+</tr>
+<tr>
+<td>Contingency reserve</td>
+<td>For <strong>known</strong> risks. Inside the cost baseline. PM controls it.</td>
+</tr>
+<tr>
+<td>Management reserve</td>
+<td>For <strong>unknown</strong> risks. Outside the cost baseline, inside the budget. Sponsor/management controls it.</td>
+</tr>
+</tbody>
+</table>
+<p>Three things to actually learn here:</p>
+<ol>
+<li><strong>Opportunities are risks too.</strong> Half the response vocabulary is upside, and
+   the exam uses it.</li>
+<li><strong>Escalate</strong> is a valid fifth response, for risks outside the project's
+   authority. Once escalated, it leaves your risk register.</li>
+<li><strong>The reserve distinction.</strong> Contingency = known unknowns, PM's to spend.
+   Management = unknown unknowns, needs approval. A question about using reserve
+   is usually really a question about which reserve.</li>
+</ol>
+<p><strong>Residual risk</strong> remains after response; <strong>secondary risk</strong> is created by the
+response itself. Both are terms you already own.</p>
+<h2 id="procurement-also-mostly-translation">Procurement — also mostly translation</h2>
+<p>Make-or-buy, then contract type. The contract type question is the one that
+recurs:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Risk sits with</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fixed price</strong> (FFP, FPIF, FP-EPA)</td>
+<td><strong>Seller</strong></td>
+<td>Scope is well defined</td>
+</tr>
+<tr>
+<td><strong>Cost reimbursable</strong> (CPFF, CPIF, CPAF)</td>
+<td><strong>Buyer</strong></td>
+<td>Scope is uncertain, R&amp;D, evolving</td>
+</tr>
+<tr>
+<td><strong>Time and materials</strong></td>
+<td>Shared</td>
+<td>Small, short, staff augmentation</td>
+</tr>
+</tbody>
+</table>
+<p>If the scenario says requirements are unclear or the work is developmental,
+fixed price is the wrong answer — you cannot fix a price on undefined scope, and
+a seller forced to will either pad heavily or claim relentlessly.</p>
+<p><strong>Point of total assumption</strong> applies only to FPIF: the cost above which the
+seller absorbs every further dollar. Rarely calculated, occasionally named.</p>
+<p>Process flow: plan procurement → conduct (bids, source selection) → control
+(administer) → close. Procurement documents you should recognise: RFI (information),
+RFQ (price), RFP (solution). The <strong>statement of work</strong> defines what is bought.</p>
+<h2 id="stakeholders">Stakeholders</h2>
+<p>Identify → analyse → plan engagement → manage → monitor. The analysis grids:</p>
+<ul>
+<li><strong>Power / interest grid</strong> — high power + high interest = manage closely; high
+  power + low interest = keep satisfied; low power + high interest = keep
+  informed; low/low = monitor.</li>
+<li><strong>Salience model</strong> — power, urgency, legitimacy.</li>
+<li><strong>Stakeholder engagement assessment matrix</strong> — current versus desired
+  engagement level, rated unaware / resistant / neutral / supportive / leading.
+  When a question mentions a resistant stakeholder, this matrix is the artefact
+  they want named.</li>
+</ul>
+<h2 id="communication">Communication</h2>
+<p><code>n(n − 1) / 2</code> gives the number of communication channels for n people. If the
+team grows from 5 to 8, channels go from 10 to 28 — the point being that adding
+people adds communication cost superlinearly. Expect at least one question that
+asks for the <em>increase</em>, not the total.</p>
+<p>Push (email, reports), pull (portal, wiki), interactive (meetings, calls).
+Interactive for anything complex or sensitive. Most of a PM's time is
+communication, and PMI will tell you so in an answer option.</p>
+<h2 id="change-control-you-already-know-this">Change control — you already know this</h2>
+<p>Same discipline as configuration and change management in a security programme.
+The chain from <a href="pmp-mindset.html">P3</a>:</p>
+<blockquote>
+<p>assess impact → change request → CCB decision → update baseline → communicate →
+implement</p>
+</blockquote>
+<p><strong>Configuration control</strong> is about the product's specifications; <strong>change
+control</strong> is about the baselines. An approved change request is an input to
+execution, and a <em>corrective action</em>, <em>preventive action</em>, or <em>defect repair</em> is
+implemented through the same route.</p>
+<p>The PM may sit on the CCB but usually does not chair it. Emergency changes can
+have an expedited route if the plan defines one — which is exactly the carve-out
+you know from incident response.</p>
+<h2 id="closing">Closing</h2>
+<ul>
+<li>Get <strong>formal written acceptance</strong>. Use in production without sign-off is not
+  acceptance.</li>
+<li>Close procurements before closing the project.</li>
+<li>Capture lessons learned in the <strong>lessons learned register</strong> during the project
+  and roll into the <strong>lessons learned repository</strong> at the end. Lessons are
+  captured continuously, not just at the end — a favourite exam distinction.</li>
+<li>Release resources, archive records, transition the product and the benefits to
+  the operational owner.</li>
+<li>A cancelled project is still <strong>closed</strong>, formally, with the same process. Why
+  it ended is documented; the closure is not skipped.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.pmi.org/-/media/pmi/documents/public/pdf/certifications/new-pmp-examination-content-outline-2026.pdf">PMP Examination Content Outline, July 2026 (PMI, PDF)</a></li>
+<li><em>A Guide to the Project Management Body of Knowledge (PMBOK Guide)</em>, 8th
+  edition — free to PMI members at <a href="https://www.pmi.org/">pmi.org</a></li>
+<li><em>Process Groups: A Practice Guide</em> (PMI) — the predictive process detail that
+  PMBOK 7 and 8 leave out</li>
+</ul>
+<nav class="pager"><a class="prev" href="../lessons/pmp-mindset.html">&larr; P3. The PMI Mindset</a><a class="next" href="../lessons/pmp-agile.html">P5. Agile &amp; Hybrid &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

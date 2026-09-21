@@ -43,6 +43,10 @@ body{margin:0;background:var(--bg);color:var(--ink);
   text-decoration:none;font-size:14px}
 #sidebar li a:hover{background:var(--accent-soft);color:var(--ink)}
 #sidebar li.active a{background:var(--accent-soft);color:var(--accent);font-weight:650}
+#sidebar .navsection{margin:16px 10px 2px;font-size:11px;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+main h2.cardhead{font-size:17px;margin:2em 0 .3em;padding-bottom:0;border-bottom:0;
+  color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 #sidebar .home{display:block;padding:7px 10px;font-size:14px;font-weight:600;
   color:var(--ink);text-decoration:none;border-radius:6px}
 #sidebar .home:hover{background:var(--accent-soft)}

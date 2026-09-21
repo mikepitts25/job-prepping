@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C2. CAM Interview and Variance Analysis Drill &middot; Prep Library</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">Prep Library</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><p class="navsection">PMP certification</p><ul><li><a href="../lessons/pmp-overview.html">P1. PMP: What You Are Signing Up For</a></li><li><a href="../lessons/pmp-eco.html">P2. The 2026 Exam Content Outline</a></li><li><a href="../lessons/pmp-mindset.html">P3. The PMI Mindset</a></li><li><a href="../lessons/pmp-predictive.html">P4. Predictive Mechanics</a></li><li><a href="../lessons/pmp-agile.html">P5. Agile &amp; Hybrid</a></li><li><a href="../lessons/pmp-drills.html">P6. Drill Set</a></li><li><a href="../lessons/pmp-plan.html">P7. Ten-Week Plan &amp; Free Resources</a></li></ul><p class="navsection">CAM / EVMS certification</p><ul><li><a href="../lessons/cam-evms.html">C1. Control Account Manager: EVMS</a></li><li class="active"><a href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill</a></li></ul><p class="navsection">EADGE-T interview prep</p><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="c2-cam-interview-and-variance-analysis-drill">C2. CAM Interview and Variance Analysis Drill</h1>
+<p>A CAM interview is not a quiz. A government reviewer sits with you and your
+control account data and asks you to explain your own numbers. They are testing
+one thing: <strong>do you actually manage this control account, or does someone else
+manage it and you sign the reports?</strong></p>
+<p>The tell is always the same. A CAM who manages their account answers from
+knowledge and reaches for evidence to confirm. A CAM who does not answers by
+reaching for the binder and reading.</p>
+<h2 id="the-twenty-questions-you-will-be-asked">The twenty questions you will be asked</h2>
+<p>Answer each of these out loud before reading the guidance. If an answer takes
+you more than about twenty seconds to begin, that is the gap.</p>
+<h3 id="scope-and-authorisation">Scope and authorisation</h3>
+<p><strong>1. What is the scope of your control account?</strong>
+Describe the work in your own words, then point to the WBS dictionary entry and
+the statement of work extract. Not a job title — a description of deliverables.</p>
+<p><strong>2. How was this work authorised to you, and by whom?</strong>
+The work authorisation document, signed, with the date. Know that it exists and
+where it is.</p>
+<p><strong>3. Is any of the work in your control account not yet on contract?</strong>
+The honest answer is either "no" or "yes, this portion is authorised unpriced
+work" — and if the latter, know the AUW and how it is budgeted.</p>
+<p><strong>4. How do you know your scope is complete — that nothing is missing?</strong>
+The 100% rule, the RAM, and the reconciliation of your budget to the PMB. The
+underlying question is whether you have unbudgeted work you are quietly
+absorbing.</p>
+<h3 id="schedule">Schedule</h3>
+<p><strong>5. Walk me through your schedule.</strong>
+Open the IMS extract. Show the logic, not just the bars. Name the predecessors
+and successors that cross into other control accounts.</p>
+<p><strong>6. What drives your critical path, and how much float do you have?</strong>
+If the answer is "I don't look at float", the interview is effectively over.</p>
+<p><strong>7. Are there any constraints or date-locked tasks in your schedule?</strong>
+Hard constraints break network logic and are a standard finding. Know yours and
+why they exist.</p>
+<p><strong>8. How does your schedule connect to the ones around you?</strong>
+Interfaces and handoffs. A control account whose schedule has no external links
+is a red flag — it means the integration is not modelled.</p>
+<h3 id="budget-and-earned-value">Budget and earned value</h3>
+<p><strong>9. How is your budget time-phased, and by element of cost?</strong>
+Labour, material, subcontract, other direct, indirect. Know the shape.</p>
+<p><strong>10. What earned value method does each work package use, and why?</strong>
+Be ready to defend every choice, and be especially ready to defend any LOE.</p>
+<p><strong>11. What percentage of your control account is LOE?</strong>
+Know the number. Expect a follow-up asking why any specific item is LOE rather
+than discrete.</p>
+<p><strong>12. How do you take earned value each month — walk me through last month.</strong>
+The process, the evidence, who reviews it. "The analyst does it" is the wrong
+answer, even when it is partly true. You own the assessment.</p>
+<p><strong>13. Do you have any planning packages, and when do they convert?</strong>
+Rolling wave. Know the conversion dates and that the conversions are happening
+on time — late conversions are a common finding.</p>
+<h3 id="performance-and-variances">Performance and variances</h3>
+<p><strong>14. What are your current CV and SV, and what is driving them?</strong>
+Numbers first, then root cause. <strong>Root cause is not "we spent more than planned"
+— that is a restatement of the variance.</strong> Root cause is <em>why</em>: a test rig was
+unavailable for three weeks, a design change added rework, a supplier slipped, a
+skill mix was richer than planned.</p>
+<p><strong>15. What corrective action are you taking, and when will it show in the data?</strong>
+A corrective action with no date and no expected effect is not a corrective
+action.</p>
+<p><strong>16. What is your EAC, and what is it based on?</strong>
+Your bottom-up basis of estimate, and how it compares to the statistical
+<code>BAC / CPI</code>. If the two diverge widely, you need a reason. "My EAC equals my BAC"
+while running CPI 0.85 is the answer that triggers the hard follow-ups.</p>
+<p><strong>17. Has your EAC changed since last month? Why?</strong>
+An EAC that never moves is not being maintained.</p>
+<h3 id="changes-and-risk">Changes and risk</h3>
+<p><strong>18. Have you had any baseline changes? Walk me through one.</strong>
+The change, its authorisation, the date, and whether any of it touched work
+already performed. Know that last part cold.</p>
+<p><strong>19. Have you used management reserve? For what?</strong>
+In-scope unanticipated work, documented and authorised. Never to cover a
+variance.</p>
+<p><strong>20. What are the top risks to your control account, and what are you doing
+about them?</strong>
+Specific risks with owners and responses, and how they connect to your EAC. A
+risk that would blow your EAC and is not reflected in it is an inconsistency a
+reviewer will find.</p>
+<h2 id="worked-variance-analysis">Worked variance analysis</h2>
+<p>This is the core CAM skill. Do these three by hand before reading the answers.</p>
+<h3 id="case-1">Case 1</h3>
+<blockquote>
+<p>Control account 1.3.2, cumulative to date:
+BAC = $2,400,000 · PV = $900,000 · EV = $750,000 · AC = $880,000
+Variance thresholds: report any cumulative CV% or SV% beyond ±10%.</p>
+</blockquote>
+<p>Work it:</p>
+<ul>
+<li><code>CV = 750,000 − 880,000 = −$130,000</code></li>
+<li><code>CV% = −130,000 / 750,000 = −17.3%</code> → <strong>over threshold, report required</strong></li>
+<li><code>SV = 750,000 − 900,000 = −$150,000</code></li>
+<li><code>SV% = −150,000 / 900,000 = −16.7%</code> → <strong>over threshold, report required</strong></li>
+<li><code>CPI = 750,000 / 880,000 = 0.85</code></li>
+<li><code>SPI = 750,000 / 900,000 = 0.83</code></li>
+<li><code>% complete = 750,000 / 2,400,000 = 31.3%</code></li>
+<li><code>EAC (statistical) = 2,400,000 / 0.85 = $2,823,529</code></li>
+<li><code>VAC = 2,400,000 − 2,823,529 = −$423,529</code></li>
+<li><code>TCPI (to BAC) = (2,400,000 − 750,000) / (2,400,000 − 880,000) = 1,650,000 / 1,520,000 = 1.086</code></li>
+</ul>
+<p><strong>The reading.</strong> Behind and overrunning together at 31% complete, which is early
+enough that the trend is likely structural rather than a one-off. TCPI of 1.09
+against demonstrated 0.85 means recovering to BAC requires a 28% improvement in
+efficiency, sustained, for the remaining 69% of the work. That is not credible
+without a specific, identified change in how the work is done.</p>
+<p><strong>What a reviewer wants to hear:</strong> the root cause, a corrective action with a
+date, and an EAC that reflects reality rather than hope. If your EAC is still
+$2.4M here, explain precisely what changes to make that achievable — or revise
+it.</p>
+<h3 id="case-2">Case 2</h3>
+<blockquote>
+<p>BAC = $500,000 · PV = $400,000 · EV = $400,000 · AC = $470,000</p>
+</blockquote>
+<ul>
+<li><code>SV = 0</code>, <code>SPI = 1.00</code> → on schedule</li>
+<li><code>CV = −$70,000</code>, <code>CV% = −17.5%</code>, <code>CPI = 0.85</code> → significant overrun</li>
+<li><code>EAC = 500,000 / 0.85 = $588,235</code></li>
+</ul>
+<p><strong>The reading.</strong> On schedule, over cost. The work is getting done on time but
+each unit costs more than planned. Typical causes: a richer labour mix than
+budgeted, overtime to hold the schedule, material price increases, or rework.</p>
+<p><strong>The follow-up you must anticipate:</strong> "Are you buying your schedule with
+overtime?" If the answer is yes, the reviewer will want to know what happens when
+you cannot sustain it, and whether your EAC assumes the overtime continues.</p>
+<h3 id="case-3">Case 3</h3>
+<blockquote>
+<p>BAC = $1,000,000 · PV = $600,000 · EV = $700,000 · AC = $690,000
+The control account is 90% level of effort.</p>
+</blockquote>
+<ul>
+<li><code>SV = +$100,000</code>, <code>SPI = 1.17</code> → apparently ahead</li>
+<li><code>CV = +$10,000</code>, <code>CPI = 1.01</code> → marginally favourable</li>
+</ul>
+<p><strong>The reading — and the trap.</strong> These numbers look excellent and they are close
+to meaningless. LOE work takes EV automatically as time passes, so it cannot
+generate a schedule variance. A control account that is 90% LOE and showing
+SPI 1.17 has that variance coming entirely from the 10% that is discrete, on a
+small base, which makes it statistically noisy.</p>
+<p><strong>The real finding is the 90% itself.</strong> A reviewer will ask why this much of the
+account is classified LOE, and whether discrete work has been misclassified to
+avoid schedule visibility. Favourable variances get scrutinised too — sometimes
+harder, because they are more often artefacts than achievements.</p>
+<h2 id="root-cause-written-properly">Root cause, written properly</h2>
+<p>Variance analysis reports are graded on the quality of the root cause. The
+pattern:</p>
+<table>
+<thead>
+<tr>
+<th>Weak</th>
+<th>Strong</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"Costs exceeded budget."</td>
+<td>"Integration testing required three additional weeks of senior engineering support because the vendor's interface did not match the ICD, driving 480 unplanned hours at a higher labour rate."</td>
+</tr>
+<tr>
+<td>"We are behind schedule."</td>
+<td>"The environmental test chamber was unavailable for four weeks due to a facility outage, delaying qualification testing that is a predecessor to two downstream work packages."</td>
+</tr>
+<tr>
+<td>"We will work to recover."</td>
+<td>"Two additional test engineers join in November; recovery of 60% of the schedule variance is expected by the January reporting period, with the remainder absorbed by resequencing WP 1.3.2.4."</td>
+</tr>
+</tbody>
+</table>
+<p>A complete variance analysis report has four parts, every time:</p>
+<ol>
+<li><strong>What</strong> the variance is — the numbers, current period and cumulative</li>
+<li><strong>Why</strong> — root cause, specific and singular where possible</li>
+<li><strong>Impact</strong> — on the control account, on downstream work, on the EAC</li>
+<li><strong>Corrective action</strong> — what, who, by when, and the expected effect on the data</li>
+</ol>
+<h2 id="ten-self-test-questions">Ten self-test questions</h2>
+<p>Answers below each. Cover them.</p>
+<p><strong>1.</strong> A work package is 50/50 and has started but not finished. What is EV?</p>
+<blockquote>
+<p>Half the work package budget. No more, regardless of how complete it feels.</p>
+</blockquote>
+<p><strong>2.</strong> Cumulative SV is −$200,000. How many weeks late are you?</p>
+<blockquote>
+<p>Unanswerable from SV. Dollars are not time. Go to the IMS.</p>
+</blockquote>
+<p><strong>3.</strong> <code>CBB = $50M</code>, <code>MR = $3M</code>. What is the PMB?</p>
+<blockquote>
+<p>$47M. <code>PMB = CBB − MR</code>.</p>
+</blockquote>
+<p><strong>4.</strong> May management reserve be used to offset a cost overrun?</p>
+<blockquote>
+<p>No. In-scope unanticipated work only, documented and authorised.</p>
+</blockquote>
+<p><strong>5.</strong> A control account is running CPI 0.90 and the CAM's EAC equals BAC. What
+will a reviewer ask?</p>
+<blockquote>
+<p>What specifically changes to deliver the remaining work at better than planned
+efficiency, given demonstrated performance below it. Without an answer, the EAC
+is not defensible.</p>
+</blockquote>
+<p><strong>6.</strong> What does TAB exceeding CBB mean?</p>
+<blockquote>
+<p>An over-target baseline is in effect: a formal, customer-approved reset because
+the original baseline became unachievable.</p>
+</blockquote>
+<p><strong>7.</strong> Why can LOE never show a schedule variance?</p>
+<blockquote>
+<p>EV is taken as time passes, so EV always equals PV by construction.</p>
+</blockquote>
+<p><strong>8.</strong> A CAM adjusts last month's EV downward to correct an error. Allowed?</p>
+<blockquote>
+<p>A documented correction of a genuine error, yes. Retroactive adjustment to
+reduce a reported variance, never. The distinction is documentation and intent,
+and reviewers look specifically for the second.</p>
+</blockquote>
+<p><strong>9.</strong> What is the difference between an IBR and an EVMS compliance review?</p>
+<blockquote>
+<p>The IBR asks whether the <em>baseline</em> is realistic and executable. A compliance
+review asks whether the <em>system</em> meets EIA-748.</p>
+</blockquote>
+<p><strong>10.</strong> <code>BAC = $1.2M</code>, <code>EV = $400K</code>, <code>AC = $500K</code>. What is the TCPI to BAC, and
+what does it tell you?</p>
+<blockquote>
+<p><code>(1,200,000 − 400,000) / (1,200,000 − 500,000) = 800,000 / 700,000 = 1.14</code>.
+You must run 14% better than plan on all remaining work, having so far run at
+<code>400/500 = 0.80</code>. The budget is not realistically recoverable.</p>
+</blockquote>
+<h2 id="preparing-for-the-real-interview">Preparing for the real interview</h2>
+<p>The week before:</p>
+<ul>
+<li><strong>Rehearse the twenty questions out loud.</strong> Not in your head. The failure mode
+  is hesitation, and hesitation only shows up when you speak.</li>
+<li><strong>Know three numbers cold:</strong> your BAC, your cumulative CPI, and your EAC. Every
+  conversation starts from those.</li>
+<li><strong>Have one clean example ready</strong> of a variance you identified, root-caused, and
+  corrected, with the data showing the correction working. This single story does
+  more than any other preparation.</li>
+<li><strong>Reconcile your notebook to the system</strong> the day before. A number in your
+  binder that does not match the tool is the worst way to start.</li>
+<li><strong>Never guess.</strong> "I don't know, I'll get that to you this afternoon" is an
+  acceptable answer once or twice and is far better than a confident wrong
+  number. Reviewers check.</li>
+</ul>
+<p>The disposition that passes: you own this work, you know where it stands, you
+know what is wrong with it, and you have a plan. Nobody expects a clean control
+account. They expect a CAM who knows their own account's problems before the
+reviewer does.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.ndia.org/divisions/ipmd/division-guides-and-resources">NDIA IPMD guides: Intent Guide, IBR Guide, Surveillance Guide</a></li>
+<li><a href="https://icatalog.dau.edu/mobile/CourseDetails.aspx?id=1907">DAU EVM 101 — Fundamentals of Earned Value Management</a></li>
+<li><a href="https://www.energy.gov/projectmanagement/evms-training">DOE EVMS training modules and videos</a></li>
+<li><a href="https://www.acq.osd.mil/asda/dpc/api/ipm/policy-guidance.html">DoD Integrated Program Management policy and guidance</a></li>
+</ul>
+<p>Questions here are original, written against published guidance. Formula
+conventions follow <a href="cam-evms.html">C1</a> and <a href="pmp-predictive.html">P4</a>.</p>
+<nav class="pager"><a class="prev" href="../lessons/cam-evms.html">&larr; C1. Control Account Manager: EVMS</a><a class="next" href="../lessons/program-brief.html">1. Program &amp; Role Brief &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>

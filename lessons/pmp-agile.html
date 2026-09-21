@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>P5. Agile and Hybrid &middot; Prep Library</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <button id="navtoggle" aria-label="Toggle navigation">&#9776;</button>
+  <span class="brand"><a href="../index.html">Prep Library</a></span>
+  <span class="spacer"></span>
+  <button id="themetoggle" aria-label="Toggle theme">&#9681;</button>
+</header>
+<div class="layout">
+<nav id="sidebar"><a class="home" href="../index.html">&#8962; Start here</a><p class="navsection">PMP certification</p><ul><li><a href="../lessons/pmp-overview.html">P1. PMP: What You Are Signing Up For</a></li><li><a href="../lessons/pmp-eco.html">P2. The 2026 Exam Content Outline</a></li><li><a href="../lessons/pmp-mindset.html">P3. The PMI Mindset</a></li><li><a href="../lessons/pmp-predictive.html">P4. Predictive Mechanics</a></li><li class="active"><a href="../lessons/pmp-agile.html">P5. Agile &amp; Hybrid</a></li><li><a href="../lessons/pmp-drills.html">P6. Drill Set</a></li><li><a href="../lessons/pmp-plan.html">P7. Ten-Week Plan &amp; Free Resources</a></li></ul><p class="navsection">CAM / EVMS certification</p><ul><li><a href="../lessons/cam-evms.html">C1. Control Account Manager: EVMS</a></li><li><a href="../lessons/cam-drills.html">C2. CAM Interview &amp; IBR Drill</a></li></ul><p class="navsection">EADGE-T interview prep</p><ul><li><a href="../lessons/program-brief.html">1. Program &amp; Role Brief</a></li><li><a href="../lessons/track-data.html">2. Track Data, Standards &amp; Fusion</a></li><li><a href="../lessons/interview-map.html">3. Interview Map &amp; 14-Day Plan</a></li><li><a href="../lessons/python-sprint.html">4. Sprint: Python in Four Hours</a></li><li><a href="../lessons/testing-sprint.html">5. Sprint: Testing in Four Hours</a></li><li><a href="../lessons/frontend-sprint.html">6. Sprint: Frontend in Four Hours</a></li><li><a href="../lessons/apis-sprint.html">7. Sprint: APIs in Four Hours</a></li><li><a href="../lessons/docker-sprint.html">8. Sprint: Docker in Four Hours</a></li><li><a href="../lessons/sdlc-sprint.html">9. Sprint: SDLC in Four Hours</a></li><li><a href="../lessons/python.html">10. Python Foundations</a></li><li><a href="../lessons/python-practice.html">11. Python in Practice</a></li><li><a href="../lessons/frontend.html">12. Frontend: Angular, TypeScript, HTML &amp; CSS</a></li><li><a href="../lessons/apis.html">13. APIs: REST, SOAP, gRPC &amp; Flask</a></li><li><a href="../lessons/java.html">14. Java Refresher</a></li><li><a href="../lessons/dsa.html">15. Data Structures &amp; Algorithms</a></li><li><a href="../lessons/ood.html">16. OO Design &amp; SOLID</a></li><li><a href="../lessons/linux.html">17. Linux / RHEL</a></li><li><a href="../lessons/git-agile.html">18. Git, GitLab &amp; Agile</a></li><li><a href="../lessons/testing-ci.html">19. Testing &amp; CI/CD</a></li><li><a href="../lessons/containers.html">20. Docker, Kubernetes &amp; Helm</a></li><li><a href="../lessons/architecture.html">21. Architecture &amp; Software Factory</a></li><li><a href="../lessons/cyber.html">22. Cybersecurity &amp; Sustainment</a></li><li><a href="../lessons/adoc-bridge.html">23. Your ADOC Bridge</a></li><li><a href="../lessons/behavioral.html">24. Behavioral &amp; Expat Questions</a></li><li><a href="../lessons/scenarios.html">25. Scenario Answers</a></li><li><a href="../lessons/mock-interview.html">26. Mock Interview Bank</a></li><li><a href="../lessons/cheatsheets.html">27. Cheat Sheets</a></li></ul><a class="home" href="../practice/README.html">&#9881; Practice repo</a></nav>
+<main id="main">
+<h1 id="p5-agile-and-hybrid">P5. Agile and Hybrid</h1>
+<p>Roughly half the exam is set in agile or hybrid environments. You have run a
+backlog as a product owner, so much of this is familiar; the risk for you is the
+opposite of the usual one. You know how agile works <em>in a real organisation</em>,
+with its compromises. The exam tests how agile works <em>as PMI describes it</em>. Where
+those differ, answer PMI's version.</p>
+<h2 id="telling-which-world-a-question-is-in">Telling which world a question is in</h2>
+<table>
+<thead>
+<tr>
+<th>Signal words</th>
+<th>World</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sprint, backlog, product owner, Scrum Master, velocity, retrospective, increment</td>
+<td>Agile</td>
+</tr>
+<tr>
+<td>baseline, change control board, WBS, critical path, earned value, phase gate</td>
+<td>Predictive</td>
+</tr>
+<tr>
+<td>both sets in one scenario</td>
+<td>Hybrid</td>
+</tr>
+</tbody>
+</table>
+<p>This matters because the correct answer flips. A scope change in a predictive
+scenario goes to the CCB. The same change in an agile scenario goes into the
+product backlog for the product owner to prioritise — <strong>no change request, no
+CCB</strong>. Getting this backwards is one of the most common avoidable failures.</p>
+<h2 id="scrum-as-pmi-describes-it">Scrum, as PMI describes it</h2>
+<p>Three accountabilities, five events, three artefacts. Know them exactly.</p>
+<p><strong>Accountabilities</strong></p>
+<table>
+<thead>
+<tr>
+<th>Role</th>
+<th>Owns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Product Owner</strong></td>
+<td>The product backlog, its ordering, and value. One person, not a committee. Decides <em>what</em>.</td>
+</tr>
+<tr>
+<td><strong>Scrum Master</strong></td>
+<td>The process. Coaches, facilitates, removes impediments. <strong>Servant leader, not a manager.</strong></td>
+</tr>
+<tr>
+<td><strong>Developers</strong></td>
+<td>How the work gets done, and the sprint backlog. Self-managing. Decides <em>how</em>.</td>
+</tr>
+</tbody>
+</table>
+<p>The Scrum Master does not assign work, does not estimate for the team, and does
+not commit on the team's behalf. If an answer has the Scrum Master deciding
+something the team should decide, it is wrong.</p>
+<p><strong>Events</strong></p>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Timebox (1-month sprint)</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Sprint</td>
+<td>≤ 1 month</td>
+<td>The container for everything else</td>
+</tr>
+<tr>
+<td>Sprint planning</td>
+<td>≤ 8 hours</td>
+<td>What and how for this sprint</td>
+</tr>
+<tr>
+<td>Daily scrum</td>
+<td>15 minutes</td>
+<td>The developers re-plan the day. Not a status report to the PM.</td>
+</tr>
+<tr>
+<td>Sprint review</td>
+<td>≤ 4 hours</td>
+<td>Inspect the increment <strong>with stakeholders</strong>, adapt the backlog</td>
+</tr>
+<tr>
+<td>Sprint retrospective</td>
+<td>≤ 3 hours</td>
+<td>Inspect the team's process, commit to one improvement</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Artefacts and their commitments</strong>: product backlog → product goal; sprint
+backlog → sprint goal; increment → <strong>definition of done</strong>.</p>
+<p>The definition of done is the quality bar for "shippable". Acceptance criteria
+are per-story. Confusing the two is a tested distinction.</p>
+<p><strong>Sprint rules that get tested</strong></p>
+<ul>
+<li>Scope within a sprint may be <strong>renegotiated</strong> with the product owner as more is
+  learned, but new work is not simply injected.</li>
+<li><strong>Only the product owner can cancel a sprint</strong>, and it happens when the sprint
+  goal becomes obsolete. It is rare.</li>
+<li>Unfinished work at sprint end goes <strong>back to the product backlog</strong> and is
+  re-estimated and re-prioritised. It does not "roll over" automatically, and
+  sprints are not extended to finish it.</li>
+<li>The sprint length is fixed. If the team keeps missing, the answer is to take
+  less work in, not to lengthen the sprint.</li>
+</ul>
+<h2 id="estimation-and-measurement">Estimation and measurement</h2>
+<ul>
+<li><strong>Story points</strong> are relative size — effort, complexity, uncertainty — not
+  hours. They are not comparable across teams and are never used to compare
+  teams.</li>
+<li><strong>Velocity</strong> is points completed per sprint, averaged over recent sprints. Used
+  for forecasting <em>by this team</em>, never as a performance target. If an answer
+  uses velocity to judge or compare people, it is wrong.</li>
+<li><strong>Planning poker</strong> for relative estimation; <strong>affinity estimation</strong> for large
+  backlogs quickly; <strong>t-shirt sizing</strong> for coarse early work.</li>
+<li>Burndown shows work remaining against time. <strong>Burnup</strong> shows work completed
+  against total scope, which makes scope changes visible — the reason PMI
+  prefers it for stakeholder communication.</li>
+<li><strong>Cumulative flow diagram</strong> shows work in each state over time. Widening bands
+  mean a bottleneck. This is the graphic most likely to appear as a
+  graphic-based question.</li>
+</ul>
+<h2 id="kanban-and-lean">Kanban and lean</h2>
+<ul>
+<li>Visualise the workflow, <strong>limit work in progress</strong>, manage flow, make policies
+  explicit, improve collaboratively.</li>
+<li><strong>Little's Law</strong>: <code>cycle time = work in progress / throughput</code>. To reduce cycle
+  time, reduce WIP. That is the answer to most "the team is slow" Kanban
+  questions.</li>
+<li><strong>Lead time</strong> is from request to delivery. <strong>Cycle time</strong> is from work started
+  to delivered. Lead time is the customer's experience.</li>
+<li>Kanban is continuous flow with no fixed iterations, pull-based, and changes can
+  enter the queue at any time. <strong>Scrumban</strong> puts WIP limits and flow onto Scrum's
+  cadence.</li>
+<li>The seven lean wastes matter mainly as a concept: anything not adding customer
+  value.</li>
+</ul>
+<h2 id="xp-practices-worth-naming">XP practices worth naming</h2>
+<p>Pair programming, test-driven development, continuous integration, refactoring,
+simple design, collective code ownership, small releases, sustainable pace,
+on-site customer. XP contributes the engineering discipline that Scrum leaves
+unspecified — which is why hybrid answers often pair "Scrum for cadence" with
+"XP practices for quality".</p>
+<h2 id="servant-leadership">Servant leadership</h2>
+<p>The People domain's agile face. The servant leader:</p>
+<ul>
+<li>removes impediments rather than assigning work</li>
+<li>asks rather than tells</li>
+<li>shields the team from interruption</li>
+<li>builds the team's capability so they need them less</li>
+<li>measures success by the team's growth</li>
+</ul>
+<p>Almost every agile People-domain question has one option that coaches or
+facilitates and three that direct. Take the coaching one.</p>
+<h2 id="hybrid">Hybrid</h2>
+<p>Hybrid is the realistic case and the 2026 exam leans into it. Common shapes:</p>
+<ul>
+<li>Predictive at the programme or phase-gate level, agile within delivery teams.</li>
+<li>Agile for software, predictive for hardware, integration, or certification
+  work that has fixed dependencies and long lead times.</li>
+<li>Agile delivery with predictive governance, funding, and reporting — which is
+  exactly the defence-programme pattern in the <a href="cam-evms.html">CAM track</a>.</li>
+</ul>
+<p>The exam's view of tailoring:</p>
+<table>
+<thead>
+<tr>
+<th>Factor pushing toward predictive</th>
+<th>Factor pushing toward agile</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stable, well-understood requirements</td>
+<td>Volatile or unclear requirements</td>
+</tr>
+<tr>
+<td>Regulatory or safety certification</td>
+<td>Fast feedback available</td>
+</tr>
+<tr>
+<td>Fixed-price contract, fixed scope</td>
+<td>Customer available and engaged</td>
+</tr>
+<tr>
+<td>Large, distributed, contractual interfaces</td>
+<td>Small, co-located, empowered team</td>
+</tr>
+<tr>
+<td>High cost of change late</td>
+<td>Low cost of change</td>
+</tr>
+</tbody>
+</table>
+<p>When a question describes the situation and asks which approach, match against
+that table. When it describes a hybrid and asks what to do, apply the rules of
+whichever layer the question is operating in.</p>
+<h2 id="the-agile-equivalents-of-predictive-artefacts">The agile equivalents of predictive artefacts</h2>
+<p>Useful for hybrid questions, and for translating when you already know the
+predictive answer.</p>
+<table>
+<thead>
+<tr>
+<th>Predictive</th>
+<th>Agile equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Requirements document</td>
+<td>Product backlog</td>
+</tr>
+<tr>
+<td>WBS work package</td>
+<td>Epic / feature / user story</td>
+</tr>
+<tr>
+<td>Detailed schedule</td>
+<td>Release plan + sprint backlog</td>
+</tr>
+<tr>
+<td>Status report</td>
+<td>Information radiator, burndown, review</td>
+</tr>
+<tr>
+<td>Change control board</td>
+<td>Product owner reprioritising the backlog</td>
+</tr>
+<tr>
+<td>Verify scope</td>
+<td>Sprint review with stakeholders</td>
+</tr>
+<tr>
+<td>Lessons learned</td>
+<td>Retrospective, every sprint</td>
+</tr>
+<tr>
+<td>Quality plan</td>
+<td>Definition of done</td>
+</tr>
+<tr>
+<td>Progress by % complete</td>
+<td>Working increments delivered</td>
+</tr>
+</tbody>
+</table>
+<h2 id="what-value-delivery-means-on-the-2026-exam">What "value delivery" means on the 2026 exam</h2>
+<p>The Process domain now has an explicit <strong>deliver value</strong> task, and it carries
+the exam's strongest bias. Where two options are otherwise equal, the one that:</p>
+<ul>
+<li>gets working output in front of a customer sooner,</li>
+<li>validates an assumption earlier,</li>
+<li>or measures benefit rather than activity,</li>
+</ul>
+<p>is the credited one. Terms to recognise: <strong>minimum viable product</strong> (smallest
+thing that delivers value and generates learning), <strong>benefits realisation plan</strong>
+(how and when benefits materialise, often after the project closes), <strong>return on
+investment</strong>, <strong>net present value</strong>, and <strong>cost of delay</strong>.</p>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><a href="https://www.pmi.org/-/media/pmi/documents/public/pdf/certifications/new-pmp-examination-content-outline-2026.pdf">PMP Examination Content Outline, July 2026 (PMI, PDF)</a></li>
+<li><em>Agile Practice Guide</em> (PMI and Agile Alliance) — free to PMI members</li>
+<li><a href="https://scrumguides.org/">The Scrum Guide</a> — free, about fifteen pages, and
+  the authority on everything in the Scrum section above. Read it whole; it takes
+  half an hour and it is the highest value-per-page document in this track.</li>
+</ul>
+<nav class="pager"><a class="prev" href="../lessons/pmp-predictive.html">&larr; P4. Predictive Mechanics</a><a class="next" href="../lessons/pmp-drills.html">P6. Drill Set &rarr;</a></nav>
+</main>
+</div>
+<script src="../assets/site.js"></script>
+</body>
+</html>
