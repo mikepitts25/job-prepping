@@ -1,4 +1,4 @@
-# P6. Drill Set: Forty Questions
+# P8. Drill Set: Forty Questions
 
 These are written in the exam's style and, more importantly, each one comes with
 the reasoning rather than just a letter. Work them with the four-step routine

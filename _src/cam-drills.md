@@ -267,4 +267,4 @@ reviewer does.
 - [DoD Integrated Program Management policy and guidance](https://www.acq.osd.mil/asda/dpc/api/ipm/policy-guidance.html)
 
 Questions here are original, written against published guidance. Formula
-conventions follow [C1](cam-evms.html) and [P4](pmp-predictive.html).
+conventions follow [C1](cam-evms.html) and [P5](pmp-predictive.html).
